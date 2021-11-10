@@ -6,20 +6,25 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.hash.aes256;
 import com.mrpizzahut.app.hash.sha256;
+import com.mrpizzahut.app.pay.paymentService;
 import com.mrpizzahut.app.pay.tryBuyDto;
 
 @Service
 public class settleService {
-	private Logger logger=LoggerFactory.getLogger(settleService.class);
+	
+	@Autowired
+	private paymentService paymentService;
 	
 	@Transactional(rollbackFor = Exception.class)
     public JSONObject makeBuyInfor(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email) {
+		System.out.println("makeBuyInfor");
         Map<String,Object>map=maps.get(maps.size()-1);
         Map<String,String>trdDtTrdTm=utillService.getTrdDtTrdTm();
         String mchtTrdNo=maps.get(0).get("bigKind")+utillService.getRandomNum(10);
@@ -29,14 +34,14 @@ public class settleService {
         String buyKind=tryBuyDto.getKind();
         String[] idAndText=getRequestTest(buyKind, mchtTrdNo, requestDate, requestTime, totalCash);
         String settleText=idAndText[1];
-        logger.info(settleText+" 해쉬예정문자열");
+        System.out.println(settleText+" 해쉬예정문자열");
         String hashText=sha256.encrypt(settleText);
-        logger.info(hashText+" 해쉬문자열");
+        System.out.println(hashText+" 해쉬문자열");
         String priceHash=aes256.encrypt(totalCash);
         JSONObject response=new JSONObject();
         String expireDate=null;
         if(buyKind.equals("vbank")){
-            logger.info("가상계좌 만료시간 담기");
+            System.out.println("가상계좌 만료시간 담기");
             expireDate=(String)map.get("expireDate");
             response.put("expireDt", expireDate);
         }
@@ -54,7 +59,7 @@ public class settleService {
         return response;
     }
 	private String[] getRequestTest(String method,String mchtTrdNo,String requestDate,String requestTime,String totalCash) {
-        logger.info("getRequestTest");
+        System.out.println("getRequestTest");
         String[] idAndText=new String[2];
         String id="";
         if(method.equals("card")){

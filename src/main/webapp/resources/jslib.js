@@ -35,6 +35,8 @@ function requestOrder(){
 		card(result);
 	}else if(kind=='vbank'){
 		vbank(result);
+	}else if(kind=='kpay'){
+		 window.open(result.message, 'width=500, height=900','resizable=no');
 	}
 	
 	

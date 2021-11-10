@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
+import com.mrpizzahut.app.api.kakaopay;
 import com.mrpizzahut.app.pay.settle.settleService;
 
 import Daos.buketDao;
@@ -39,6 +40,8 @@ public class payService {
 	private payDao payDao;
 	@Autowired
 	private settleService settleService;
+	@Autowired
+	private kakaopay kakaopay;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
@@ -58,11 +61,11 @@ public class payService {
 			return settleService.makeBuyInfor(tryBuyDto, maps, email);
 		}else if(kind.equals("kpay")) {
 			System.out.println("카카오페이");
+			return kakaopay.getKaKaoPayLink(tryBuyDto, maps, email);
 		}else {
 			throw utillService.makeRuntimeEX("지원하지 않는 결제수단입니다", "getPayInfor");
 		}
 		
-		return utillService.makeJson(true, "??dsd");
 	}
 	private List<Map<String,Object>> confrimbuket(String email,String buyKind,String coupon){
 		System.out.println("confrimbuket");
@@ -117,7 +120,7 @@ public class payService {
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
 	            confrimCoupon(co,requestCount,eventmap,couponNamesAndCodeNames,productName);
 	            System.out.println("최종 쿠폰 정보 "+eventmap.toString());
-	            onlyCash=getOnlyCash(Integer.parseInt(product.get("PRICE").toString().replace(",", "")),requestCount,eventmap,30);
+	            onlyCash=getOnlyCash(Integer.parseInt(product.get("PRICE").toString().replace(",", "")),requestCount,eventmap,30,productName);
 	            System.out.println("최종가격"+onlyCash);
 	            totalCash+=onlyCash;
 	            System.out.println("전체가격 "+totalCash);
@@ -213,7 +216,7 @@ public class payService {
             }
             System.out.println("쿠폰액션 담기완료");
     }
-    private int getOnlyCash(int  price,int count,LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap,int maxDiscountPercent) {
+    private int getOnlyCash(int  price,int count,LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap,int maxDiscountPercent,String productName) {
         System.out.println("getOnlyCash");
         System.out.println("원가 "+price);
         int tempPrice=0;
@@ -230,11 +233,11 @@ public class payService {
                 }else if(couponAction.equals("minus")) {
                 	 totalDiscountPercent=(double)couponNum/price*100;
                 }else{
-                    throw utillService.makeRuntimeEX("지원하는 할인방법이 아닙니다", "getTotalPrice");
+                    throw utillService.makeRuntimeEX("지원하는 할인방법이 아닙니다", "getOnlyCash");
                 }
                 System.out.println(totalDiscountPercent+"할인 페센트");
                 if(maxDiscountPercent<totalDiscountPercent){
-                    throw utillService.makeRuntimeEX("이 상품은 최대 "+maxDiscountPercent+"%까지 할인 가능합니다 현재 "+totalDiscountPercent+"%", "getTotalPrice");
+                    throw utillService.makeRuntimeEX(productName+"상품은 최대 "+maxDiscountPercent+"%까지 할인 가능합니다 현재 "+totalDiscountPercent+"%", "getOnlyCash");
                 }
                 if(totalDiscountPercent>0.0){
                     tempPrice+=price-price*(totalDiscountPercent*0.01);
