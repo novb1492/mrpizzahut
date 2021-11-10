@@ -20,7 +20,12 @@ function requestOrder(){
            "kind":kind,
            "coupon":document.getElementById('coupons').value
 	}); 
-	requestToServer('/app/tryOrder',data);
+	 var result=requestToServer('/app/tryOrder',data);
+	 if(!result.flag){
+		alert(result.message);
+		return;	
+	}
+	
 }
 function deletechoice(){
 	var arr = document.getElementsByName("cart_item");

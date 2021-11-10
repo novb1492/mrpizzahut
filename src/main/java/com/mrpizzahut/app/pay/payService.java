@@ -22,6 +22,7 @@ import com.mrpizzahut.app.utillService;
 
 import Daos.buketDao;
 import Daos.couponDao;
+import Daos.payDao;
 
 @Service
 public class payService {
@@ -31,6 +32,8 @@ public class payService {
 	private buketDao buketDao;
 	@Autowired
 	private couponDao couponDao;
+	@Autowired
+	private payDao payDao;
 	
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
 		System.out.println("getPayInfor");
@@ -38,50 +41,55 @@ public class payService {
 		if(utillService.checkNull(tryBuyDto.getMobile1())||utillService.checkNull(tryBuyDto.getMobile2())||utillService.checkNull(tryBuyDto.getMobile3())) {
 			throw utillService.makeRuntimeEX("핸드폰 번호를 확인해주세요", "getPayInfor");
 		}
-		List<Map<String, Object>>maps=buketDao.findByEmail(email);
-		if(maps.isEmpty()) {
-			throw utillService.makeRuntimeEX("장바구니가 비었습니다", "getPayInfor");
-		}
 		int kind=tryBuyDto.getKind();
 		if(kind==1||kind==2) {
 			System.out.println("세틀뱅크");
-			confrimbuket(email);
+		
+			confrimbuket(email,kind,tryBuyDto.getcoupon());
 		}else if(kind==3) {
 			System.out.println("카카오페이");
 		}else {
 			throw utillService.makeRuntimeEX("지원하지 않는 결제수단입니다", "getPayInfor");
 		}
-		confrimbuket(email);
 		return utillService.makeJson(true, "??dsd");
 	}
-	private List<Map<String,Object>> confrimbuket(String email){
+	private List<Map<String,Object>> confrimbuket(String email,int buyKind,String coupon){
 		System.out.println("confrimbuket");
-		 System.out.println("getTotalPriceAndOther");
 		 List<Map<String, Object>>carts=buketDao.findByEmail(email);
+			if(carts.isEmpty()) {
+				throw utillService.makeRuntimeEX("장바구니가 비었습니다", "getPayInfor");
+			}
+			System.out.println("장바구니 "+carts.toString());
 	        int itemArraySize=carts.size();
 	        String itemNames="";
 	        int onlyCash=0;
 	        int totalCash=0;
 	        List<Map<String,Object>>maps=new ArrayList<>();
 	        List<String>couponNamesAndCodeNames=new ArrayList<>();
-	        for(int i=0;i<itemArraySize;i++){
-	            Map<String,Object>result=new HashMap<>();
-	            String couponName=carts[i][2].toString();
-	            int count=confrimCount(itemArray[i][1]);
-	            productVo productVo=productDao.findById(Integer.parseInt(itemArray[i][0].toString())).orElseThrow(()->new IllegalArgumentException("메세지: 존재하지 않는 상품입니다"));
-	            String productName=productVo.getProductName();
-	            int dbCount=productVo.getCount();
-	            int tempCount=0;
-	                for(int ii=0;ii<itemArraySize;ii++){
-	                    if(Integer.parseInt(itemArray[i][0].toString())==Integer.parseInt(itemArray[ii][0].toString())){
-	                        tempCount+=Integer.parseInt(itemArray[ii][1].toString());
-	                    }
-	                    
+	        for(Map<String, Object>map:carts){
+	        	System.out.println("조회 "+map.toString());
+	        	Map<String, Object>product=payDao.findByPizzaName(map);
+	        	System.out.println("결과 "+product.toString());
+	        	int dbcount=Integer.parseInt(product.get("MCOUNT").toString());
+	        	System.out.println("남은 재고 "+dbcount);
+	        	int requestCount=Integer.parseInt(map.get("CCOUNT").toString());
+	        	System.out.println("요청 재고 "+requestCount);
+	        	int tempCount=0;
+	            for(Map<String, Object>map2:carts){
+	            	if(map2.get("CMENU").equals(map.get("CMENU"))){
+	                       tempCount+=Integer.parseInt(map2.get("CCOUNT").toString());
+	                       if(tempCount>dbcount) {
+	                    	   System.out.println("총 요청 수량 초과");
+	                    	   throw utillService.makeRuntimeEX("주문 가능 수량을 초과합니다 제품 "+map2.get("CMENU")+"요청수량 "+tempCount+"가능수량 "+dbcount, "confrimbuket");
+	                       }
 	                }
-	            if(tempCount>dbCount){
-	                throw utillService.makeRuntimeEX("재고가 부족합니다 제품명:"+productName+" 최대 수량 "+dbCount+" 주문수량 "+tempCount, "getTotalPriceAndOther");
+	                    
 	            }
-	            tempCount=0;
+	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
+	            confrimCoupon(coupon,requestCount,eventmap,couponNamesAndCodeNames);
+	            /*
+	           
+
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
 	            confrimCoupon(couponName,count,eventmap,couponNamesAndCodeNames);
 	            System.out.println(eventmap.toString()+" 쿠폰");
@@ -99,25 +107,22 @@ public class payService {
 	            maps.add(result);
 	            if(i==itemArraySize-1){
 	                maps.add(getTotalPrice(totalCash,itemNames,buyKind));
-	            };
+	            };*/
 	        }
 
-	        return maps;
+	        //return maps;
+	        return null;
 
 	}
-    private Map<String,Object> getTotalPrice(int totalCash,int point,String itemNames,String kind,String buyKind){
+    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,int buyKind){
        System.out.println("getTotalPrice");
         Map<String,Object>map=new HashMap<>();
-        int temp=totalCash-point;
-        if(temp<0){
-            temp=0;
-            point=point-totalCash;
-        }
-       System.out.println(temp+" 지불가격");
-        map.put("totalCash", temp);
-        map.put("totalPoint", point);
+
+       System.out.println(totalCash+" 지불가격");
+        map.put("totalCash", totalCash);
         map.put("itemNames", itemNames);
-        if(buyKind.equals("vbank")){
+        if(buyKind==2){
+        	System.out.println("가상계좌 요청 입급일 생성");
             map.put("expireDate", getVbankExpriedDate());
         }
         return map;
@@ -148,7 +153,7 @@ public class payService {
             for(String s:splite){
             	Map<String, Object>coupon=couponDao.findByCouponName(s);
                 LinkedHashMap<String,Object>map=new LinkedHashMap<>();
-                if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COCREATED").toString()).toLocalDateTime())){
+                if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COEXPIRED").toString()).toLocalDateTime())){
                     throw utillService.makeRuntimeEX("기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
                 }else if(Integer.parseInt(coupon.get("USEDFLAG").toString())!=0){
                     throw utillService.makeRuntimeEX("이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
