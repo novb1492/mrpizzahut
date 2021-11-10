@@ -518,6 +518,12 @@ Map<String,Object>user=(Map<String,Object>)request.getAttribute("user");
 							<span>1.여러장이라면 ,로 나누어서 입력해주세요</span>
 							<br>
 							<span>2.쿠폰 장수는 각 판수 보다 많을 수 없습니다</span>
+							<span>3.테스트 쿠폰들</span>
+							<br>
+							<span>test = 5프로, </span>
+							<span>test2 = 10프로,</span>
+							<span>test3 =  40프로, </span>
+							<span>test4 =  25프로, </span>
 							<br>
 							<br>
 							<input type="hidden" id="sizeup_flag">
