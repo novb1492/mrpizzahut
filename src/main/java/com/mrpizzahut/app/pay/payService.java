@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
@@ -26,7 +27,8 @@ import Daos.payDao;
 
 @Service
 public class payService {
-	  private final int fullProductMin=10;
+	 private final int fullProductMin=10;
+
 
 	@Autowired
 	private buketDao buketDao;
@@ -35,6 +37,7 @@ public class payService {
 	@Autowired
 	private payDao payDao;
 	
+	@Transactional(rollbackFor = Exception.class)
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
 		System.out.println("getPayInfor");
 		System.out.println(tryBuyDto.toString());
@@ -101,12 +104,12 @@ public class payService {
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
 	            confrimCoupon(co,Integer.parseInt(map.get("CCOUNT").toString()),eventmap,couponNamesAndCodeNames,(String)map.get("CMENU"));
 	            System.out.println("최종 쿠폰 정보 "+eventmap.toString());
+	            onlyCash=getOnlyCash(Integer.parseInt(product.get("PRICE").toString().replace(",", "")),requestCount,eventmap,30);
+	            System.out.println("최종가격"+onlyCash);
 	            /*
 	           
 
-	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
-	            confrimCoupon(couponName,count,eventmap,couponNamesAndCodeNames);
-	            System.out.println(eventmap.toString()+" 쿠폰");
+	          
 	            onlyCash=getOnlyCash(productVo.getPrice(),count,eventmap,productVo.getMaxDiscountPercent());
 	            totalCash+=onlyCash;
 	            itemNames+=productName;
@@ -162,6 +165,7 @@ public class payService {
         System.out.println("쿠폰 존재");
         String[] splite=couponName.split(",");
         if(splite.length>count){
+        	System.out.println("쿠폰 개수 판수보다 초과");
             throw utillService.makeRuntimeEX("주문 개수보다 쿠폰 개수가 많습니다 제품명 "+productName, "getTotalPrice");
         }
         int temp=0;
@@ -199,16 +203,17 @@ public class payService {
     }
     private int getOnlyCash(int  price,int count,LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap,int maxDiscountPercent) {
         System.out.println("getOnlyCash");
+        System.out.println("원가 "+price);
         int tempPrice=0;
         try {
             for(int i=0;i<count;i++){
                 String couponAction=(String)eventmap.get("coupon"+i).get("couponaction");
-                System.out.println(couponAction+" getOnlyCash");
-                int couponNum=(int)eventmap.get("coupon"+i).get("couponnum");
-                System.out.println(couponNum+" getOnlyCash");
+                System.out.println("할인 종류"+couponAction);
+                int couponNum=Integer.parseInt(eventmap.get("coupon"+i).get("couponnum").toString());
+                System.out.println("할인퍼센트 아니면 금액"+couponNum);
                 double totalDiscountPercent=0.00;
                 if(couponAction.equals("per")){
-                    System.out.println("둘다 퍼센트");
+                    System.out.println("퍼센트");
                     totalDiscountPercent=couponNum;
                 }else if(couponAction.equals("minus")) {
                 	 totalDiscountPercent=(double)couponNum/price*100;
