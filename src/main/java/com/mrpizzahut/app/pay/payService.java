@@ -62,6 +62,10 @@ public class payService {
 			System.out.println("장바구니 "+carts.toString());
 	        int itemArraySize=carts.size();
 	        String[] coupons=coupon.split("/");
+	        for(String s:coupons) {
+	        	 System.out.println("쿠폰 "+s);
+	        }
+	        
 	        String itemNames="";
 	        int onlyCash=0;
 	        int totalCash=0;
@@ -95,7 +99,8 @@ public class payService {
 				}
 	            temp+=1;
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
-	            confrimCoupon(co,itemArraySize,eventmap,couponNamesAndCodeNames);
+	            confrimCoupon(co,Integer.parseInt(map.get("CCOUNT").toString()),eventmap,couponNamesAndCodeNames,(String)map.get("CMENU"));
+	            System.out.println("최종 쿠폰 정보 "+eventmap.toString());
 	            /*
 	           
 
@@ -140,7 +145,7 @@ public class payService {
         System.out.println("getVbankExpriedDate");
          return utillService.getSettleVBankExpireDate(LocalDateTime.now().plusMinutes(fullProductMin).toString());
     }
-    private void confrimCoupon(String couponName,int count,LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap,List<String>couponNamesAndCodeNames){
+    private void confrimCoupon(String couponName,int count,LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap,List<String>couponNamesAndCodeNames,String productName){
         System.out.println("confrimCoupon");
         System.out.println("전체 쿠폰 배열"+couponNamesAndCodeNames);
         boolean flag=utillService.checkNull(couponName);
@@ -157,7 +162,7 @@ public class payService {
         System.out.println("쿠폰 존재");
         String[] splite=couponName.split(",");
         if(splite.length>count){
-            throw utillService.makeRuntimeEX("주문 개수보다 쿠폰 개수가 많습니다", "getTotalPriceAndOther");
+            throw utillService.makeRuntimeEX("주문 개수보다 쿠폰 개수가 많습니다 제품명 "+productName, "getTotalPrice");
         }
         int temp=0;
             for(String s:splite){

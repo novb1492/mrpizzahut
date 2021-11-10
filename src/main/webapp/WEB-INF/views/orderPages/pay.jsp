@@ -515,7 +515,9 @@ Map<String,Object>user=(Map<String,Object>)request.getAttribute("user");
 								<li class="w100"><span>쿠폰입력</span></li>
 								
 							</ul>
-							<span>여러장이라면 ,로 나누어서 입력해주세요</span>
+							<span>1.여러장이라면 ,로 나누어서 입력해주세요</span>
+							<br>
+							<span>2.쿠폰 장수는 각 판수 보다 많을 수 없습니다</span>
 							<br>
 							<br>
 							<input type="hidden" id="sizeup_flag">

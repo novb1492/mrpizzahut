@@ -1,10 +1,11 @@
 var result;
 function requestOrder(){
 	var carr=document.getElementsByClassName('coupon');
-	var coupons='/';
+	var coupons='*';
 	for(var i=0;i<carr.length;i++){
 		coupons+=carr[i].value+'/';
 	}
+	coupons=coupons.replace('*',"");
 	var arr=document.getElementsByName('payGroup');
 		var kind;
        for(var i=0;i<arr.length;i++){

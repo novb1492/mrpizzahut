@@ -6,7 +6,7 @@
 		select* from jang
 	</select>
 		<select id="findByEmail" parameterType="String" resultType="Map">
-		 select *from cart where CEMAIL=#{email}
+		 select *from cart where CEMAIL=#{email} order by CNUM desc
 	</select>
 	<select id="findByBid" parameterType="_int" resultType="Map">
 		select *from cart where CNUM=#{bid}
