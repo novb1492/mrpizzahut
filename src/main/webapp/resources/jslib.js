@@ -14,7 +14,7 @@ function requestOrder(){
 				break;
             }
        }
-   	if(kind==0){
+   	if(kind==undefined||kind==null){
 		alert('결제수단을 선택해주세요');
 		return;
 	}
@@ -31,7 +31,75 @@ function requestOrder(){
 		alert(result.message);
 		return;	
 	}
+	if(kind=='card'){
+		card(result);
+	}else if(kind=='vbank'){
+		vbank(result);
+	}
 	
+	
+}
+function vbank(result) {
+    SETTLE_PG.pay({
+        "env": "https://tbnpg.settlebank.co.kr",
+        "mchtId": result.mchtId,
+        "method": "vbank",
+        "trdDt": result.trdDt,    
+        "trdTm": result.trdTm,
+        "expireDt":result.expireDt,
+        "mchtTrdNo":result.mchtTrdNo,
+        "mchtName": "WonderLand",
+        "mchtEName": "WonderLand",
+        "pmtPrdtNm": result.itemName,
+        "trdAmt": result.trdAmt,
+        "mchtCustId":result.mchtCustId,
+        "notiUrl": "http://kim80800.iptime.org:8080/auth/settlebank",
+        "nextUrl": "http://localhost:8080/settle/callback",
+        "cancUrl": "http://localhost:8080/settle/callback",
+        "pktHash": result.pktHash,
+        "ui": {
+            "type": "popup",
+            "width": "430",
+            "height": "660"
+        }
+        }, function(rsp){
+            //iframe인경우 온다고 한다
+            console.log('통신완료');
+            console.log(rsp);
+        });      
+
+
+}
+ function card(result) {
+ 
+        SETTLE_PG.pay({
+            "env": "https://tbnpg.settlebank.co.kr",
+            "mchtId": result.mchtId,
+            "method": "card",
+            "trdDt": result.trdDt,    
+            "trdTm": result.trdTm,
+            "mchtTrdNo": result.mchtTrdNo,
+            "mchtName": "WonderLand",
+            "mchtEName": "WonderLand",
+            "pmtPrdtNm": result.itemName,
+            "trdAmt": result.trdAmt,
+            "mchtCustId":result.mchtCustId,
+            "notiUrl": "http://kim80800.iptime.org:8080/auth/settlebank",
+            "nextUrl": "http://localhost:8080/settle/callback",
+            "cancUrl": "http://localhost:8080/settle/callback",
+            "pktHash": result.pktHash,
+            "ui": {
+                "type": "popup",
+                "width": "430",
+                "height": "660"
+            }
+            }, function(rsp){
+                //iframe인경우 온다고 한다
+                console.log('통신완료');
+                console.log(rsp);
+            });      
+    
+    
 }
 function deletechoice(){
 	var arr = document.getElementsByName("cart_item");

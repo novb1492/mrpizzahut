@@ -709,14 +709,14 @@ Map<String,Object>user=(Map<String,Object>)request.getAttribute("user");
 										<th scope="row"><label for="payGroup">인터넷 결제</label></th>
 										<td class="t_left">
 										<label> 
-										<input name="payGroup" id="payGroup" value="1" type="radio" class="radio" onclick="javascript:payment();"> 
+										<input name="payGroup" id="payGroup" value="card" type="radio" class="radio" onclick="javascript:payment();"> 
 										<span class="lbl">신용카드</span>
 										</label>
 										 <label class="ml30">
-										  <input name="payGroup" id="payGroup2" value="2" type="radio" class="radio" onclick="javascript:payment();"> 
+										  <input name="payGroup" id="payGroup2" value="vbank" type="radio" class="radio" onclick="javascript:payment();"> 
 										  <span class="lbl">가상계좌</span>
 										</label> 
-										<label class="ml30"> <input name="payGroup" id="payGroup3" value="3" type="radio" class="radio" onclick="javascript:payment();"> 
+										<label class="ml30"> <input name="payGroup" id="payGroup3" value="kpay" type="radio" class="radio" onclick="javascript:payment();"> 
 										<span class="lbl"><img src="https://cdn.mrpizza.co.kr/2014_resources/images/order/img_kakaopay_new.png" alt="카카오페이"></span>
 										</label>
 										

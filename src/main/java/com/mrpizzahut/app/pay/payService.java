@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
+import com.mrpizzahut.app.pay.settle.settleService;
 
 import Daos.buketDao;
 import Daos.couponDao;
@@ -36,21 +37,26 @@ public class payService {
 	private couponDao couponDao;
 	@Autowired
 	private payDao payDao;
+	@Autowired
+	private settleService settleService;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
 		System.out.println("getPayInfor");
 		System.out.println("결제요청정보 "+tryBuyDto.toString());
-	
 		if(utillService.checkNull(tryBuyDto.getMobile1())||utillService.checkNull(tryBuyDto.getMobile2())||utillService.checkNull(tryBuyDto.getMobile3())) {
 			throw utillService.makeRuntimeEX("핸드폰 번호를 확인해주세요", "getPayInfor");
 		}
-		int kind=tryBuyDto.getKind();
+		String kind=tryBuyDto.getKind();
+		if(utillService.checkNull(kind)) {
+			throw utillService.makeRuntimeEX("결제수단을 선택해주세요", "getPayInfor");
+		}
 		List<Map<String,Object>>maps=confrimbuket(email,kind,tryBuyDto.getcoupon());
 		System.out.println(""+maps.toString());
-		if(kind==1||kind==2) {
+		if(kind.equals("card")||kind.equals("vbank")) {
 			System.out.println("세틀뱅크");
-		}else if(kind==3) {
+			return settleService.makeBuyInfor(tryBuyDto, maps, email);
+		}else if(kind.equals("kpay")) {
 			System.out.println("카카오페이");
 		}else {
 			throw utillService.makeRuntimeEX("지원하지 않는 결제수단입니다", "getPayInfor");
@@ -58,7 +64,7 @@ public class payService {
 		
 		return utillService.makeJson(true, "??dsd");
 	}
-	private List<Map<String,Object>> confrimbuket(String email,int buyKind,String coupon){
+	private List<Map<String,Object>> confrimbuket(String email,String buyKind,String coupon){
 		System.out.println("confrimbuket");
 		 List<Map<String, Object>>carts=buketDao.findByEmail(email);
 			if(carts.isEmpty()) {
@@ -137,14 +143,14 @@ public class payService {
 	    
 
 	}
-    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,int buyKind){
+    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,String buyKind){
        System.out.println("getTotalPrice");
         Map<String,Object>map=new HashMap<>();
 
        System.out.println(totalCash+" 지불가격");
         map.put("totalCash", totalCash);
         map.put("itemNames", itemNames);
-        if(buyKind==2){
+        if(buyKind.equals("vbank")){
         	System.out.println("가상계좌 요청 입급일 생성");
             map.put("expireDate", getVbankExpriedDate());
         }

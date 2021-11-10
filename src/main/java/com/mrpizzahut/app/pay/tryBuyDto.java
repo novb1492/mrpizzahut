@@ -16,7 +16,7 @@ public class tryBuyDto {
 		this.coupon = coupon;
 	}
 
-	private int  kind;
+	private String  kind;
 	
 	public String getMobile1() {
 		return mobile1;
@@ -42,10 +42,10 @@ public class tryBuyDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getKind() {
+	public String getKind() {
 		return kind;
 	}
-	public void setKind(int kind) {
+	public void setKind(String kind) {
 		this.kind = kind;
 	}
 	
