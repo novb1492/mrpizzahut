@@ -30,10 +30,12 @@ public class buketService {
 		if(maps.isEmpty()) {
 			return true;
 		}
-		int price=20000;
 		int totalPrice=0;
 		for(Map<String, Object>map:maps) {
-			int countAndPrice=price*Integer.parseInt(map.get("CCOUNT").toString());
+			System.out.println("조회 "+map.toString());
+        	Map<String, Object>product=buketDao.findByPizzaName(map);
+        	System.out.println("결과 "+product.toString());
+			int countAndPrice=Integer.parseInt(product.get("PRICE").toString().replace(",", ""))*Integer.parseInt(map.get("CCOUNT").toString());
 			map.put("img", "http://cdn.mrpizza.co.kr/2011/uploadV1/product_new/2021630152735817.jpg");
 			map.put("price", countAndPrice);
 			totalPrice+=countAndPrice;

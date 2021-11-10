@@ -10,4 +10,5 @@ public interface buketDao {
  public int updateCount(Map<String, Object>map);
  public int deleteById(int cnum);
  public Map<String, Object> findUser(String email);
+Map<String, Object>findByPizzaName(Map<String, Object>map);
 }

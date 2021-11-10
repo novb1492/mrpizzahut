@@ -40,20 +40,22 @@ public class payService {
 	@Transactional(rollbackFor = Exception.class)
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
 		System.out.println("getPayInfor");
-		System.out.println(tryBuyDto.toString());
+		System.out.println("결제요청정보 "+tryBuyDto.toString());
+	
 		if(utillService.checkNull(tryBuyDto.getMobile1())||utillService.checkNull(tryBuyDto.getMobile2())||utillService.checkNull(tryBuyDto.getMobile3())) {
 			throw utillService.makeRuntimeEX("핸드폰 번호를 확인해주세요", "getPayInfor");
 		}
 		int kind=tryBuyDto.getKind();
+		List<Map<String,Object>>maps=confrimbuket(email,kind,tryBuyDto.getcoupon());
+		System.out.println(""+maps.toString());
 		if(kind==1||kind==2) {
 			System.out.println("세틀뱅크");
-		
-			confrimbuket(email,kind,tryBuyDto.getcoupon());
 		}else if(kind==3) {
 			System.out.println("카카오페이");
 		}else {
 			throw utillService.makeRuntimeEX("지원하지 않는 결제수단입니다", "getPayInfor");
 		}
+		
 		return utillService.makeJson(true, "??dsd");
 	}
 	private List<Map<String,Object>> confrimbuket(String email,int buyKind,String coupon){
@@ -75,9 +77,14 @@ public class payService {
 	        List<Map<String,Object>>maps=new ArrayList<>();
 	        List<String>couponNamesAndCodeNames=new ArrayList<>();
 	        int temp=0;
+	        int temp2=0;
 	        for(Map<String, Object>map:carts){
 	        	System.out.println("조회 "+map.toString());
 	        	Map<String, Object>product=payDao.findByPizzaName(map);
+	        	String productName=map.get("CMENU").toString();
+	        	if(product==null) {
+	        		throw utillService.makeRuntimeEX("존재하지 않는 상품입니다"+productName, "confrimbuket");
+	        	}
 	        	System.out.println("결과 "+product.toString());
 	        	int dbcount=Integer.parseInt(product.get("MCOUNT").toString());
 	        	System.out.println("남은 재고 "+dbcount);
@@ -102,33 +109,32 @@ public class payService {
 				}
 	            temp+=1;
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
-	            confrimCoupon(co,Integer.parseInt(map.get("CCOUNT").toString()),eventmap,couponNamesAndCodeNames,(String)map.get("CMENU"));
+	            confrimCoupon(co,requestCount,eventmap,couponNamesAndCodeNames,productName);
 	            System.out.println("최종 쿠폰 정보 "+eventmap.toString());
 	            onlyCash=getOnlyCash(Integer.parseInt(product.get("PRICE").toString().replace(",", "")),requestCount,eventmap,30);
 	            System.out.println("최종가격"+onlyCash);
-	            /*
-	           
-
-	          
-	            onlyCash=getOnlyCash(productVo.getPrice(),count,eventmap,productVo.getMaxDiscountPercent());
 	            totalCash+=onlyCash;
+	            System.out.println("전체가격 "+totalCash);
 	            itemNames+=productName;
-	            if(i<itemArraySize-1){
+	            if(temp2<itemArraySize-1){
 	                itemNames+=",";
 	            }
+	            temp2+=1;
+	            Map<String,Object>result=new HashMap<>();
 	            result.put("itemName",productName);
-	            result.put("count", count);
+	            result.put("count", requestCount);
 	            result.put("price",onlyCash);
-	            result.put("bigKind",productVo.getBigKind());
-	            result.put("coupon", couponName);
+	            result.put("coupon", coupons);
+	            result.put("size",map.get("CSIZE"));
+	            result.put("edge", map.get("CEDGE"));
 	            maps.add(result);
-	            if(i==itemArraySize-1){
+	            if(temp2==itemArraySize){
 	                maps.add(getTotalPrice(totalCash,itemNames,buyKind));
-	            };*/
-	        }
+	            };
 
-	        //return maps;
-	        return null;
+	        }
+	        return maps;
+	    
 
 	}
     private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,int buyKind){

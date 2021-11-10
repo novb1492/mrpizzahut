@@ -20,4 +20,7 @@
 	<select id="findUser" parameterType="String" resultType="Map">
 		select *from member where email=#{email}
 	</select>
+	<select id="findByPizzaName" parameterType="Map" resultType="Map">
+		select *from menu where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
+	</select>
 </mapper>
