@@ -1,5 +1,10 @@
 var result;
 function requestOrder(){
+	var carr=document.getElementsByClassName('coupon');
+	var coupons='/';
+	for(var i=0;i<carr.length;i++){
+		coupons+=carr[i].value+'/';
+	}
 	var arr=document.getElementsByName('payGroup');
 		var kind;
        for(var i=0;i<arr.length;i++){
@@ -18,7 +23,7 @@ function requestOrder(){
            "mobile3":document.getElementById('view_delivery_phone3').value,
            "name":document.getElementById('gift_from_nm').value,
            "kind":kind,
-           "coupon":document.getElementById('coupons').value
+           "coupon":coupons
 	}); 
 	 var result=requestToServer('/app/tryOrder',data);
 	 if(!result.flag){

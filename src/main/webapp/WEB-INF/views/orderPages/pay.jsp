@@ -515,7 +515,9 @@ Map<String,Object>user=(Map<String,Object>)request.getAttribute("user");
 								<li class="w100"><span>쿠폰입력</span></li>
 								
 							</ul>
-							
+							<span>여러장이라면 ,로 나누어서 입력해주세요</span>
+							<br>
+							<br>
 							<input type="hidden" id="sizeup_flag">
 
 
@@ -620,9 +622,14 @@ Map<String,Object>user=(Map<String,Object>)request.getAttribute("user");
 						</div>
 						-->
 							
-								
-								
-						<input type="text" id="coupons" placeholder="쿠폰번호를 입력해주세요">
+						<%for(Map<String,Object>map:maps){
+						%>		
+						<%=map.get("CMENU") %>	
+						<input type="text" class="coupon"  placeholder="쿠폰번호를 입력해주세요">
+						<br>
+				
+						<%}%>		
+						
 								
 							
 

@@ -61,11 +61,13 @@ public class payService {
 			}
 			System.out.println("장바구니 "+carts.toString());
 	        int itemArraySize=carts.size();
+	        String[] coupons=coupon.split("/");
 	        String itemNames="";
 	        int onlyCash=0;
 	        int totalCash=0;
 	        List<Map<String,Object>>maps=new ArrayList<>();
 	        List<String>couponNamesAndCodeNames=new ArrayList<>();
+	        int temp=0;
 	        for(Map<String, Object>map:carts){
 	        	System.out.println("조회 "+map.toString());
 	        	Map<String, Object>product=payDao.findByPizzaName(map);
@@ -85,8 +87,15 @@ public class payService {
 	                }
 	                    
 	            }
+	            String co=null;
+	            try {
+	            	co=coupons[temp];
+				} catch (Exception e) {
+					co=null;
+				}
+	            temp+=1;
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
-	            confrimCoupon(coupon,requestCount,eventmap,couponNamesAndCodeNames);
+	            confrimCoupon(co,itemArraySize,eventmap,couponNamesAndCodeNames);
 	            /*
 	           
 
@@ -133,6 +142,7 @@ public class payService {
     }
     private void confrimCoupon(String couponName,int count,LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap,List<String>couponNamesAndCodeNames){
         System.out.println("confrimCoupon");
+        System.out.println("전체 쿠폰 배열"+couponNamesAndCodeNames);
         boolean flag=utillService.checkNull(couponName);
         if(flag){
             for(int i=0;i<count;i++){
@@ -151,19 +161,24 @@ public class payService {
         }
         int temp=0;
             for(String s:splite){
+            	System.out.println("조회쿠폰 "+s);
             	Map<String, Object>coupon=couponDao.findByCouponName(s);
+            	if(coupon==null) {
+            		throw utillService.makeRuntimeEX("존재하지 않는 쿠폰 "+s, "confrimCoupon");
+            	}
+            	System.out.println("쿠폰 정보"+ coupon.toString());
                 LinkedHashMap<String,Object>map=new LinkedHashMap<>();
-                if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COEXPIRED").toString()).toLocalDateTime())){
+                if(LocalDateTime.now().isAfter(Timestamp.valueOf(coupon.get("COEXPIRED").toString()).toLocalDateTime())){
                     throw utillService.makeRuntimeEX("기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
                 }else if(Integer.parseInt(coupon.get("USEDFLAG").toString())!=0){
                     throw utillService.makeRuntimeEX("이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
                 }
                 if(couponNamesAndCodeNames.contains(s)){
-                    throw utillService.makeRuntimeEX("같은쿠폰이 중복으로 발견되었습니다", "confrimCoupon");
+                    throw utillService.makeRuntimeEX("같은쿠폰이 중복으로 발견되었습니다"+s, "confrimCoupon");
                 }
                 couponNamesAndCodeNames.add(s);
                 map.put("couponaction",coupon.get("COKIND"));
-                map.put("couponnum",coupon.get("COPIRCE"));
+                map.put("couponnum",coupon.get("COPRICE"));
                 eventmap.put("coupon"+temp, map);
                 temp+=1;
             }
