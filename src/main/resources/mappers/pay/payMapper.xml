@@ -5,4 +5,7 @@
 	<select id="findByPizzaName" parameterType="Map" resultType="Map">
 		select *from menu where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
 	</select>
+	<insert id="insert" parameterType="Map">
+		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created})
+	</insert>
 </mapper>

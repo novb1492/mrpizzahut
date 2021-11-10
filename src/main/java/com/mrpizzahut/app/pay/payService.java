@@ -1,6 +1,5 @@
 package com.mrpizzahut.app.pay;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,15 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.kakaopay;
@@ -67,7 +63,7 @@ public class payService {
 		}
 		
 	}
-	private List<Map<String,Object>> confrimbuket(String email,String buyKind,String coupon){
+	public List<Map<String,Object>> confrimbuket(String email,String buyKind,String coupon){
 		System.out.println("confrimbuket");
 		 List<Map<String, Object>>carts=buketDao.findByEmail(email);
 			if(carts.isEmpty()) {

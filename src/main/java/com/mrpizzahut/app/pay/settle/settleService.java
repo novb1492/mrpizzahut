@@ -54,7 +54,7 @@ public class settleService {
         response.put("trdTm", requestTime);
         response.put("pktHash", hashText);
         response.put("flag", true);
-        //paymentService.insertTemp(mchtTrdNo,email,tryBuyDto.getBuyKind(),(int)map.get("totalCash"),(int)map.get("totalPoint"),expireDate);
+        paymentService.insertOrder(maps,mchtTrdNo,email,buyKind);
        // paymentService.insertTemp(maps, mchtTrdNo, email);
         return response;
     }

@@ -3,5 +3,6 @@ package Daos;
 import java.util.Map;
 
 public interface payDao {
-	Map<String, Object>findByPizzaName(Map<String, Object>map);
+	public Map<String, Object>findByPizzaName(Map<String, Object>map);
+	public int insert(Map<String, Object>map);
 }
