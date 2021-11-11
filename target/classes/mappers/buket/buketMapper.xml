@@ -23,4 +23,8 @@
 	<select id="findByPizzaName" parameterType="Map" resultType="Map">
 		select *from menu where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
 	</select>
+	<delete id="deleteByEmail" parameterType="String" > 
+			delete from cart where CEMAIL = #{email} 
+	</delete>
+
 </mapper>

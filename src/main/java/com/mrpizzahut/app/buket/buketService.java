@@ -24,6 +24,11 @@ public class buketService {
 	
 	@Autowired
 	private buketDao buketDao;
+	
+	public void deleteBuket(String email) {
+		System.out.println("deleteBuket");
+		//buketDao.deleteByEmail(email);
+	}
 	public boolean getCartByEmail(String email,Model model) {
 		logger.info("getCartByEmail");
 		List<Map<String, Object>>maps=buketDao.findByEmail(email);

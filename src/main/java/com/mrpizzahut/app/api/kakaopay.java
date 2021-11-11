@@ -15,6 +15,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.pay.paymentService;
+import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
 
 @Service
@@ -30,6 +31,8 @@ public class kakaopay {
     private requestTo requestTo;
     @Autowired
     private paymentService paymentService;
+    @Autowired
+    private productService productService;
 
     @Transactional(rollbackFor = Exception.class)
     public JSONObject getKaKaoPayLink(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email,HttpServletRequest request) {
@@ -58,7 +61,7 @@ public class kakaopay {
         request.getSession().setAttribute("mchtTrdNo", mchtTrdNo);
         return utillService.makeJson(true,(String)response.get("next_redirect_pc_url"));
     }
-  /*  @Transactional(rollbackFor = Exception.class)
+   /* @Transactional(rollbackFor = Exception.class)
     public void requestKakaopay(String pgToken) {
         System.out.println("requestKakaopay");
   

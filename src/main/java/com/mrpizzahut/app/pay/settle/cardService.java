@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.requestTo;
+import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.hash.aes256;
 import com.mrpizzahut.app.hash.sha256;
 import com.mrpizzahut.app.pay.productService;
@@ -32,6 +33,8 @@ public class cardService {
 	private requestTo requestTo;
 	@Autowired
 	private productService productService;
+	@Autowired
+	private buketService buketService;
 	
 	@Transactional(rollbackFor = Exception.class)
     public JSONObject cardConfrim(settleDto settleDto) {
@@ -53,6 +56,7 @@ public class cardService {
             	System.out.println("금액이 일치하지 않음");
             	throw new RuntimeException("금액이 일치하지 않습니다");
             }
+            String email=card.get("CEMAIL").toString();
             Map<String, Object>map=new HashMap<String, Object>();
             map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
             map.put("doneFlag", doneFlag);
@@ -61,9 +65,10 @@ public class cardService {
             map.put("trdNo", settleDto.getTrdNo());
             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
             productService.minusProductCount(mchtTrdNo);
-            productService.doneCoupon(card.get("CCOUPON").toString(),card.get("CEMAIL").toString(),mchtTrdNo);
+            productService.doneCoupon(card.get("CCOUPON").toString(),email,mchtTrdNo);
             payDao.updateCardDonflag(map);
             payDao.updateOrderDoneFlag(map);
+            buketService.deleteBuket(email);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
             reseponse.put("price", settleDto.getTrdAmt());
