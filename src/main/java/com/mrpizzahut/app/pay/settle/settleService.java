@@ -26,7 +26,7 @@ public class settleService {
 		System.out.println("makeBuyInfor");
         Map<String,Object>map=maps.get(maps.size()-1);
         Map<String,String>trdDtTrdTm=utillService.getTrdDtTrdTm();
-        String mchtTrdNo=maps.get(0).get("bigKind")+utillService.getRandomNum(10);
+        String mchtTrdNo=utillService.getRandomNum(10);
         String requestDate=trdDtTrdTm.get("trdDt");
         String requestTime=trdDtTrdTm.get("trdTm");
         String totalCash=Integer.toString((int)map.get("totalCash"));

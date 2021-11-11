@@ -19,6 +19,9 @@ import Daos.payDao;
 
 @Service
 public class paymentService {
+
+	private final String cid="TC0ONETIME";
+	
 	
 	@Autowired
 	private payDao payDao;
@@ -60,33 +63,43 @@ public class paymentService {
 			insertVbank(maps.get(maps.size()-1), mchtTrdNo, email, method);
 		}else if(method.equals("kpay")) {
 			System.out.println("카카오페이 등록");
+			insertKpay(maps.get(maps.size()-1), mchtTrdNo, email, method);
 		}else {
 			throw utillService.makeRuntimeEX("지원하지 않는 결제수단입니다", "insertPayment");
 		}
 	}
 	private void insertCard(Map<String, Object>infor,String mchtTrdNo,String email,String method) {
 		System.out.println("insertCard");
-		Map<String, Object>map=new HashMap<String, Object>();
-		map.put("email"	, email);
-		map.put("mchtTrdNo", mchtTrdNo);
-		map.put("method", method);
-		map.put("price", infor.get("totalCash"));
-		map.put("created", Timestamp.valueOf(LocalDateTime.now()));
-		map.put("doneFlag", 0);
-		map.put("phone", infor.get("phone"));
-		payDao.insertCard(map);
+		infor.put("email"	, email);
+		infor.put("mchtTrdNo", mchtTrdNo);
+		infor.put("method", method);
+		infor.put("price", infor.get("totalCash"));
+		infor.put("created", Timestamp.valueOf(LocalDateTime.now()));
+		infor.put("doneFlag", 0);
+		infor.put("phone", infor.get("phone"));
+		payDao.insertCard(infor);
 	}
 	private void insertVbank(Map<String, Object>infor,String mchtTrdNo,String email,String method) {
 		System.out.println("insertVbank");
-		Map<String, Object>map=new HashMap<String, Object>();
-		map.put("created", Timestamp.valueOf(LocalDateTime.now()));
-		map.put("expireDate", infor.get("expireDate"));
-		map.put("mchtTrdNo", mchtTrdNo);
-		map.put("method", method);
-		map.put("price", infor.get("totalCash"));
-		map.put("doneFlag", 0);
-		map.put("phone", infor.get("phone"));
-		map.put("email"	, email);
-		payDao.insertVbank(map);
+		infor.put("created", Timestamp.valueOf(LocalDateTime.now()));
+		infor.put("expireDate", infor.get("expireDate"));
+		infor.put("mchtTrdNo", mchtTrdNo);
+		infor.put("method", method);
+		infor.put("price", infor.get("totalCash"));
+		infor.put("doneFlag", 0);
+		infor.put("phone", infor.get("phone"));
+		infor.put("email",email);
+		payDao.insertVbank(infor);
+	}
+	private void insertKpay(Map<String, Object>infor,String mchtTrdNo,String email,String method) {
+		System.out.println("insertKpay");
+		infor.put("cid",cid);
+		infor.put("created", Timestamp.valueOf(LocalDateTime.now()));
+		infor.put("mchtTrdNo", mchtTrdNo);
+		infor.put("email",email);
+		infor.put("price", infor.get("totalCash"));
+		infor.put("doneFlag", 0);
+		infor.put("phone", infor.get("phone"));
+		payDao.insertKpay(infor);
 	}
 }
