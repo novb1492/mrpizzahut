@@ -15,6 +15,6 @@
 		insert into vbank values(vbank_sq.NEXTVAL,#{created},#{expireDate},null,null,null,#{mchtTrdNo},#{method},null,#{price},null,0,0,null,#{doneFlag},null,#{phone},#{email})
 	</insert>
 	<insert id="insertKpay" parameterType="Map">
-		insert into kpay values(kpay_sq.NEXTVAL,#{cid},#{created},#{mchtTrdNo},#{email},0,null,#{price},#{doneFlag},null,0,null,#{phone})
+		insert into kpay values(kpay_sq.NEXTVAL,#{cid},#{created},#{mchtTrdNo},#{email},0,#{tid},#{price},#{doneFlag},null,0,null,#{phone})
 	</insert>
 </mapper>

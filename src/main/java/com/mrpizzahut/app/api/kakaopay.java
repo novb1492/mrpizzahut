@@ -48,10 +48,11 @@ public class kakaopay {
         body.add("fail_url", backDomain+callbackUrl);
         headers.add("Authorization","KakaoAK "+kakaoAdminKey);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        JSONObject response=requestTo.requestToApi(body, readyUrl, headers);
+        System.out.println("카카오페이 결제요청 결과"+response);
+        maps.get(maps.size()-1).put("tid", response.get("tid"));
         paymentService.insertOrder(maps, mchtTrdNo, email, mchtTrdNo);
         paymentService.insertPayment(maps, mchtTrdNo, email,tryBuyDto.getKind());
-        JSONObject response=requestTo.requestToApi(body, readyUrl, headers);
-        System.out.println(response);
         return utillService.makeJson(true,(String)response.get("next_redirect_pc_url"));
     }
 }
