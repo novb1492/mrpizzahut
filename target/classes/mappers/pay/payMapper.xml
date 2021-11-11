@@ -6,7 +6,7 @@
 		select *from menu where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
 	</select>
 	<insert id="insert" parameterType="Map">
-		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null)
+		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null,#{size},#{edge})
 	</insert>
 	<insert id="insertCard" parameterType="Map">
 		insert into card values(card_sq.NEXTVAL,0,0,#{email},null,#{mchtTrdNo},null,#{method},#{price},null,null,#{created},0,null,#{phone})
@@ -32,5 +32,11 @@
 	</update>
 	<update id="updateOrderCancleFlag" parameterType="Map" >
 		update orders set OCANCLEFLAG=#{cancleFlag},OCANCLEDATE=#{cancleDate} where OMCHTTRDNO=#{mchtTrdNo}
+	</update>
+	<select id="OrderFindByMchtTrdNo" parameterType="String" resultType="Map">
+		select * from orders where OMCHTTRDNO=#{mchtTrdNo}
+	</select>
+	<update id="orderUpdateCount" parameterType="Map">
+		update menu set MCOUNT=#{count} where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
 	</update>
 </mapper>

@@ -1,5 +1,6 @@
 package Daos;
 
+import java.util.List;
 import java.util.Map;
 
 public interface payDao {
@@ -13,4 +14,6 @@ public interface payDao {
 	public int updateCardCancleFlag(Map<String, Object>map);
 	public int updateOrderDoneFlag(Map<String, Object>map);
 	public int updateOrderCancleFlag(Map<String, Object>map);
+	public List<Map<String, Object>>OrderFindByMchtTrdNo(String mchtTrdNo);
+	public int orderUpdateCount(Map<String, Object>map);
 }

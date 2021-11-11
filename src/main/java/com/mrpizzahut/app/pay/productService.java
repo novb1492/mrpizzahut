@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 
@@ -39,9 +40,10 @@ public class productService {
 	@Autowired
 	private kakaopay kakaopay;
 	
-	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
+	public JSONObject getPayInfor(tryBuyDto tryBuyDto,HttpServletRequest request) {
 		System.out.println("getPayInfor");
 		System.out.println("결제요청정보 "+tryBuyDto.toString());
+		String email=utillService.getEmail(request);
 		if(utillService.checkNull(tryBuyDto.getMobile1())||utillService.checkNull(tryBuyDto.getMobile2())||utillService.checkNull(tryBuyDto.getMobile3())) {
 			throw utillService.makeRuntimeEX("핸드폰 번호를 확인해주세요", "getPayInfor");
 		}
@@ -56,7 +58,7 @@ public class productService {
 			return settleService.makeBuyInfor(tryBuyDto, maps, email);
 		}else if(kind.equals("kpay")) {
 			System.out.println("카카오페이");
-			return kakaopay.getKaKaoPayLink(tryBuyDto, maps, email);
+			return kakaopay.getKaKaoPayLink(tryBuyDto, maps, email,request);
 		}else {
 			throw utillService.makeRuntimeEX("지원하지 않는 결제수단입니다", "getPayInfor");
 		}
@@ -249,9 +251,28 @@ public class productService {
         }catch (Exception e) {
             throw utillService.makeRuntimeEX("금액계산에 실패했습니다", "getOnlyCash");
         }
-      
-
     }
+    public void minusProductCount(String mchtTrdNo) {
+		System.out.println("minusProductCount");
+		List<Map<String, Object>>maps=payDao.OrderFindByMchtTrdNo(mchtTrdNo);
+		System.out.println("결제 요청 제품 정보 "+maps.toString());
+		for(Map<String, Object>map:maps) {
+			Map<String, Object>map2=new HashMap<String, Object>();
+			map2.put("CEDGE", map.get("OEDGE"));
+			map2.put("CSIZE", map.get("OSIZE"));
+			map2.put("CMENU", map.get("ONAME"));
+			Map<String, Object>map3=payDao.findByPizzaName(map2);
+			System.out.println("현재 제품 정보 "+map3.toString());
+			int dbCount=Integer.parseInt(map3.get("MCOUNT").toString());
+			dbCount-=Integer.parseInt(map.get("OCOUNT").toString());
+			if(dbCount<0) {
+				throw utillService.makeRuntimeEX("상품의 재고가 부족합니다", "minusProductCount");
+			}
+			map2.put("count", dbCount);
+			payDao.orderUpdateCount(map2);
+			
+		}
+	}
 	
 
 }

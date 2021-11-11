@@ -3,6 +3,8 @@ package com.mrpizzahut.app.api;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +32,7 @@ public class kakaopay {
     private paymentService paymentService;
 
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject getKaKaoPayLink(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email) {
+    public JSONObject getKaKaoPayLink(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email,HttpServletRequest request) {
     	System.out.println("getKaKaoPayLink");
         MultiValueMap<String,Object> body=requestTo.getMultiValueBody();
         HttpHeaders headers=requestTo.getHeaders();
@@ -53,6 +55,45 @@ public class kakaopay {
         maps.get(maps.size()-1).put("tid", response.get("tid"));
         paymentService.insertOrder(maps, mchtTrdNo, email, mchtTrdNo);
         paymentService.insertPayment(maps, mchtTrdNo, email,tryBuyDto.getKind());
+        request.getSession().setAttribute("mchtTrdNo", mchtTrdNo);
         return utillService.makeJson(true,(String)response.get("next_redirect_pc_url"));
     }
+  /*  @Transactional(rollbackFor = Exception.class)
+    public void requestKakaopay(String pgToken) {
+        System.out.println("requestKakaopay");
+  
+        String[][]itemArray=(String[][])httpSession.getAttribute("itemArray");
+        String[]other=(String[])httpSession.getAttribute("other");
+        String email=(String)httpSession.getAttribute("email");
+        String name=(String)httpSession.getAttribute("name");
+        int total_amount=(int)httpSession.getAttribute("totalPrice");
+        String kind=(String)httpSession.getAttribute("kind");
+        String tid=(String)httpSession.getAttribute("tid");
+        List<Integer>timesOrSize=(List<Integer>)httpSession.getAttribute("timesOrSize");
+        String partner_order_id=(String)httpSession.getAttribute("partner_order_id");
+        String tax_free_amount="0";
+        try {
+            body.add("cid", cid);
+            body.add("tid",tid);
+            body.add("partner_order_id",partner_order_id);
+            body.add("partner_user_id", email);
+            body.add("quantity",httpSession.getAttribute("count"));
+            body.add("pg_token", pgToken);
+            headers.add("Authorization","KakaoAK "+adminKey);
+            JSONObject response=requestToKakao(approveUrl);
+            System.out.println(response+" 카카오페이 결제완료");
+            String usedKind=aboutPayEnums.kakaoPay.getString();
+            kakaopayService.kakaopayInsert(cid, partner_order_id, email, tax_free_amount, tid, total_amount);
+            if(kind.equals(aboutPayEnums.reservation.getString())){
+                System.out.println("예약 상품 결제");
+                resevationService.doReservation(email,name, tid, itemArray, other,timesOrSize,status,usedKind);
+            }else if(kind.equals(aboutPayEnums.product.getString())){
+                System.out.println("상품결제");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("insertPaymentForkakao error"+e.getMessage());
+            throw new failKakaoPay(e.getMessage(),cid,tid,total_amount);
+        }
+    } */
 }

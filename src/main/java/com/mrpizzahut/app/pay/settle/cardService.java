@@ -15,6 +15,7 @@ import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.requestTo;
 import com.mrpizzahut.app.hash.aes256;
 import com.mrpizzahut.app.hash.sha256;
+import com.mrpizzahut.app.pay.productService;
 
 import Daos.payDao;
 
@@ -29,6 +30,8 @@ public class cardService {
 	private payDao payDao;
 	@Autowired
 	private requestTo requestTo;
+	@Autowired
+	private productService productService;
 	
 	@Transactional(rollbackFor = Exception.class)
     public JSONObject cardConfrim(settleDto settleDto) {
@@ -46,6 +49,9 @@ public class cardService {
             settleDto.setTrdAmt(utillService.aesToNomal(settleDto.getTrdAmt()));
             if(Integer.parseInt(card.get("CDONEFLAG").toString())==1) {
             	 return utillService.makeJson(true, "구매가 완료되었습니다");
+            }else if(!settleDto.getTrdAmt().equals(card.get("CTRDAMT").toString())) {
+            	System.out.println("금액이 일치하지 않음");
+            	throw new RuntimeException("금액이 일치하지 않습니다");
             }
             Map<String, Object>map=new HashMap<String, Object>();
             map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
@@ -54,13 +60,14 @@ public class cardService {
             map.put("fnnm", settleDto.getFnNm());
             map.put("trdNo", settleDto.getTrdNo());
             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
+            productService.minusProductCount(mchtTrdNo);
             payDao.updateCardDonflag(map);
             payDao.updateOrderDoneFlag(map);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
             reseponse.put("price", settleDto.getTrdAmt());
-            //return reseponse;
-            throw new RuntimeException();
+            return reseponse;
+            //throw new RuntimeException();
         } catch (Exception e) {
         	System.out.println("카드결제중 예외 발생 자동환불");
         	 Map<String, Object>map=new HashMap<String, Object>();
@@ -70,8 +77,15 @@ public class cardService {
              map.put("cnclord", 1);
              payDao.updateCardCancleFlag(map);
              payDao.updateOrderCancleFlag(map);
-   
-            return requestToSettle(cancle(settleDto));
+             settleDto.setCnclOrd(1);
+             String message=e.getMessage();
+             JSONObject jsonObject=requestToSettle(cancle(settleDto));
+             if(!(boolean)jsonObject.get("flag")) {
+            	 message=jsonObject.get("message").toString();
+             }else if(!message.startsWith("메")) {
+            	 message+=" 환불되었습니다";
+             }
+             return utillService.makeJson(false, message);
         }
         
     }

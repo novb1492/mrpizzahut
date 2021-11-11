@@ -47,7 +47,7 @@ public class restController {
 	@RequestMapping(value = "/tryOrder", method = RequestMethod.POST)
 	public JSONObject tryOrder(@RequestBody tryBuyDto tryBuyDto,HttpServletRequest request,HttpServletResponse response) {
 		logger.info("tryOrder rest");
-		return productService.getPayInfor(tryBuyDto,utillService.getEmail(request));
+		return productService.getPayInfor(tryBuyDto,request);
 	}
 	@RequestMapping(value = "/settle/callback", method = RequestMethod.POST)
 	public JSONObject confrimSettle(HttpServletRequest request,HttpServletResponse response) {
