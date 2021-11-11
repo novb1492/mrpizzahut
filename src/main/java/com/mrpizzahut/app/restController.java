@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mrpizzahut.app.api.kakaoService;
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.buket.deleteCartDto;
 import com.mrpizzahut.app.pay.productService;
@@ -29,6 +30,9 @@ public class restController {
 	private productService productService;
 	@Autowired
 	private settleService settleService;
+	@Autowired
+	private kakaoService kakaoService;
+	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
 	public JSONObject changeCount(@RequestBody JSONObject jsonObject,HttpServletRequest request,HttpServletResponse response) {
@@ -49,6 +53,11 @@ public class restController {
 	public JSONObject confrimSettle(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("confrimSettle");
 		return settleService.confrimPayment(request);
+	}
+	@RequestMapping(value = "/kakao/callback",method = RequestMethod.GET)
+	public void kakaoCallback(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("kakaoCallback");
+		kakaoService.processCallback(request);
 	}
 	
 	

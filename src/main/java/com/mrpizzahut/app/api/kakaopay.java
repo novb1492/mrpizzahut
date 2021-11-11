@@ -20,7 +20,7 @@ public class kakaopay {
 	
 	private final String readyUrl="https://kapi.kakao.com/v1/payment/ready";
     private final String cid="TC0ONETIME";
-    private final String callbackUrl="kakao/callback?scope=pay";
+    private final String callbackUrl="app/kakao/callback?scope=pay";
     private final  String backDomain="http://localhost:8085/";
     private final String kakaoAdminKey="a813510779a54f77f1fe028ffd3e1d81";
 
@@ -34,7 +34,7 @@ public class kakaopay {
     	System.out.println("getKaKaoPayLink");
         MultiValueMap<String,Object> body=requestTo.getMultiValueBody();
         HttpHeaders headers=requestTo.getHeaders();
-        String mchtTrdNo=maps.get(0).get("bigKind")+utillService.getRandomNum(10);
+        String mchtTrdNo=utillService.getRandomNum(10);
         Map<String,Object>map=maps.get(maps.size()-1);
         body.add("cid", cid);
         body.add("partner_order_id",mchtTrdNo);
