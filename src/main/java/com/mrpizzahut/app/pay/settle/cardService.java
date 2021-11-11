@@ -59,20 +59,18 @@ public class cardService {
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
             reseponse.put("price", settleDto.getTrdAmt());
-            return reseponse;
-            //throw new RuntimeException();
+            //return reseponse;
+            throw new RuntimeException();
         } catch (Exception e) {
         	System.out.println("카드결제중 예외 발생 자동환불");
         	 Map<String, Object>map=new HashMap<String, Object>();
         	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
              map.put("cancleFlag", cancleFlag);
              map.put("mchtTrdNo", settleDto.getMchtTrdNo());
-            settleDto.setCnclOrd(1);
-            String message="환불에 실패했습니다";
-            if(requestToSettle(cancle(settleDto))){
-                message=e.getMessage()+" 환불되었습니다";
-            }
-            throw utillService.makeRuntimeEX(message, "cardConfrim");
+             payDao.updateCardCancleFlag(map);
+             payDao.updateOrderCancleFlag(map);
+             settleDto.setCnclOrd(1);
+            return requestToSettle(cancle(settleDto));
         }
         
     }
@@ -108,14 +106,15 @@ public class cardService {
         System.out.println("requestcancleString");
         return  String.format("%s%s%s%s%s%s",trdDt,trdTm,MchtId,mchtTrdNo,price,"ST1009281328226982205"); 
     }
-	  private boolean requestToSettle(JSONObject body){
+	  private JSONObject requestToSettle(JSONObject body){
 		  System.out.println("requestToSettle");
 	        JSONObject  response=requestTo.requestToSettle("https://tbgw.settlebank.co.kr/spay/APICancel.do", body);
 	        LinkedHashMap<String,Object>params=(LinkedHashMap<String, Object>) response.get("params");
 	        System.out.println("세틀뱅크 통신결과"+response.toString());
+	        String message=(String)params.get("outRsltMsg");
 	        if(params.get("outStatCd").equals("0021")){
-	            return true;
-	        }
-	        return false;
+	        	return utillService.makeJson(true,message);
+	        }	
+	        return utillService.makeJson(false,message);
 	    }
 }
