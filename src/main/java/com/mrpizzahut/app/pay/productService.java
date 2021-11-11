@@ -278,7 +278,7 @@ public class productService {
 			
 		}
 	}
-    public void doneCoupon(String coupon,String email) {
+    public void doneCoupon(String coupon,String email,String mchtTrdNo) {
 		System.out.println("doneCoupon");
 		String[] coupons=coupon.split(",");
 		for(String s: coupons) {
@@ -291,6 +291,7 @@ public class productService {
 	              }else if(Integer.parseInt(map.get("USEDFLAG").toString())!=0){
 	                    throw utillService.makeRuntimeEX("이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
 	              }
+				 map.put("mchtTrdNo", mchtTrdNo);
 				 map.put("email", email);
 				 map.put("doneFlag", doneFlag);
 				 map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
