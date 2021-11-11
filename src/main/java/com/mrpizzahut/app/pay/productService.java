@@ -27,6 +27,7 @@ import Daos.payDao;
 @Service
 public class productService {
 	 private final int fullProductMin=10;
+	 private final int doneFlag=1;
 
 
 	@Autowired
@@ -85,6 +86,7 @@ public class productService {
 	        List<String>couponNamesAndCodeNames=new ArrayList<>();
 	        int temp=0;
 	        int temp2=0;
+	        String couponNames="";
 	        for(Map<String, Object>map:carts){
 	        	System.out.println("조회 "+map.toString());
 	        	Map<String, Object>product=payDao.findByPizzaName(map);
@@ -123,8 +125,10 @@ public class productService {
 	            totalCash+=onlyCash;
 	            System.out.println("전체가격 "+totalCash);
 	            itemNames+=productName;
+	            couponNames+=co;
 	            if(temp2<itemArraySize-1){
 	                itemNames+=",";
+	                couponNames+=",";
 	            }
 	            temp2+=1;
 	            Map<String,Object>result=new HashMap<>();
@@ -136,7 +140,7 @@ public class productService {
 	            result.put("edge", map.get("CEDGE"));
 	            maps.add(result);
 	            if(temp2==itemArraySize){
-	                maps.add(getTotalPrice(totalCash,itemNames,tryBuyDto));
+	                maps.add(getTotalPrice(totalCash,itemNames,tryBuyDto,couponNames));
 	            };
 
 	        }
@@ -144,7 +148,7 @@ public class productService {
 	    
 
 	}
-    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,tryBuyDto tryBuyDto){
+    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,tryBuyDto tryBuyDto,String couponNames){
        System.out.println("getTotalPrice");
         Map<String,Object>map=new HashMap<>();
 
@@ -155,6 +159,7 @@ public class productService {
         	System.out.println("가상계좌 요청 입급일 생성");
             map.put("expireDate", getVbankExpriedDate());
         }
+        map.put("couponNames", couponNames);
         map.put("phone", tryBuyDto.getMobile1()+tryBuyDto.getMobile2()+tryBuyDto.getMobile3());
         return map;
     }
@@ -271,6 +276,27 @@ public class productService {
 			map2.put("count", dbCount);
 			payDao.orderUpdateCount(map2);
 			
+		}
+	}
+    public void doneCoupon(String coupon,String email) {
+		System.out.println("doneCoupon");
+		String[] coupons=coupon.split(",");
+		for(String s: coupons) {
+			if(!s.equals("null")) {
+				System.out.println("쿠폰 조회"+s);
+				Map<String, Object>map=couponDao.findByCouponName(s);
+				System.out.println("쿠폰 정보 "+map.toString());
+				 if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COEXPIRED").toString()).toLocalDateTime())){
+	                    throw utillService.makeRuntimeEX("기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
+	              }else if(Integer.parseInt(map.get("USEDFLAG").toString())!=0){
+	                    throw utillService.makeRuntimeEX("이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
+	              }
+				 map.put("email", email);
+				 map.put("doneFlag", doneFlag);
+				 map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+				 map.put("name", s);
+				 couponDao.updateDone(map);
+			}
 		}
 	}
 	

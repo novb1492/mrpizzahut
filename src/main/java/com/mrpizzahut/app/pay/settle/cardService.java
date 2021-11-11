@@ -61,6 +61,7 @@ public class cardService {
             map.put("trdNo", settleDto.getTrdNo());
             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
             productService.minusProductCount(mchtTrdNo);
+            productService.doneCoupon(card.get("CCOUPON").toString(),card.get("CEMAIL").toString());
             payDao.updateCardDonflag(map);
             payDao.updateOrderDoneFlag(map);
             reseponse.put("flag", true);

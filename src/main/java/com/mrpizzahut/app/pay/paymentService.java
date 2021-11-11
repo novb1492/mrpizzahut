@@ -77,6 +77,7 @@ public class paymentService {
 		infor.put("created", Timestamp.valueOf(LocalDateTime.now()));
 		infor.put("doneFlag", 0);
 		infor.put("phone", infor.get("phone"));
+		infor.put("couponNames", infor.get("couponNames"));
 		payDao.insertCard(infor);
 	}
 	private void insertVbank(Map<String, Object>infor,String mchtTrdNo,String email,String method) {
@@ -89,6 +90,7 @@ public class paymentService {
 		infor.put("doneFlag", 0);
 		infor.put("phone", infor.get("phone"));
 		infor.put("email",email);
+		infor.put("couponNames", infor.get("couponNames"));
 		payDao.insertVbank(infor);
 	}
 	private void insertKpay(Map<String, Object>infor,String mchtTrdNo,String email,String method) {
@@ -100,6 +102,7 @@ public class paymentService {
 		infor.put("price", infor.get("totalCash"));
 		infor.put("doneFlag", 0);
 		infor.put("phone", infor.get("phone"));
+		infor.put("couponNames", infor.get("couponNames"));
 		payDao.insertKpay(infor);
 	}
 }

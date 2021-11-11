@@ -5,4 +5,7 @@
 	<select id="findByCouponName" parameterType="String" resultType="Map">
 		select *from coupon where COUPONNAME=#{cname}
 	</select>
+	<update id="updateDone" parameterType="Map">
+		update coupon set COUSEDEMAIL=#{email},USEDFLAG=#{doneFlag},USEDDATE=#{doneDate} where COUPONNAME=#{name}
+	</update>
 </mapper>
