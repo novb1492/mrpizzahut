@@ -23,7 +23,7 @@ public class cardService {
 	private final String MchtId="nxca_jt_il";
 	private final String sucPayNum="0021";
 	private final int doneFlag=1;
-	private final int cancleFlag=0;
+	private final int cancleFlag=1;
 	 
 	@Autowired
 	private payDao payDao;
@@ -67,9 +67,10 @@ public class cardService {
         	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
              map.put("cancleFlag", cancleFlag);
              map.put("mchtTrdNo", settleDto.getMchtTrdNo());
+             map.put("cnclord", 1);
              payDao.updateCardCancleFlag(map);
              payDao.updateOrderCancleFlag(map);
-             settleDto.setCnclOrd(1);
+   
             return requestToSettle(cancle(settleDto));
         }
         
