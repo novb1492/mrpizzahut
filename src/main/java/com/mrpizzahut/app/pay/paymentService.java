@@ -57,6 +57,7 @@ public class paymentService {
 			insertCard(maps.get(maps.size()-1), mchtTrdNo, email, method);
 		}else if(method.equals("vbank")) {
 			System.out.println("가상계좌 등록");
+			insertVbank(maps.get(maps.size()-1), mchtTrdNo, email, method);
 		}else if(method.equals("kpay")) {
 			System.out.println("카카오페이 등록");
 		}else {
@@ -74,5 +75,18 @@ public class paymentService {
 		map.put("doneFlag", 0);
 		map.put("phone", infor.get("phone"));
 		payDao.insertCard(map);
+	}
+	private void insertVbank(Map<String, Object>infor,String mchtTrdNo,String email,String method) {
+		System.out.println("insertVbank");
+		Map<String, Object>map=new HashMap<String, Object>();
+		map.put("created", Timestamp.valueOf(LocalDateTime.now()));
+		map.put("expireDate", infor.get("expireDate"));
+		map.put("mchtTrdNo", mchtTrdNo);
+		map.put("method", method);
+		map.put("price", infor.get("totalCash"));
+		map.put("doneFlag", 0);
+		map.put("phone", infor.get("phone"));
+		map.put("email"	, email);
+		payDao.insertVbank(map);
 	}
 }

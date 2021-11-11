@@ -11,4 +11,7 @@
 	<insert id="insertCard" parameterType="Map">
 		insert into card values(card_sq.NEXTVAL,0,0,#{email},null,#{mchtTrdNo},null,#{method},#{price},null,null,#{created},0,null,#{phone})
 	</insert>
+		<insert id="insertVbank" parameterType="Map">
+		insert into vbank values(vbank_sq.NEXTVAL,#{created},#{expireDate},null,null,null,#{mchtTrdNo},#{method},null,#{price},null,0,0,null,#{doneFlag},null,#{phone},#{email})
+	</insert>
 </mapper>
