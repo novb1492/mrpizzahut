@@ -54,7 +54,7 @@ public class settleService {
         response.put("pktHash", hashText);
         response.put("flag", true);
         paymentService.insertOrder(maps,mchtTrdNo,email,buyKind);
-       // paymentService.insertTemp(maps, mchtTrdNo, email);
+        paymentService.insertPayment(maps, mchtTrdNo, email, buyKind);
         return response;
     }
 	private String[] getRequestTest(String method,String mchtTrdNo,String requestDate,String requestTime,String totalCash) {

@@ -49,7 +49,7 @@ public class productService {
 		if(utillService.checkNull(kind)) {
 			throw utillService.makeRuntimeEX("결제수단을 선택해주세요", "getPayInfor");
 		}
-		List<Map<String,Object>>maps=confrimbuket(email,kind,tryBuyDto.getcoupon());
+		List<Map<String,Object>>maps=confrimbuket(tryBuyDto,email);
 		System.out.println(""+maps.toString());
 		if(kind.equals("card")||kind.equals("vbank")) {
 			System.out.println("세틀뱅크");
@@ -62,7 +62,7 @@ public class productService {
 		}
 		
 	}
-	public List<Map<String,Object>> confrimbuket(String email,String buyKind,String coupon){
+	public List<Map<String,Object>> confrimbuket(tryBuyDto tryBuyDto,String email){
 		System.out.println("confrimbuket");
 		///첫 db 접속 select
 		 List<Map<String, Object>>carts=buketDao.findByEmail(email);
@@ -71,7 +71,7 @@ public class productService {
 			}
 			System.out.println("장바구니 "+carts.toString());
 	        int itemArraySize=carts.size();
-	        String[] coupons=coupon.split("/");
+	        String[] coupons=tryBuyDto.getcoupon().toString().split("/");
 	        for(String s:coupons) {
 	        	 System.out.println("쿠폰 "+s);
 	        }
@@ -134,7 +134,7 @@ public class productService {
 	            result.put("edge", map.get("CEDGE"));
 	            maps.add(result);
 	            if(temp2==itemArraySize){
-	                maps.add(getTotalPrice(totalCash,itemNames,buyKind));
+	                maps.add(getTotalPrice(totalCash,itemNames,tryBuyDto));
 	            };
 
 	        }
@@ -142,17 +142,18 @@ public class productService {
 	    
 
 	}
-    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,String buyKind){
+    private Map<String,Object> getTotalPrice(int totalCash ,String itemNames,tryBuyDto tryBuyDto){
        System.out.println("getTotalPrice");
         Map<String,Object>map=new HashMap<>();
 
        System.out.println(totalCash+" 지불가격");
         map.put("totalCash", totalCash);
         map.put("itemNames", itemNames);
-        if(buyKind.equals("vbank")){
+        if(tryBuyDto.getKind().equals("vbank")){
         	System.out.println("가상계좌 요청 입급일 생성");
             map.put("expireDate", getVbankExpriedDate());
         }
+        map.put("phone", tryBuyDto.getMobile1()+tryBuyDto.getMobile2()+tryBuyDto.getMobile3());
         return map;
     }
     private String getVbankExpriedDate() {

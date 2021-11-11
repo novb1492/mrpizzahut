@@ -8,4 +8,7 @@
 	<insert id="insert" parameterType="Map">
 		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created})
 	</insert>
+	<insert id="insertCard" parameterType="Map">
+		insert into card values(card_sq.NEXTVAL,0,0,#{email},null,#{mchtTrdNo},null,#{method},#{price},null,null,#{created},0,null,#{phone})
+	</insert>
 </mapper>
