@@ -10,8 +10,49 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 
+import com.mrpizzahut.app.hash.aes256;
+import com.mrpizzahut.app.pay.settle.settleDto;
+
 public class utillService {
 	
+    public static String aesToNomal(String hash) {
+        try {
+            byte[] aesCipherRaw2=aes256.decodeBase64(hash);
+            return new String(aes256.aes256DecryptEcb(aesCipherRaw2),"UTF-8");
+        } catch (Exception e) {
+            throw new RuntimeException("복호화 실패");
+        }
+    }
+	 public static settleDto requestToSettleDto(HttpServletRequest request) {
+	        System.out.println("requestToSettleDto");
+	        settleDto dto=new settleDto();
+	        dto.setMchtId(request.getParameter("mchtId"));//상점아이디
+	        dto.setOutStatCd(request.getParameter("outStatCd"));          //결과코드
+	        dto.setOutRsltCd(request.getParameter("outRsltCd"));          //거절코드
+	        dto.setOutRsltMsg( request.getParameter("outRsltMsg"));         //결과메세지
+	        dto.setMethod(          request.getParameter("method"));             //결제수단
+	        dto.setMchtTrdNo(         request.getParameter("mchtTrdNo"));          //상점주문번호
+	        dto.setMchtCustId(request.getParameter("mchtCustId"));         //상점고객아이디
+	        dto.setTrdNo(             request.getParameter("trdNo"));              //세틀뱅크 거래번호
+	        dto.setTrdAmt(            request.getParameter("trdAmt"));             //거래금액
+	        dto.setMchtParam(         request.getParameter("mchtParam"));          //상점 예약필드
+	        dto.setAuthDt(            request.getParameter("authDt"));             //승인일시
+	        dto.setAuthNo(            request.getParameter("authNo"));             //승인번호
+	        dto.setReqIssueDt(     	request.getParameter("reqIssueDt"));       	//채번요청일시
+	        dto.setIntMon(            request.getParameter("intMon"));             //할부개월수
+	        dto.setFnNm(              request.getParameter("fnNm"));               //카드사명
+	        dto.setFnCd(              request.getParameter("fnCd"));               //카드사코드
+	        dto.setPointTrdNo(        request.getParameter("pointTrdNo"));         //포인트거래번호
+	        dto.setPointTrdAmt(       request.getParameter("pointTrdAmt"));        //포인트거래금액
+	        dto.setCardTrdAmt(        request.getParameter("cardTrdAmt"));         //신용카드결제금액
+	        dto.setVtlAcntNo(         request.getParameter("vtlAcntNo"));          //가상계좌번호
+	        dto.setExpireDt(          request.getParameter("expireDt"));           //입금기한
+	        dto.setCphoneNo(          request.getParameter("cphoneNo"));           //휴대폰번호
+	        dto.setBillKey(           request.getParameter("billKey"));
+	                          
+	                                return dto;
+	    }
+	 
     public static RuntimeException makeRuntimeEX(String message,String methodName) {
          return new RuntimeException("메세지: "+message);
     }

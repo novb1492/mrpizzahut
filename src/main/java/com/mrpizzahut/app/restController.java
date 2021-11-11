@@ -17,6 +17,7 @@ import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.buket.deleteCartDto;
 import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
+import com.mrpizzahut.app.pay.settle.settleService;
 
 @RestController
 public class restController {
@@ -26,6 +27,8 @@ public class restController {
 	private buketService buketService;
 	@Autowired
 	private productService productService;
+	@Autowired
+	private settleService settleService;
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
 	public JSONObject changeCount(@RequestBody JSONObject jsonObject,HttpServletRequest request,HttpServletResponse response) {
@@ -42,5 +45,12 @@ public class restController {
 		logger.info("tryOrder rest");
 		return productService.getPayInfor(tryBuyDto,utillService.getEmail(request));
 	}
+	@RequestMapping(value = "/settle/callback", method = RequestMethod.POST)
+	public JSONObject confrimSettle(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("confrimSettle");
+		return settleService.confrimPayment(request);
+	}
+	
+	
 
 }

@@ -8,4 +8,6 @@ public interface payDao {
 	public int insertCard(Map<String, Object>map);
 	public int insertVbank(Map<String, Object>map);
 	public int insertKpay(Map<String, Object>map);
+	public Map<String, Object> cardFindByMchtTrdNo(String mchtTrdNo);
+	public int updateCardDonflag(Map<String, Object>map);
 }

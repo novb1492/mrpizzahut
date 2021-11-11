@@ -17,4 +17,11 @@
 	<insert id="insertKpay" parameterType="Map">
 		insert into kpay values(kpay_sq.NEXTVAL,#{cid},#{created},#{mchtTrdNo},#{email},0,#{tid},#{price},#{doneFlag},null,0,null,#{phone})
 	</insert>
+
+	<select id="cardFindByMchtTrdNo" parameterType="String" resultType="Map">
+		select * from card where CMCHTTRDNO=#{mchtTrdNo}
+	</select>
+	<update id="updateCardDonflag" parameterType="Map" >
+		update card set CFNNM=#{fnnm},CMCHTID=#{mchtid}, CDONEFLAG=#{doneFlag},CDONEDATE=#{doneDate},CTRDNO=#{trdNo} where CMCHTTRDNO=#{mchtTrdNo}
+	</update>
 </mapper>

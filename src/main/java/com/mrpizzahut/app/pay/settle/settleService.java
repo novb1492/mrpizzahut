@@ -1,7 +1,10 @@
 package com.mrpizzahut.app.pay.settle;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -19,8 +22,31 @@ import com.mrpizzahut.app.pay.tryBuyDto;
 @Service
 public class settleService {
 	
+	private final String cardMchtId="nxca_jt_il";
+	
+	@Autowired
+	private cardService cardService;
 	@Autowired
 	private paymentService paymentService;
+	
+	 public JSONObject confrimPayment(HttpServletRequest request) {
+	        System.out.println("confrimPayment");
+	        try {
+				request.setCharacterEncoding("UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+	        settleDto settleDto=utillService.requestToSettleDto(request);
+	        System.out.println(settleDto.toString());
+	        JSONObject reponse=new JSONObject();
+	        if(settleDto.getMchtId().equals(cardMchtId)){
+	            reponse=cardService.cardConfrim(settleDto);
+	        }else{
+	            return utillService.makeJson(false, "지원하지 않는 결제 형식입니다");
+	        }
+	        return reponse;
+	   }
+	
 	
     public JSONObject makeBuyInfor(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email) {
 		System.out.println("makeBuyInfor");
