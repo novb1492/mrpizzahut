@@ -1,9 +1,6 @@
 package com.mrpizzahut.app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mrpizzahut.app.buket.buketService;
-import com.mrpizzahut.app.pay.payService;
 
-import Daos.buketDao;
+
+
 
 @Controller
 public class controller {
@@ -27,8 +24,7 @@ public class controller {
 
 	@Autowired
 	private buketService buketService;
-	@Autowired
-	private payService payService;
+
 	
 	
 	@RequestMapping(value = "/buket", method = RequestMethod.GET)

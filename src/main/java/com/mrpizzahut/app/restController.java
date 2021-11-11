@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mrpizzahut.app.buket.buketService;
-import com.mrpizzahut.app.buket.changeCountDto;
 import com.mrpizzahut.app.buket.deleteCartDto;
-import com.mrpizzahut.app.pay.payService;
+import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
 
 @RestController
@@ -26,7 +25,7 @@ public class restController {
 	@Autowired
 	private buketService buketService;
 	@Autowired
-	private payService payService;
+	private productService productService;
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
 	public JSONObject changeCount(@RequestBody JSONObject jsonObject,HttpServletRequest request,HttpServletResponse response) {
@@ -41,7 +40,7 @@ public class restController {
 	@RequestMapping(value = "/tryOrder", method = RequestMethod.POST)
 	public JSONObject tryOrder(@RequestBody tryBuyDto tryBuyDto,HttpServletRequest request,HttpServletResponse response) {
 		logger.info("tryOrder rest");
-		return payService.getPayInfor(tryBuyDto,utillService.getEmail(request));
+		return productService.getPayInfor(tryBuyDto,utillService.getEmail(request));
 	}
 
 }

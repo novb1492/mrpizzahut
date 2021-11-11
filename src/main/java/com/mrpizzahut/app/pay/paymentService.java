@@ -13,7 +13,9 @@ import com.mrpizzahut.app.utillService;
 
 import Daos.payDao;
 
+
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class paymentService {
 	
 	@Autowired
@@ -21,23 +23,28 @@ public class paymentService {
 	
 	public void insertOrder(List<Map<String,Object>>maps,String mchtTrdNo,String email,String method) {
 		System.out.println("insertOrder");
-		try {
+			int temp=0;
+			int size=maps.size();
 			for(Map<String, Object>map:maps) {
+				if(temp==size-1) {
+					break;
+				}
 				map.put("mchtTrdNo", mchtTrdNo);
 				map.put("email", email);
 				map.put("method", method);
-				String[] counpons=(String[])map.get("coupon");
-				for(String s:counpons) {
-					System.out.println(s);
+				
+				String counpon=(String)map.get("coupon");
+				System.out.println(counpon);
+				if(counpon==null) {
+					map.put("coupon", "emthy");
+				}else {
+					map.put("coupon", counpon);
 				}
-				map.put("coupon", "test");
 				map.put("created",Timestamp.valueOf(LocalDateTime.now()));
 				payDao.insert(map);
-				throw new RuntimeException();
+				temp+=1;
 			}
-		} catch (Exception e) {
-			throw utillService.makeRuntimeEX("tt", "insertOrder");
-		}
+		
 	
 	}
 }

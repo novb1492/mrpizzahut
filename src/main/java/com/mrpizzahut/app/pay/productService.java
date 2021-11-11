@@ -24,7 +24,7 @@ import Daos.couponDao;
 import Daos.payDao;
 
 @Service
-public class payService {
+public class productService {
 	 private final int fullProductMin=10;
 
 
@@ -39,7 +39,6 @@ public class payService {
 	@Autowired
 	private kakaopay kakaopay;
 	
-	@Transactional(rollbackFor = Exception.class)
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,String email) {
 		System.out.println("getPayInfor");
 		System.out.println("결제요청정보 "+tryBuyDto.toString());
@@ -65,6 +64,7 @@ public class payService {
 	}
 	public List<Map<String,Object>> confrimbuket(String email,String buyKind,String coupon){
 		System.out.println("confrimbuket");
+		///첫 db 접속 select
 		 List<Map<String, Object>>carts=buketDao.findByEmail(email);
 			if(carts.isEmpty()) {
 				throw utillService.makeRuntimeEX("장바구니가 비었습니다", "getPayInfor");
@@ -129,7 +129,7 @@ public class payService {
 	            result.put("itemName",productName);
 	            result.put("count", requestCount);
 	            result.put("price",onlyCash);
-	            result.put("coupon", coupons);
+	            result.put("coupon", co);
 	            result.put("size",map.get("CSIZE"));
 	            result.put("edge", map.get("CEDGE"));
 	            maps.add(result);

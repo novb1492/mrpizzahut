@@ -22,7 +22,6 @@ public class settleService {
 	@Autowired
 	private paymentService paymentService;
 	
-	@Transactional(rollbackFor = Exception.class)
     public JSONObject makeBuyInfor(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email) {
 		System.out.println("makeBuyInfor");
         Map<String,Object>map=maps.get(maps.size()-1);
