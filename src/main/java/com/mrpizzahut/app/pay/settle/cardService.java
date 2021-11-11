@@ -55,7 +55,7 @@ public class cardService {
             map.put("trdNo", settleDto.getTrdNo());
             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
             payDao.updateCardDonflag(map);
-            
+            payDao.updateOrderDoneFlag(map);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
             reseponse.put("price", settleDto.getTrdAmt());

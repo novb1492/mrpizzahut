@@ -11,4 +11,5 @@ public interface payDao {
 	public Map<String, Object> cardFindByMchtTrdNo(String mchtTrdNo);
 	public int updateCardDonflag(Map<String, Object>map);
 	public int updateCardCancleFlag(Map<String, Object>map);
+	public int updateOrderDoneFlag(Map<String, Object>map);
 }

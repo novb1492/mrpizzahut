@@ -6,7 +6,7 @@
 		select *from menu where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
 	</select>
 	<insert id="insert" parameterType="Map">
-		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created})
+		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null)
 	</insert>
 	<insert id="insertCard" parameterType="Map">
 		insert into card values(card_sq.NEXTVAL,0,0,#{email},null,#{mchtTrdNo},null,#{method},#{price},null,null,#{created},0,null,#{phone})
@@ -23,6 +23,9 @@
 	</select>
 	<update id="updateCardDonflag" parameterType="Map" >
 		update card set CFNNM=#{fnnm},CMCHTID=#{mchtid}, CDONEFLAG=#{doneFlag},CDONEDATE=#{doneDate},CTRDNO=#{trdNo} where CMCHTTRDNO=#{mchtTrdNo}
+	</update>
+	<update id="updateOrderDoneFlag" parameterType="Map">
+		update orders set ODONEFLAG=#{doneFlag},ODONEDATE=#{doneDate} where OMCHTTRDNO=#{mchtTrdNo}
 	</update>
 	<update id="updateCardCancleFlag" parameterType="Map" >
 		update card set CDONEFLAG=#{cancleFlag},CDONEDATE=#{cancleDate} where CMCHTTRDNO=#{mchtTrdNo}
