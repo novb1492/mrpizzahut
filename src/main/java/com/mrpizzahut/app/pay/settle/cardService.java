@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ public class cardService {
 	private final String MchtId="nxca_jt_il";
 	private final String sucPayNum="0021";
 	private final int doneFlag=1;
+	private final int cancleFlag=0;
 	 
 	@Autowired
 	private payDao payDao;
@@ -62,11 +62,13 @@ public class cardService {
             return reseponse;
             //throw new RuntimeException();
         } catch (Exception e) {
+        	System.out.println("카드결제중 예외 발생 자동환불");
+        	 Map<String, Object>map=new HashMap<String, Object>();
+        	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
+             map.put("cancleFlag", cancleFlag);
+             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
             settleDto.setCnclOrd(1);
             String message="환불에 실패했습니다";
-            if(!e.getMessage().startsWith("메")){
-                message="구매에 실패하였습니다";
-            }
             if(requestToSettle(cancle(settleDto))){
                 message=e.getMessage()+" 환불되었습니다";
             }
@@ -107,8 +109,10 @@ public class cardService {
         return  String.format("%s%s%s%s%s%s",trdDt,trdTm,MchtId,mchtTrdNo,price,"ST1009281328226982205"); 
     }
 	  private boolean requestToSettle(JSONObject body){
+		  System.out.println("requestToSettle");
 	        JSONObject  response=requestTo.requestToSettle("https://tbgw.settlebank.co.kr/spay/APICancel.do", body);
 	        LinkedHashMap<String,Object>params=(LinkedHashMap<String, Object>) response.get("params");
+	        System.out.println("세틀뱅크 통신결과"+response.toString());
 	        if(params.get("outStatCd").equals("0021")){
 	            return true;
 	        }

@@ -24,4 +24,7 @@
 	<update id="updateCardDonflag" parameterType="Map" >
 		update card set CFNNM=#{fnnm},CMCHTID=#{mchtid}, CDONEFLAG=#{doneFlag},CDONEDATE=#{doneDate},CTRDNO=#{trdNo} where CMCHTTRDNO=#{mchtTrdNo}
 	</update>
+	<update id="updateCardCancleFlag" parameterType="Map" >
+		update card set CDONEFLAG=#{cancleFlag},CDONEDATE=#{cancleDate} where CMCHTTRDNO=#{mchtTrdNo}
+	</update>
 </mapper>

@@ -10,4 +10,5 @@ public interface payDao {
 	public int insertKpay(Map<String, Object>map);
 	public Map<String, Object> cardFindByMchtTrdNo(String mchtTrdNo);
 	public int updateCardDonflag(Map<String, Object>map);
+	public int updateCardCancleFlag(Map<String, Object>map);
 }
