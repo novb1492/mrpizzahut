@@ -79,6 +79,7 @@ public class kakaopayService {
      String pgtoken=request.getParameter("pg_token");
      String mchtTrdNo=request.getSession().getAttribute(email+"mchtTrdNo").toString();
      Map<String, Object>kpay=paymentService.selectByMchtTrdNo(mchtTrdNo, "kpay", email);
+     JSONObject reponse=new JSONObject();
         try {
              System.out.println("카카오페이 조회 결과"+kpay.toString());
              if(Integer.parseInt(kpay.get("KDONEFLAG").toString())!=0) {
@@ -109,13 +110,12 @@ public class kakaopayService {
              map.put("email", email);
              paymentService.updateDonFlag(map,"kpay");
              paymentService.updateOrderDoneFlag(map);
-             JSONObject reponse=new JSONObject();
              reponse.put("flag", true);
              reponse.put("buykind", buykind);
              reponse.put("price", dbPrice);
              reponse.put("productNames", jsonObject.get("item_name"));
-            // return reponse;
-             throw new RuntimeException("test");
+             return reponse;
+             //throw new RuntimeException("test");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("카카오페이 검증 실패");
@@ -124,6 +124,9 @@ public class kakaopayService {
 	        body.add("tid",kpay.get("KTID"));
 	        body.add("cancel_amount",Integer.parseInt(kpay.get("KPRICE").toString()));
 	        body.add("cancel_tax_free_amount",0);
+            reponse.put("flag", false);
+            reponse.put("buykind", buykind);
+            String message=null;
 	        if(cancleKakaoPAY(body)) {
 	        	 Map<String, Object>map=new HashMap<String, Object>();
 	        	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
@@ -132,9 +135,13 @@ public class kakaopayService {
 	             map.put("email", email);
 	             paymentService.updateOrderCancleFlag(map);
 	             paymentService.updateBuykindCancleFlag(map, buykind);
-	        	return utillService.makeJson(false,e.getMessage()+"자동환불되었습니다");
+	             message=e.getMessage()+"자동환불되었습니다";
+	        	
+	        }else {
+	        	message="구매에 실패하였습니다 자동환불에 실패하였습니다 문의바랍니다";
 	        }
-			return utillService.makeJson(false,"구매에 실패하였습니다 자동환불에 실패하였습니다 문의바랍니다");
+	        reponse.put("message", message);
+			return reponse;
 		}
     } 
    public boolean cancleKakaoPAY(MultiValueMap<String, Object>body) {

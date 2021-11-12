@@ -49,4 +49,24 @@ public class controller {
 	public String goAddress(HttpServletRequest request,HttpServletResponse response) {
 		return "/orderPages/address";
 	}
+	@RequestMapping(value = "/donePay", method = RequestMethod.GET)
+	public String donePay(HttpServletRequest request,HttpServletResponse response,Model model) {
+		System.out.println("donePay");
+		boolean flag=Boolean.parseBoolean(request.getParameter("flag"));
+		if(flag) {
+			System.out.println("결제성공");
+			String productNames=request.getParameter("productNames");
+			productNames=productNames.replace("%2C", ",");
+			model.addAttribute("productNames",productNames);
+			model.addAttribute("price", request.getParameter("price"));
+		}else {
+			System.out.println("결제실패");
+			model.addAttribute("message", request.getParameter("message"));
+		}
+		model.addAttribute("flag", flag);
+		model.addAttribute("buykind", request.getParameter("buykind"));
+
+
+		return"/orderPages/donePay";
+	}
 }

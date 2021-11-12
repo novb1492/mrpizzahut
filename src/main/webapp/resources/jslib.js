@@ -1,4 +1,5 @@
 var result;
+
 function requestOrder(){
 	var carr=document.getElementsByClassName('coupon');
 	var coupons='*';
