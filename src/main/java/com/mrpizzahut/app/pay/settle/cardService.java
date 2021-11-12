@@ -44,7 +44,7 @@ public class cardService {
         System.out.println("cardConfrim");
         JSONObject reseponse=new JSONObject();
         String mchtTrdNo=settleDto.getMchtTrdNo();
-        System.out.println(settleDto.getFnNm());
+        System.out.println(settleDto.getFnNm()+","+settleDto.getMchtParam());
         try {
         	if(!settleDto.getOutStatCd().equals(sucPayNum)){
                 System.out.println("결제실패 실패 코드 "+settleDto.getOutRsltCd());
@@ -75,6 +75,8 @@ public class cardService {
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
             reseponse.put("price", settleDto.getTrdAmt());
+            reseponse.put("buykind", buyKind);
+            reseponse.put("productNames", settleDto.getMchtParam());
             return reseponse;
             //throw new RuntimeException();
         } catch (Exception e) {
@@ -90,13 +92,16 @@ public class cardService {
              paymentService.updateOrderCancleFlag(map);
              settleDto.setCnclOrd(1);
              String message=e.getMessage();
+             reseponse.put("flag", false);
+             reseponse.put("buykind", buyKind);
              JSONObject jsonObject=requestToSettle(cancle(settleDto));
              if(!(boolean)jsonObject.get("flag")) {
-            	 message=jsonObject.get("message").toString();
-             }else if(!message.startsWith("메")) {
             	 message+=" 환불되었습니다";
+             }else {
+            	 message+="환불에 실패하였습니다 "+jsonObject.get("message");
              }
-             return utillService.makeJson(false, message);
+             reseponse.put("message", message);
+             return reseponse;
         }
         
     }

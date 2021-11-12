@@ -56,6 +56,7 @@ function vbank(result) {
         "pmtPrdtNm": result.itemName,
         "trdAmt": result.trdAmt,
         "mchtCustId":result.mchtCustId,
+        "mchtParam":result.mchtParam,
         "notiUrl": "http://kim80800.iptime.org:8085/auth/settlebank",
         "nextUrl": "http://localhost:8085/app/settle/callback",
         "cancUrl": "http://localhost:8085/app/settle/callback",

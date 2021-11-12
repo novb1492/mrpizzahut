@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class settleService {
 	@Autowired
 	private paymentService paymentService;
 	
-	 public JSONObject confrimPayment(HttpServletRequest request) {
+	 public void confrimPayment(HttpServletRequest request,HttpServletResponse response) {
 	        System.out.println("confrimPayment");
 	        try {
 				request.setCharacterEncoding("UTF-8");
@@ -39,13 +40,23 @@ public class settleService {
 	        settleDto settleDto=utillService.requestToSettleDto(request);
 	        String email=utillService.getEmail(request);
 	        System.out.println(settleDto.toString());
-	        JSONObject reponse=new JSONObject();
+	        JSONObject result=new JSONObject();
+	        String uri=null;
+			String parm=null;
 	        if(settleDto.getMchtId().equals(cardMchtId)){
-	            reponse=cardService.cardConfrim(settleDto,email);
+	        	result=cardService.cardConfrim(settleDto,email);
 	        }else{
-	            return utillService.makeJson(false, "지원하지 않는 결제 형식입니다");
+	            throw utillService.makeRuntimeEX("지원하지 않는 결제 형식입니다","confrimPayment");
 	        }
-	        return reponse;
+	        System.out.println("세틀뱅크 최종 응답 "+result.toString());
+			if((boolean) result.get("flag")) {
+				parm="?flag="+result.get("flag")+"&buykind="+utillService.makeUtf8(result.get("buykind").toString())+"&productNames="+utillService.makeUtf8(result.get("productNames").toString())+"&price="+utillService.makeUtf8(result.get("price").toString());
+			}else {
+				parm="?buykind="+utillService.makeUtf8(result.get("buykind").toString())+"&flag="+result.get("flag")+"&message="+utillService.makeUtf8(result.get("message").toString());
+			}
+			uri="/app/donePay";
+			utillService.doRedirect(response, uri,parm);
+	       
 	   }
 	
 	
@@ -71,6 +82,7 @@ public class settleService {
             expireDate=(String)map.get("expireDate");
             response.put("expireDt", expireDate);
         }
+        response.put("mchtParam", map.get("itemNames"));
         response.put("itemName", map.get("itemNames"));
         response.put("mchtId", idAndText[0]);
         response.put("mchtCustId", aes256.encrypt(email));

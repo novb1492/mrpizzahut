@@ -50,9 +50,10 @@ public class restController {
 		return productService.getPayInfor(tryBuyDto,request);
 	}
 	@RequestMapping(value = "/settle/callback", method = RequestMethod.POST)
-	public JSONObject confrimSettle(HttpServletRequest request,HttpServletResponse response) {
+	public void confrimSettle(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("confrimSettle");
-		return settleService.confrimPayment(request);
+		 settleService.confrimPayment(request,response);
+		 
 	}
 	@RequestMapping(value = "/kakao/callback",method = RequestMethod.GET)
 	public void kakaoCallback(HttpServletRequest request,HttpServletResponse response) {
