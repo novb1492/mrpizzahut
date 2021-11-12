@@ -37,10 +37,11 @@ public class settleService {
 				e.printStackTrace();
 			}
 	        settleDto settleDto=utillService.requestToSettleDto(request);
+	        String email=utillService.getEmail(request);
 	        System.out.println(settleDto.toString());
 	        JSONObject reponse=new JSONObject();
 	        if(settleDto.getMchtId().equals(cardMchtId)){
-	            reponse=cardService.cardConfrim(settleDto);
+	            reponse=cardService.cardConfrim(settleDto,email);
 	        }else{
 	            return utillService.makeJson(false, "지원하지 않는 결제 형식입니다");
 	        }

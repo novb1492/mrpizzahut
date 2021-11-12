@@ -62,13 +62,8 @@ public class paymentService {
 		System.out.println(buykind+"테이블 doneFlag완료");
 		
 	}
-	public void updateOrderDoneFlag(String email,String mchtTrdNo) {
+	public void updateOrderDoneFlag(Map<String, Object>map) {
 		System.out.println("updateOrderDoneFlag");
-		Map<String, Object>map=new HashMap<String, Object>();
-		map.put("email", email);
-		map.put("mchtTrdNo", mchtTrdNo);
-		map.put("doneFlag", doneFlag);
-		map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
 		payDao.updateOrderDoneFlag(map);
 	}
 	public void insertOrder(List<Map<String,Object>>maps,String mchtTrdNo,String email,String method) {

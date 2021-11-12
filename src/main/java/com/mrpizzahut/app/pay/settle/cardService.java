@@ -41,7 +41,7 @@ public class cardService {
 	private paymentService paymentService;
 	
 	@Transactional(rollbackFor = Exception.class)
-    public JSONObject cardConfrim(settleDto settleDto) {
+    public JSONObject cardConfrim(settleDto settleDto,String email) {
         System.out.println("cardConfrim");
         JSONObject reseponse=new JSONObject();
         String mchtTrdNo=settleDto.getMchtTrdNo();
@@ -51,7 +51,7 @@ public class cardService {
                 System.out.println("결제실패 실패 코드 "+settleDto.getOutRsltCd());
                 throw new RuntimeException("결제실패");
             }
-        	Map<String, Object>card=payDao.cardFindByMchtTrdNo(mchtTrdNo);
+        	Map<String, Object>card=paymentService.selectByMchtTrdNo(mchtTrdNo, buyKind, email);
         	System.out.println("결제정보 "+card.toString());
             settleDto.setTrdAmt(utillService.aesToNomal(settleDto.getTrdAmt()));
             if(Integer.parseInt(card.get("CDONEFLAG").toString())==1) {
@@ -60,7 +60,6 @@ public class cardService {
             	System.out.println("금액이 일치하지 않음");
             	throw new RuntimeException("금액이 일치하지 않습니다");
             }
-            String email=card.get("CEMAIL").toString();
             Map<String, Object>map=new HashMap<String, Object>();
             map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
             map.put("doneFlag", doneFlag);
@@ -68,10 +67,11 @@ public class cardService {
             map.put("fnnm", settleDto.getFnNm());
             map.put("trdNo", settleDto.getTrdNo());
             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
+            map.put("email", email);
             productService.minusProductCount(mchtTrdNo);
             productService.doneCoupon(card.get("CCOUPON").toString(),email,mchtTrdNo);
             paymentService.updateDonFlag(map, buyKind);
-            paymentService.updateOrderDoneFlag(email, mchtTrdNo);
+            paymentService.updateOrderDoneFlag(map);
             buketService.deleteBuket(email);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
