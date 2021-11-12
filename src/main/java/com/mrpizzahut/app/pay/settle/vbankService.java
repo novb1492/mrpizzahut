@@ -24,7 +24,6 @@ public class vbankService {
 	
 	private final String mchtId="nx_mid_il";
 	private final String sucPayNum="0051";
-	private final int doneFlag=1;
 	private final int cancleFlag=1;
 	private final String buyKind="vbank";
 	 

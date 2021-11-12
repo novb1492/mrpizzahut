@@ -52,7 +52,7 @@ public class restController {
 	@RequestMapping(value = "/settle/callback", method = RequestMethod.POST)
 	public void confrimSettle(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("confrimSettle");
-		 settleService.confrimPayment(request,response);
+		 settleService.callbackProcess(request,response);
 		 
 	}
 	@RequestMapping(value = "/kakao/callback",method = RequestMethod.GET)
