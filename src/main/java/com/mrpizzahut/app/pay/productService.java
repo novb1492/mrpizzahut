@@ -197,9 +197,9 @@ public class productService {
             	System.out.println("쿠폰 정보"+ coupon.toString());
                 LinkedHashMap<String,Object>map=new LinkedHashMap<>();
                 if(LocalDateTime.now().isAfter(Timestamp.valueOf(coupon.get("COEXPIRED").toString()).toLocalDateTime())){
-                    throw utillService.makeRuntimeEX("기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
+                    throw utillService.makeRuntimeEX(s+"기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
                 }else if(Integer.parseInt(coupon.get("USEDFLAG").toString())!=0){
-                    throw utillService.makeRuntimeEX("이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
+                    throw utillService.makeRuntimeEX(s+"이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
                 }
                 if(couponNamesAndCodeNames.contains(s)){
                     throw utillService.makeRuntimeEX("같은쿠폰이 중복으로 발견되었습니다"+s, "confrimCoupon");
@@ -271,7 +271,7 @@ public class productService {
 			int dbCount=Integer.parseInt(map3.get("MCOUNT").toString());
 			dbCount-=Integer.parseInt(map.get("OCOUNT").toString());
 			if(dbCount<0) {
-				throw utillService.makeRuntimeEX("상품의 재고가 부족합니다", "minusProductCount");
+				throw utillService.makeRuntimeEX(map.get("ONAME")+"상품의 재고가 부족합니다", "minusProductCount");
 			}
 			map2.put("count", dbCount);
 			payDao.orderUpdateCount(map2);
@@ -288,9 +288,9 @@ public class productService {
 				Map<String, Object>map=couponDao.findByCouponName(s);
 				System.out.println("쿠폰 정보 "+map.toString());
 				 if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COEXPIRED").toString()).toLocalDateTime())){
-	                    throw utillService.makeRuntimeEX("기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
+	                    throw utillService.makeRuntimeEX(s+"기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
 	              }else if(Integer.parseInt(map.get("USEDFLAG").toString())!=0){
-	                    throw utillService.makeRuntimeEX("이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
+	                    throw utillService.makeRuntimeEX(s+"이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
 	              }
 				 map.put("mchtTrdNo", mchtTrdNo);
 				 map.put("email", email);

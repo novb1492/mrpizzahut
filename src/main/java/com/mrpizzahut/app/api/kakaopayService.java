@@ -34,6 +34,7 @@ public class kakaopayService {
     private final String kakaoAdminKey="a813510779a54f77f1fe028ffd3e1d81";
     private final int doneFlag=1;
     private final String buykind="kpay";
+    private final String realCancleUrl="https://kapi.kakao.com/v1/payment/cancel";
 
     @Autowired
     private requestTo requestTo;
@@ -73,11 +74,11 @@ public class kakaopayService {
    @Transactional(rollbackFor = Exception.class)
     public JSONObject requestKakaopay(HttpServletRequest request) {
         System.out.println("requestKakaopay");
+   	 String email=utillService.getEmail(request);
+     String pgtoken=request.getParameter("pg_token");
+     String mchtTrdNo=request.getSession().getAttribute(email+"mchtTrdNo").toString();
+     Map<String, Object>kpay=paymentService.selectByMchtTrdNo(mchtTrdNo, "kpay", email);
         try {
-        	 String email=utillService.getEmail(request);
-             String pgtoken=request.getParameter("pg_token");
-             String mchtTrdNo=request.getSession().getAttribute(email+"mchtTrdNo").toString();
-             Map<String, Object>kpay=paymentService.selectByMchtTrdNo(mchtTrdNo, "kpay", email);
              System.out.println("카카오페이 조회 결과"+kpay.toString());
              if(Integer.parseInt(kpay.get("KDONEFLAG").toString())!=0) {
             	 utillService.makeJson(true, "구매가 완료된 거래입니다");
@@ -112,13 +113,34 @@ public class kakaopayService {
              reponse.put("buykind", buykind);
              reponse.put("price", dbPrice);
              reponse.put("productNames", jsonObject.get("item_name"));
-             return reponse;
+            // return reponse;
+             throw new RuntimeException("test");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("카카오페이 검증 실패");
-			return null;
+			MultiValueMap<String, Object>body=requestTo.getMultiValueBody();
+			body.add("cid", cid);
+	        body.add("tid",kpay.get("KTID"));
+	        body.add("cancel_amount",Integer.parseInt(kpay.get("KPRICE").toString()));
+	        body.add("cancel_tax_free_amount",0);
+	        if(cancleKakaoPAY(body)) {
+	        	return utillService.makeJson(false,e.getMessage()+"자동환불되었습니다");
+	        }
+		
+			return utillService.makeJson(false,"구매에 실패하였습니다 자동환불에 실패하였습니다 문의바랍니다");
 		}
-       
-
     } 
+   public boolean cancleKakaoPAY(MultiValueMap<String, Object>body) {
+	   System.out.println("cancleKakaoPAY");
+	   HttpHeaders headers=requestTo.getHeaders();
+	   headers.add("Authorization","KakaoAK "+kakaoAdminKey);
+	   headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+       JSONObject response=requestTo.requestToApi(body, realCancleUrl, headers);
+	   System.out.println("카카오페이 환불결과 "+response.toString());
+	   String status=response.get("status").toString();
+	   if(status.equals("CANCEL_PAYMENT")||status.equals("PART_CANCEL_PAYMENT")) {
+		   return true;
+	   }
+	   return false;
+   }
 }
