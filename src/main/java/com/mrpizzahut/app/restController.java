@@ -57,7 +57,7 @@ public class restController {
 	@RequestMapping(value = "/kakao/callback",method = RequestMethod.GET)
 	public void kakaoCallback(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("kakaoCallback");
-		kakaoService.processCallback(request);
+		kakaoService.processCallback(request,response);
 	}
 	
 	

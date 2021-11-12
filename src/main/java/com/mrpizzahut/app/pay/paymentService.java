@@ -21,7 +21,7 @@ import Daos.payDao;
 public class paymentService {
 
 	private final String cid="TC0ONETIME";
-	private final int doneFlag=1;
+
 	
 	@Autowired
 	private payDao payDao;
@@ -65,6 +65,7 @@ public class paymentService {
 	public void updateOrderDoneFlag(Map<String, Object>map) {
 		System.out.println("updateOrderDoneFlag");
 		payDao.updateOrderDoneFlag(map);
+		System.out.println("주문 테이블 done완료");
 	}
 	public void insertOrder(List<Map<String,Object>>maps,String mchtTrdNo,String email,String method) {
 		System.out.println("insertOrder");

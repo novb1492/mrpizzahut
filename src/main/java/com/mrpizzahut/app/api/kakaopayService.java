@@ -1,5 +1,8 @@
 package com.mrpizzahut.app.api;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,8 @@ public class kakaopayService {
     private final String callbackUrl="app/kakao/callback?scope=pay";
     private final  String backDomain="http://localhost:8085/";
     private final String kakaoAdminKey="a813510779a54f77f1fe028ffd3e1d81";
+    private final int doneFlag=1;
+    private final String buykind="kpay";
 
     @Autowired
     private requestTo requestTo;
@@ -66,7 +71,7 @@ public class kakaopayService {
         return utillService.makeJson(true,(String)response.get("next_redirect_pc_url"));
     }
    @Transactional(rollbackFor = Exception.class)
-    public void requestKakaopay(HttpServletRequest request) {
+    public JSONObject requestKakaopay(HttpServletRequest request) {
         System.out.println("requestKakaopay");
         try {
         	 String email=utillService.getEmail(request);
@@ -95,11 +100,23 @@ public class kakaopayService {
              }
              productService.minusProductCount(mchtTrdNo);
              productService.doneCoupon(kpay.get("KCOUPN").toString() , email, mchtTrdNo);
-             paymentService.updateDonFlag(email, mchtTrdNo, "kpay");
-             paymentService.updateOrderDoneFlag(email, mchtTrdNo);
+             Map<String, Object>map=new HashMap<String, Object>();
+             map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+             map.put("doneFlag", doneFlag);
+             map.put("mchtTrdNo", mchtTrdNo);
+             map.put("email", email);
+             paymentService.updateDonFlag(map,"kpay");
+             paymentService.updateOrderDoneFlag(map);
+             JSONObject reponse=new JSONObject();
+             reponse.put("flag", true);
+             reponse.put("buykind", buykind);
+             reponse.put("price", dbPrice);
+             reponse.put("productNames", jsonObject.get("item_name"));
+             return reponse;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("카카오페이 검증 실패");
+			return null;
 		}
        
 

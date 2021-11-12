@@ -1,5 +1,8 @@
 package com.mrpizzahut.app;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -7,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
@@ -14,6 +18,27 @@ import com.mrpizzahut.app.hash.aes256;
 import com.mrpizzahut.app.pay.settle.settleDto;
 
 public class utillService {
+	
+	public static String makeUtf8(String param) {
+		System.out.println("makeUtf8");
+		try {
+			return URLEncoder.encode(param, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			throw utillService.makeRuntimeEX("형식변환에 실패했습니다", "makeUtf8");
+		}
+	
+	}
+    public static void doRedirect(HttpServletResponse response,String url,String parm) {
+        System.out.println("doRedirect");
+        System.out.println(url+"리다이렉트 요청 url");
+        try {
+            response.sendRedirect(url+parm);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("doRedirect error"+e.getMessage());
+        }
+    }
 	
     public static String aesToNomal(String hash) {
         try {
