@@ -30,8 +30,10 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-	
+	public String home(Locale locale, Model model,HttpServletRequest request) {
+		System.out.println("home");
+		request.getSession().setAttribute("email", "kim@kim.com");
+		System.out.println(request.getSession().getAttribute("email"));
 		return "home";
 	}
 

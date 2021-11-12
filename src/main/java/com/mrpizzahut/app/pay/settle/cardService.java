@@ -95,7 +95,7 @@ public class cardService {
              reseponse.put("flag", false);
              reseponse.put("buykind", buyKind);
              JSONObject jsonObject=requestToSettle(cancle(settleDto));
-             if(!(boolean)jsonObject.get("flag")) {
+             if((boolean)jsonObject.get("flag")) {
             	 message+=" 환불되었습니다";
              }else {
             	 message+="환불에 실패하였습니다 "+jsonObject.get("message");

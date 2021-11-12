@@ -39,6 +39,7 @@ public class settleService {
 			}
 	        settleDto settleDto=utillService.requestToSettleDto(request);
 	        String email=utillService.getEmail(request);
+	        System.out.println(email+"이메일");
 	        System.out.println(settleDto.toString());
 	        JSONObject result=new JSONObject();
 	        String uri=null;
@@ -50,8 +51,10 @@ public class settleService {
 	        }
 	        System.out.println("세틀뱅크 최종 응답 "+result.toString());
 			if((boolean) result.get("flag")) {
+				System.out.println("성공응답");
 				parm="?flag="+result.get("flag")+"&buykind="+utillService.makeUtf8(result.get("buykind").toString())+"&productNames="+utillService.makeUtf8(result.get("productNames").toString())+"&price="+utillService.makeUtf8(result.get("price").toString());
 			}else {
+				System.out.println("실패응답");
 				parm="?buykind="+utillService.makeUtf8(result.get("buykind").toString())+"&flag="+result.get("flag")+"&message="+utillService.makeUtf8(result.get("message").toString());
 			}
 			uri="/app/donePay";

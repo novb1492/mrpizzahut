@@ -29,7 +29,7 @@ public class controller {
 	
 	@RequestMapping(value = "/buket", method = RequestMethod.GET)
 	public String goBuket(HttpServletRequest request,HttpServletResponse response,Model model) {
-		logger.info("goBuket");
+		System.out.println("goBuket"+request.getSession().getAttribute("email"));
 		try {
 			if(buketService.getCartByEmail(request.getSession().getAttribute("email").toString(), model)) {
 				return "/home";

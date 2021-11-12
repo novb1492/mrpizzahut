@@ -27,12 +27,12 @@ public class paymentService {
 	private payDao payDao;
 	
 	public void updateOrderCancleFlag(Map<String, Object>map) {
-		System.out.println("updateCardCancleFlag");
+		System.out.println("updateOrderCancleFlag");
 		payDao.updateOrderCancleFlag(map);
 		System.out.println("주문 테이블 cancle완료");
 	}
 	public void updateBuykindCancleFlag(Map<String, Object>map,String buykind) {
-		System.out.println("updateCardCancleFlag");
+		System.out.println("updateBuykindCancleFlag");
 		if(buykind.equals("card")) {
 			System.out.println("카드조회");
 			 payDao.updateCardCancleFlag(map);
