@@ -26,6 +26,28 @@ public class paymentService {
 	@Autowired
 	private payDao payDao;
 	
+	public void updateOrderCancleFlag(Map<String, Object>map) {
+		System.out.println("updateCardCancleFlag");
+		payDao.updateOrderDoneFlag(map);
+		System.out.println("주문 테이블 cancle완료");
+	}
+	public void updateCardCancleFlag(Map<String, Object>map,String buykind) {
+		System.out.println("updateCardCancleFlag");
+		if(buykind.equals("card")) {
+			System.out.println("카드조회");
+			 payDao.updateCardCancleFlag(map);
+		}else if(buykind.equals("vbank")) {
+			System.out.println("가상계좌 조회");
+			 
+		}else if(buykind.equals("kpay")) {
+			System.out.println("카카오페이 조회");
+			 payDao.kpayUpdateDoneFlag(map);
+		}else {
+			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
+		}
+		System.out.println(buykind+"테이블 cancleFlag완료");
+	}
+	
 	public Map<String, Object> selectByMchtTrdNo(String mchtTrdNo,String buykind,String email) {
 		System.out.println("selectByMchtTrdNo");
 		System.out.println("조회 거래번호 "+mchtTrdNo);

@@ -29,8 +29,7 @@ public class cardService {
 	private final int cancleFlag=1;
 	private final String buyKind="card";
 	 
-	@Autowired
-	private payDao payDao;
+
 	@Autowired
 	private requestTo requestTo;
 	@Autowired
@@ -86,8 +85,9 @@ public class cardService {
              map.put("cancleFlag", cancleFlag);
              map.put("mchtTrdNo", settleDto.getMchtTrdNo());
              map.put("cnclord", 1);
-             payDao.updateCardCancleFlag(map);
-             payDao.updateOrderCancleFlag(map);
+             map.put("email", email);
+             paymentService.updateCardCancleFlag(map, buyKind);
+             paymentService.updateOrderCancleFlag(map);
              settleDto.setCnclOrd(1);
              String message=e.getMessage();
              JSONObject jsonObject=requestToSettle(cancle(settleDto));
