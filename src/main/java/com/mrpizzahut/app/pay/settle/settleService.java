@@ -24,11 +24,15 @@ import com.mrpizzahut.app.pay.tryBuyDto;
 public class settleService {
 	
 	private final String cardMchtId="nxca_jt_il";
+	private final String vbankMchtid="nx_mid_il";
+
 	
 	@Autowired
 	private cardService cardService;
 	@Autowired
 	private paymentService paymentService;
+	@Autowired
+	private vbankService vbankService;
 	
 	 public void confrimPayment(HttpServletRequest request,HttpServletResponse response) {
 	        System.out.println("confrimPayment");
@@ -38,14 +42,17 @@ public class settleService {
 				e.printStackTrace();
 			}
 	        settleDto settleDto=utillService.requestToSettleDto(request);
-	        String email=utillService.getEmail(request);
+	        String email="kim@kim.com";//utillService.getEmail(request);
 	        System.out.println(email+"이메일");
-	        System.out.println(settleDto.toString());
 	        JSONObject result=new JSONObject();
 	        String uri=null;
 			String parm=null;
-	        if(settleDto.getMchtId().equals(cardMchtId)){
+			String settleID=settleDto.getMchtId();
+	        if(settleID.equals(cardMchtId)){
 	        	result=cardService.cardConfrim(settleDto,email);
+	        }else if(settleID.equals(vbankMchtid)) {
+	        	System.out.println("가상게좌검증");
+	        	result=vbankService.vbankConfrim(settleDto, email);
 	        }else{
 	            throw utillService.makeRuntimeEX("지원하지 않는 결제 형식입니다","confrimPayment");
 	        }
@@ -53,6 +60,9 @@ public class settleService {
 			if((boolean) result.get("flag")) {
 				System.out.println("성공응답");
 				parm="?flag="+result.get("flag")+"&buykind="+utillService.makeUtf8(result.get("buykind").toString())+"&productNames="+utillService.makeUtf8(result.get("productNames").toString())+"&price="+utillService.makeUtf8(result.get("price").toString());
+				if(result.get("buykind").equals("vbank")) {
+					parm+="&vbanknum="+utillService.makeUtf8(result.get("vbanknum").toString())+"&expireDate="+utillService.makeUtf8(result.get("expireDate").toString());
+				}
 			}else {
 				System.out.println("실패응답");
 				parm="?buykind="+utillService.makeUtf8(result.get("buykind").toString())+"&flag="+result.get("flag")+"&message="+utillService.makeUtf8(result.get("message").toString());

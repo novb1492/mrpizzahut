@@ -48,4 +48,10 @@
 	<update id="kpayUpdateCancleFlag" parameterType="Map">
 		update kpay set KCANCLEFLAG=#{cancleFlag},KCANCLEDATE=#{cancleDate} where KPARTNERORDERID=#{mchtTrdNo} and KEMAIL=#{email}
 	</update>
+	<select id="vbankFindByMchtTrdNo" parameterType="String" resultType="Map">
+		select * from vbank where VMCHTTRDNO=#{mchtTrdNo}
+	</select>
+	<update id="vbankUpdateVtlAcntNo" parameterType="Map">
+		update vbank set VTLACNTNO=#{vtlAcntNo},VFNCD=#{fncd},VFNNM=#{fnnm},VMCHTID=#{mchtid},VTRDNO=#{trdNo} where VEMAIL=#{email} and VMCHTTRDNO=#{mchtTrdNo}
+	</update>
 </mapper>

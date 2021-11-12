@@ -20,7 +20,6 @@ import com.mrpizzahut.app.buket.buketService;
 
 @Controller
 public class controller {
-	private static final Logger logger = LoggerFactory.getLogger(controller.class);
 
 	@Autowired
 	private buketService buketService;
@@ -53,18 +52,24 @@ public class controller {
 	public String donePay(HttpServletRequest request,HttpServletResponse response,Model model) {
 		System.out.println("donePay");
 		boolean flag=Boolean.parseBoolean(request.getParameter("flag"));
+		String buykind=request.getParameter("buykind");
 		if(flag) {
 			System.out.println("결제성공");
 			String productNames=request.getParameter("productNames");
 			productNames=productNames.replace("%2C", ",");
 			model.addAttribute("productNames",productNames);
 			model.addAttribute("price", request.getParameter("price"));
+			if(buykind.equals("vbank")) {
+				System.out.println("가상계좌 이므로 추가");
+				model.addAttribute("vbanknum", request.getParameter("vbanknum"));
+				model.addAttribute("expireDate", request.getParameter("expireDate"));
+			}
 		}else {
 			System.out.println("결제실패");
 			model.addAttribute("message", request.getParameter("message"));
 		}
 		model.addAttribute("flag", flag);
-		model.addAttribute("buykind", request.getParameter("buykind"));
+		model.addAttribute("buykind", buykind);
 
 
 		return"/orderPages/donePay";

@@ -59,7 +59,7 @@ public class paymentService {
 			return payDao.cardFindByMchtTrdNo(mchtTrdNo);
 		}else if(buykind.equals("vbank")) {
 			System.out.println("가상계좌 조회");
-			return null;
+			return payDao.vbankFindByMchtTrdNo(mchtTrdNo);
 		}else if(buykind.equals("kpay")) {
 			System.out.println("카카오페이 조회");
 			return payDao.kpayFindByyMchtTrdNo(map);
@@ -74,7 +74,7 @@ public class paymentService {
 			 payDao.updateCardDonflag(map);
 		}else if(buykind.equals("vbank")) {
 			System.out.println("가상계좌 조회");
-			 
+			 payDao.vbankUpdateVtlAcntNo(map);
 		}else if(buykind.equals("kpay")) {
 			System.out.println("카카오페이 조회");
 			 payDao.kpayUpdateDoneFlag(map);
