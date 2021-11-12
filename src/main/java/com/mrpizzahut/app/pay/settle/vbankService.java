@@ -80,11 +80,11 @@ public class vbankService {
             reseponse.put("vbanknum", vtlAcntNo);
             reseponse.put("expireDate",vbank.get("VEXPIREDATE"));
             return reseponse;
-            //throw new RuntimeException();
+            //throw new RuntimeException("test");
         } catch (Exception e) {
         	e.printStackTrace();
         	System.out.println("가상꼐좌 예외 발생 채번취소");
-        	 /*Map<String, Object>map=new HashMap<String, Object>();
+        	 Map<String, Object>map=new HashMap<String, Object>();
         	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
              map.put("cancleFlag", cancleFlag);
              map.put("mchtTrdNo", settleDto.getMchtTrdNo());
@@ -96,17 +96,54 @@ public class vbankService {
              String message=e.getMessage();
              reseponse.put("flag", false);
              reseponse.put("buykind", buyKind);
-             JSONObject jsonObject=requestToSettle(cancle(settleDto));
-             if((boolean)jsonObject.get("flag")) {
-            	 message+=" 환불되었습니다";
-             }else {
-            	 message+="환불에 실패하였습니다 "+jsonObject.get("message");
-             }
-             reseponse.put("message", message);*/
-             return null;
+             settleDto.setVtlAcntNo(utillService.aesToNomal(settleDto.getVtlAcntNo()));
+             JSONObject jsonObject=requestToSettle(makeCancleAccountBody(settleDto));
+             reseponse.put("message", message+"구매실패");
+             return reseponse;
         }
         
     }
+	 public JSONObject makeCancleAccountBody(settleDto settleDto) {
+	        try {
+	            Map<String,String>map=utillService.getTrdDtTrdTm();
+	            String pktHash=requestcancleString(settleDto.getMchtTrdNo(),settleDto.getTrdAmt(), settleDto.getMchtId(),map.get("trdDt"),map.get("trdTm"),"0");
+	            JSONObject body=new JSONObject();
+	            JSONObject params=new JSONObject();
+	            JSONObject data=new JSONObject();
+	            params.put("mchtId", settleDto.getMchtId());
+	            params.put("ver", "0A18");
+	            params.put("method", "VA");
+	            params.put("bizType", "A2");
+	            params.put("encCd", "23");
+	            params.put("mchtTrdNo", settleDto.getMchtTrdNo());
+	            params.put("trdDt", map.get("trdDt"));
+	            params.put("trdTm", map.get("trdTm"));
+	            data.put("pktHash", sha256.encrypt(pktHash));
+	            data.put("orgTrdNo", settleDto.getTrdNo());
+	            data.put("vAcntNo", aes256.encrypt(settleDto.getVtlAcntNo()));
+	            body.put("params", params);
+	            body.put("data", data);
+	        return body;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            throw new RuntimeException();
+	        }
+	    }
+	    private String requestcancleString(String mchtTrdNo,String price,String mchtId,String trdDt,String trdTm,String zero) {
+	        System.out.println("requestcancleString zero");
+	        return String.format("%s%s%s%s%s%s",trdDt,trdTm,mchtId,mchtTrdNo,zero,"ST1009281328226982205"); 
+	    }
+	    private JSONObject requestToSettle(JSONObject body){
+			  System.out.println("requestToSettle");
+		        JSONObject  response=requestTo.requestToSettle("https://tbgw.settlebank.co.kr/spay/APIVBank.do", body);
+		        LinkedHashMap<String,Object>params=(LinkedHashMap<String, Object>) response.get("params");
+		        System.out.println("세틀뱅크 통신결과"+response.toString());
+		        String message=(String)params.get("outRsltMsg");
+		        if(params.get("outStatCd").equals("0021")){
+		        	return utillService.makeJson(true,message);
+		        }	
+		        return utillService.makeJson(false,message);
+		    }
 	/* public JSONObject cancle(settleDto settleDto) {
 	        System.out.println("makeCancleBody");
 	        try {
@@ -138,21 +175,8 @@ public class vbankService {
 	            e.printStackTrace();
 	            throw new RuntimeException();
 	        }
-	    }
-	
-    private String requestcancleString(String mchtTrdNo,String price,String mchtId,String trdDt,String trdTm,String zero) {
-        System.out.println("requestcancleString zero");
-        return String.format("%s%s%s%s%s%s",trdDt,trdTm,mchtId,mchtTrdNo,zero,"ST1009281328226982205"); 
-    }
-	  private JSONObject requestToSettle(JSONObject body){
-		  System.out.println("requestToSettle");
-	        JSONObject  response=requestTo.requestToSettle("https://tbgw.settlebank.co.kr/spay/APICancel.do", body);
-	        LinkedHashMap<String,Object>params=(LinkedHashMap<String, Object>) response.get("params");
-	        System.out.println("세틀뱅크 통신결과"+response.toString());
-	        String message=(String)params.get("outRsltMsg");
-	        if(params.get("outStatCd").equals("0021")){
-	        	return utillService.makeJson(true,message);
-	        }	
-	        return utillService.makeJson(false,message);
 	    }*/
+	
+
+	
 }
