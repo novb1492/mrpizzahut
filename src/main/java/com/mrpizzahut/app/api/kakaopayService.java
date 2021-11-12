@@ -78,7 +78,7 @@ public class kakaopayService {
    	 String email=utillService.getEmail(request);
      String pgtoken=request.getParameter("pg_token");
      String mchtTrdNo=request.getSession().getAttribute(email+"mchtTrdNo").toString();
-     Map<String, Object>kpay=paymentService.selectByMchtTrdNo(mchtTrdNo, "kpay", email);
+     Map<String, Object>kpay=paymentService.selectByMchtTrdNo(mchtTrdNo, buykind);
      JSONObject reponse=new JSONObject();
         try {
              System.out.println("카카오페이 조회 결과"+kpay.toString());

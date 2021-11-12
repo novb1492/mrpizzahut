@@ -50,7 +50,7 @@ public class cardService {
                 System.out.println("결제실패 실패 코드 "+settleDto.getOutRsltCd());
                 throw new RuntimeException("결제실패");
             }
-        	Map<String, Object>card=paymentService.selectByMchtTrdNo(mchtTrdNo, buyKind, email);
+        	Map<String, Object>card=paymentService.selectByMchtTrdNo(mchtTrdNo, buyKind);
         	System.out.println("결제정보 "+card.toString());
             settleDto.setTrdAmt(utillService.aesToNomal(settleDto.getTrdAmt()));
             if(Integer.parseInt(card.get("CDONEFLAG").toString())==1) {

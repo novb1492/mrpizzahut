@@ -37,11 +37,18 @@ public class settleService {
 	public void callbackProcess(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("callbackProcess");
 		String scope=request.getParameter("scope");
+		 String email=utillService.getEmail(request);
 		if(scope.equals("confrim")) {
 			System.out.println("카드결제 검증 및 가상계좌 채번 등록");
 			confrimPayment(request, response);
 		}else if(scope.equals("noti")) {
 			System.out.println("가상계좌 입금확인및 세트뱅크에서 주기 적으로 보냄 60번까지");
+			settleDto settleDto=utillService.requestToSettleDto(request);
+			if(!settleDto.getMchtId().equals(vbankMchtid)) {
+				System.out.println("가상계좌 노티 아님");
+				return;
+			}
+			vbankService.okVbank(settleDto);
 		}else if(scope.equals("cancle")) {
 			System.out.println("거래를 중간에 취소함");
 		}

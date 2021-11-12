@@ -39,8 +39,8 @@
 	<update id="orderUpdateCount" parameterType="Map">
 		update menu set MCOUNT=#{count} where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
 	</update>
-	<select id="kpayFindByyMchtTrdNo" parameterType="Map" resultType="Map">
-		select *from kpay where KPARTNERORDERID=#{mchtTrdNo} and KEMAIL=#{email}
+	<select id="kpayFindByyMchtTrdNo" parameterType="String" resultType="Map">
+		select *from kpay where KPARTNERORDERID=#{mchtTrdNo}
 	</select>
 	<update id="kpayUpdateDoneFlag" parameterType="Map">
 		update kpay set KDONEFLAG=#{doneFlag},KDONEDATE=#{doneDate} where KEMAIL=#{email} and KPARTNERORDERID=#{mchtTrdNo}
@@ -53,5 +53,8 @@
 	</select>
 	<update id="vbankUpdateVtlAcntNo" parameterType="Map">
 		update vbank set VTLACNTNO=#{vtlAcntNo},VFNCD=#{fncd},VFNNM=#{fnnm},VMCHTID=#{mchtid},VTRDNO=#{trdNo} where VEMAIL=#{email} and VMCHTTRDNO=#{mchtTrdNo}
+	</update>
+	<update id="updateVbankDoneFlag" parameterType="Map">
+			update vbank set VDONEFLAG=#{doneFlag},VDONEDATE=#{doneDate} where VEMAIL=#{email} and VMCHTTRDNO=#{mchtTrdNo}
 	</update>
 </mapper>

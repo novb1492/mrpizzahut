@@ -24,9 +24,11 @@ public class vbankService {
 	
 	private final String mchtId="nx_mid_il";
 	private final String sucPayNum="0051";
+	private final String sucpayNum2="0021";
 	private final int cancleFlag=1;
+	private final int doneFlag=1;
 	private final String buyKind="vbank";
-	 
+	private final String buyKind2="vbankDone";
 
 	@Autowired
 	private requestTo requestTo;
@@ -48,7 +50,7 @@ public class vbankService {
                 System.out.println("결제실패 실패 코드 "+settleDto.getOutRsltCd());
                 throw new RuntimeException("결제실패");
             }
-        	Map<String, Object>vbank=paymentService.selectByMchtTrdNo(mchtTrdNo, buyKind, email);
+        	Map<String, Object>vbank=paymentService.selectByMchtTrdNo(mchtTrdNo, buyKind);
         	System.out.println("결제정보 "+vbank.toString());
             settleDto.setTrdAmt(utillService.aesToNomal(settleDto.getTrdAmt()));
             if(Integer.parseInt(vbank.get("VDONEFLAG").toString())==1) {
@@ -68,7 +70,6 @@ public class vbankService {
             map.put("fncd",settleDto.getFnCd());
      
             productService.minusProductCount(mchtTrdNo);
-            productService.doneCoupon(vbank.get("VCOUPON").toString(),email,mchtTrdNo);
             paymentService.updateDonFlag(map, buyKind);
             buketService.deleteBuket(email);
             reseponse.put("flag", true);
@@ -143,38 +144,36 @@ public class vbankService {
 		        }	
 		        return utillService.makeJson(false,message);
 		    }
-	/* public JSONObject cancle(settleDto settleDto) {
-	        System.out.println("makeCancleBody");
-	        try {
-	            Map<String,String>map=utillService.getTrdDtTrdTm();
-	            String pktHash=requestcancleString(settleDto.getMchtTrdNo(),settleDto.getCnclAmt(), settleDto.getMchtId(),map.get("trdDt"),map.get("trdTm"));
-	            JSONObject body=new JSONObject();
-	            JSONObject params=new JSONObject();
-	            JSONObject data=new JSONObject();
-	            params.put("mchtId", settleDto.getMchtId());
-	            params.put("ver", "0A17");
-	            params.put("method", "VA");
-	            params.put("bizType", "C0");
-	            params.put("encCd", "23");
-	            params.put("mchtTrdNo", settleDto.getMchtTrdNo());
-	            params.put("trdDt", map.get("trdDt"));
-	            params.put("trdTm", map.get("trdTm"));
-	            data.put("pktHash", sha256.encrypt(pktHash));
-	            data.put("orgTrdNo", settleDto.getTrdNo());
-	            data.put("crcCd","KRW");
-	            data.put("cnclOrd",settleDto.getCnclOrd());
-	            data.put("cnclAmt",aes256.encrypt(settleDto.getCnclAmt()));
-	            data.put("refundBankCd",settleDto.getRefundBankCd());
-	            data.put("refundAcntNo",aes256.encrypt(settleDto.getRefundAcntNo()));
-	            data.put("refundDpstrNm",settleDto.getUserName());
-	            body.put("params", params);
-	            body.put("data", data);
-	        return body;
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            throw new RuntimeException();
-	        }
-	    }*/
+	    public void okVbank(settleDto settleDto) {
+			System.out.println("okVbank");
+			if(!settleDto.getOutStatCd().equals(sucpayNum2)){
+                System.out.println("결제 성공 코드아님 "+settleDto.getOutRsltCd());
+                return;
+            }
+			JSONObject reseponse=new JSONObject();
+		    String mchtTrdNo=settleDto.getMchtTrdNo();
+		    System.out.println(settleDto.getFnNm()+","+settleDto.getMchtParam());
+			try {
+				Map<String, Object>vbank=paymentService.selectByMchtTrdNo(mchtTrdNo,buyKind);
+				String email=vbank.get("VEMAIL").toString();
+				System.out.println("결제정보 "+vbank.toString());
+				Map<String, Object>map=new HashMap<String, Object>();
+			       map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+		            map.put("doneFlag", doneFlag);
+		            map.put("mchtTrdNo", settleDto.getMchtTrdNo());
+		            map.put("email",email);
+		            productService.doneCoupon(vbank.get("VCOUPON").toString(),email,mchtTrdNo);
+		            paymentService.updateDonFlag(map, buyKind2);
+		            paymentService.updateOrderDoneFlag(map);
+				System.out.println("가상계좌 입금 처리 완료");
+			} catch (Exception e) {
+				System.out.println("가상계좌 입금 완료 처리중 예외발생");
+				
+			}
+
+			
+			
+		}
 	
 
 	

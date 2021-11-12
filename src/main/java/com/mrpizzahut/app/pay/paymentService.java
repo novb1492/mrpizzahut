@@ -48,11 +48,11 @@ public class paymentService {
 		System.out.println(buykind+"테이블 cancleFlag완료");
 	}
 	
-	public Map<String, Object> selectByMchtTrdNo(String mchtTrdNo,String buykind,String email) {
+	public Map<String, Object> selectByMchtTrdNo(String mchtTrdNo,String buykind) {
 		System.out.println("selectByMchtTrdNo");
 		System.out.println("조회 거래번호 "+mchtTrdNo);
 		Map<String, Object>map=new HashMap<String, Object>();
-		map.put("email", email);
+
 		map.put("mchtTrdNo", mchtTrdNo);
 		if(buykind.equals("card")) {
 			System.out.println("카드조회");
@@ -62,7 +62,7 @@ public class paymentService {
 			return payDao.vbankFindByMchtTrdNo(mchtTrdNo);
 		}else if(buykind.equals("kpay")) {
 			System.out.println("카카오페이 조회");
-			return payDao.kpayFindByyMchtTrdNo(map);
+			return payDao.kpayFindByyMchtTrdNo(mchtTrdNo);
 		}else {
 			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
 		}
@@ -70,14 +70,17 @@ public class paymentService {
 	public void updateDonFlag(Map<String, Object>map,String buykind) {
 		System.out.println("updateDonFlag");
 		if(buykind.equals("card")) {
-			System.out.println("카드조회");
+			System.out.println("카드 입금완료 처리");
 			 payDao.updateCardDonflag(map);
 		}else if(buykind.equals("vbank")) {
-			System.out.println("가상계좌 조회");
+			System.out.println("가상계좌 채번 완료 처리");
 			 payDao.vbankUpdateVtlAcntNo(map);
 		}else if(buykind.equals("kpay")) {
-			System.out.println("카카오페이 조회");
+			System.out.println("카카오페이 입금완료 처리");
 			 payDao.kpayUpdateDoneFlag(map);
+		}else if(buykind.equals("vbankDone")) {
+			System.out.println("가상계좌 입금완료 처리");
+			payDao.updateVbankDoneFlag(map);
 		}else {
 			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
 		}

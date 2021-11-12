@@ -16,9 +16,10 @@ public interface payDao {
 	public int updateOrderCancleFlag(Map<String, Object>map);
 	public List<Map<String, Object>>OrderFindByMchtTrdNo(String mchtTrdNo);
 	public int orderUpdateCount(Map<String, Object>map);
-	public Map<String, Object>kpayFindByyMchtTrdNo(Map<String, Object>map);
+	public Map<String, Object>kpayFindByyMchtTrdNo(String email);
 	public int kpayUpdateDoneFlag(Map<String, Object>map);
 	public int kpayUpdateCancleFlag(Map<String, Object>map);
 	public Map<String, Object> vbankFindByMchtTrdNo(String mchtTrdNo);
 	public int vbankUpdateVtlAcntNo(Map<String, Object>map);
+	public int updateVbankDoneFlag(Map<String, Object>map);
 }
