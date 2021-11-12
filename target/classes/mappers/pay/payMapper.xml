@@ -28,7 +28,7 @@
 		update orders set ODONEFLAG=#{doneFlag},ODONEDATE=#{doneDate} where OMCHTTRDNO=#{mchtTrdNo} and OEMAIL=#{email}
 	</update>
 	<update id="updateCardCancleFlag" parameterType="Map" >
-		update card set CCNCLORD=#{cnclord}, CCANCLEFLAG=#{cancleFlag},CCANCLEDATE=#{cancleDate} where CMCHTTRDNO=#{mchtTrdNo}
+		update card set CCNCLORD=#{cnclord}, CCANCLEFLAG=#{cancleFlag},CCANCLEDATE=#{cancleDate} where CMCHTTRDNO=#{mchtTrdNo} and OEMAIL=#{email}
 	</update>
 	<update id="updateOrderCancleFlag" parameterType="Map" >
 		update orders set OCANCLEFLAG=#{cancleFlag},OCANCLEDATE=#{cancleDate} where OMCHTTRDNO=#{mchtTrdNo}
@@ -44,5 +44,8 @@
 	</select>
 	<update id="kpayUpdateDoneFlag" parameterType="Map">
 		update kpay set KDONEFLAG=#{doneFlag},KDONEDATE=#{doneDate} where KEMAIL=#{email} and KPARTNERORDERID=#{mchtTrdNo}
+	</update>
+	<update id="kpayUpdateCancleFlag" parameterType="Map">
+		update kpay set KCANCLEFLAG=#{cancleFlag},KCANCLEDATE=#{cancleDate} where KPARTNERORDERID=#{mchtTrdNo} and KEMAIL=#{email}
 	</update>
 </mapper>

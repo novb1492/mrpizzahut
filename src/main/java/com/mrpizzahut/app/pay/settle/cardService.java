@@ -86,7 +86,7 @@ public class cardService {
              map.put("mchtTrdNo", settleDto.getMchtTrdNo());
              map.put("cnclord", 1);
              map.put("email", email);
-             paymentService.updateCardCancleFlag(map, buyKind);
+             paymentService.updateBuykindCancleFlag(map, buyKind);
              paymentService.updateOrderCancleFlag(map);
              settleDto.setCnclOrd(1);
              String message=e.getMessage();

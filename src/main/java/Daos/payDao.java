@@ -18,4 +18,5 @@ public interface payDao {
 	public int orderUpdateCount(Map<String, Object>map);
 	public Map<String, Object>kpayFindByyMchtTrdNo(Map<String, Object>map);
 	public int kpayUpdateDoneFlag(Map<String, Object>map);
+	public int kpayUpdateCancleFlag(Map<String, Object>map);
 }

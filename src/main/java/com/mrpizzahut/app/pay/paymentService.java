@@ -28,10 +28,10 @@ public class paymentService {
 	
 	public void updateOrderCancleFlag(Map<String, Object>map) {
 		System.out.println("updateCardCancleFlag");
-		payDao.updateOrderDoneFlag(map);
+		payDao.updateOrderCancleFlag(map);
 		System.out.println("주문 테이블 cancle완료");
 	}
-	public void updateCardCancleFlag(Map<String, Object>map,String buykind) {
+	public void updateBuykindCancleFlag(Map<String, Object>map,String buykind) {
 		System.out.println("updateCardCancleFlag");
 		if(buykind.equals("card")) {
 			System.out.println("카드조회");
@@ -41,7 +41,7 @@ public class paymentService {
 			 
 		}else if(buykind.equals("kpay")) {
 			System.out.println("카카오페이 조회");
-			 payDao.kpayUpdateDoneFlag(map);
+			payDao.kpayUpdateCancleFlag(map);
 		}else {
 			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
 		}

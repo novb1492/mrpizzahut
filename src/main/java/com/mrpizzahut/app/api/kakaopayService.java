@@ -33,6 +33,7 @@ public class kakaopayService {
     private final  String backDomain="http://localhost:8085/";
     private final String kakaoAdminKey="a813510779a54f77f1fe028ffd3e1d81";
     private final int doneFlag=1;
+    private final int cancleFlag=1;
     private final String buykind="kpay";
     private final String realCancleUrl="https://kapi.kakao.com/v1/payment/cancel";
 
@@ -124,9 +125,15 @@ public class kakaopayService {
 	        body.add("cancel_amount",Integer.parseInt(kpay.get("KPRICE").toString()));
 	        body.add("cancel_tax_free_amount",0);
 	        if(cancleKakaoPAY(body)) {
+	        	 Map<String, Object>map=new HashMap<String, Object>();
+	        	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
+	             map.put("cancleFlag", cancleFlag);
+	             map.put("mchtTrdNo", mchtTrdNo);
+	             map.put("email", email);
+	             paymentService.updateOrderCancleFlag(map);
+	             paymentService.updateBuykindCancleFlag(map, buykind);
 	        	return utillService.makeJson(false,e.getMessage()+"자동환불되었습니다");
 	        }
-		
 			return utillService.makeJson(false,"구매에 실패하였습니다 자동환불에 실패하였습니다 문의바랍니다");
 		}
     } 
