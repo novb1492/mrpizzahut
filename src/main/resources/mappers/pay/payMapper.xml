@@ -25,7 +25,7 @@
 		update card set CFNNM=#{fnnm},CMCHTID=#{mchtid}, CDONEFLAG=#{doneFlag},CDONEDATE=#{doneDate},CTRDNO=#{trdNo} where CMCHTTRDNO=#{mchtTrdNo}
 	</update>
 	<update id="updateOrderDoneFlag" parameterType="Map">
-		update orders set ODONEFLAG=#{doneFlag},ODONEDATE=#{doneDate} where OMCHTTRDNO=#{mchtTrdNo}
+		update orders set ODONEFLAG=#{doneFlag},ODONEDATE=#{doneDate} where OMCHTTRDNO=#{mchtTrdNo} and OEMAIL#{email}
 	</update>
 	<update id="updateCardCancleFlag" parameterType="Map" >
 		update card set CCNCLORD=#{cnclord}, CCANCLEFLAG=#{cancleFlag},CCANCLEDATE=#{cancleDate} where CMCHTTRDNO=#{mchtTrdNo}
@@ -38,5 +38,11 @@
 	</select>
 	<update id="orderUpdateCount" parameterType="Map">
 		update menu set MCOUNT=#{count} where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
+	</update>
+	<select id="kpayFindByyMchtTrdNo" parameterType="Map" resultType="Map">
+		select *from kpay where KPARTNERORDERID=#{mchtTrdNo} and KEMAIL=#{email}
+	</select>
+	<update id="kpayUpdateDoneFlag" parameterType="Map">
+		update kpay set KDONEFLAG=#{doneFlag},KDONEDATE=#{doneDate} where KEMAIL=#{email} and KPARTNERORDERID=#{mchtTrdNo}
 	</update>
 </mapper>

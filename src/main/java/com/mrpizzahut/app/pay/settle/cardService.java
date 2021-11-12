@@ -16,6 +16,7 @@ import com.mrpizzahut.app.api.requestTo;
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.hash.aes256;
 import com.mrpizzahut.app.hash.sha256;
+import com.mrpizzahut.app.pay.paymentService;
 import com.mrpizzahut.app.pay.productService;
 
 import Daos.payDao;
@@ -26,6 +27,7 @@ public class cardService {
 	private final String sucPayNum="0021";
 	private final int doneFlag=1;
 	private final int cancleFlag=1;
+	private final String buyKind="card";
 	 
 	@Autowired
 	private payDao payDao;
@@ -35,6 +37,8 @@ public class cardService {
 	private productService productService;
 	@Autowired
 	private buketService buketService;
+	@Autowired
+	private paymentService paymentService;
 	
 	@Transactional(rollbackFor = Exception.class)
     public JSONObject cardConfrim(settleDto settleDto) {
@@ -66,8 +70,8 @@ public class cardService {
             map.put("mchtTrdNo", settleDto.getMchtTrdNo());
             productService.minusProductCount(mchtTrdNo);
             productService.doneCoupon(card.get("CCOUPON").toString(),email,mchtTrdNo);
-            payDao.updateCardDonflag(map);
-            payDao.updateOrderDoneFlag(map);
+            paymentService.updateDonFlag(map, buyKind);
+            paymentService.updateOrderDoneFlag(email, mchtTrdNo);
             buketService.deleteBuket(email);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
@@ -75,6 +79,7 @@ public class cardService {
             return reseponse;
             //throw new RuntimeException();
         } catch (Exception e) {
+        	e.printStackTrace();
         	System.out.println("카드결제중 예외 발생 자동환불");
         	 Map<String, Object>map=new HashMap<String, Object>();
         	 map.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));

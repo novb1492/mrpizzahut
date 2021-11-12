@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mrpizzahut.app.utillService;
-import com.mrpizzahut.app.api.kakaopay;
+import com.mrpizzahut.app.api.kakaopayService;
 import com.mrpizzahut.app.pay.settle.settleService;
 
 import Daos.buketDao;
@@ -39,7 +39,7 @@ public class productService {
 	@Autowired
 	private settleService settleService;
 	@Autowired
-	private kakaopay kakaopay;
+	private kakaopayService kakaopay;
 	
 	public JSONObject getPayInfor(tryBuyDto tryBuyDto,HttpServletRequest request) {
 		System.out.println("getPayInfor");
@@ -277,6 +277,7 @@ public class productService {
 			payDao.orderUpdateCount(map2);
 			
 		}
+		System.out.println("재고 유효성 통과");
 	}
     public void doneCoupon(String coupon,String email,String mchtTrdNo) {
 		System.out.println("doneCoupon");
@@ -299,6 +300,7 @@ public class productService {
 				 couponDao.updateDone(map);
 			}
 		}
+		System.out.println("쿠폰유효성통과");
 	}
 	
 

@@ -1,5 +1,6 @@
 package com.mrpizzahut.app.api;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,10 @@ import com.mrpizzahut.app.pay.paymentService;
 import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
 
+import Daos.payDao;
+
 @Service
-public class kakaopay {
+public class kakaopayService {
 	
 	private final String readyUrl="https://kapi.kakao.com/v1/payment/ready";
     private final String cid="TC0ONETIME";
@@ -33,6 +36,7 @@ public class kakaopay {
     private paymentService paymentService;
     @Autowired
     private productService productService;
+
 
     @Transactional(rollbackFor = Exception.class)
     public JSONObject getKaKaoPayLink(tryBuyDto tryBuyDto,List<Map<String,Object>>maps,String email,HttpServletRequest request) {
@@ -58,45 +62,46 @@ public class kakaopay {
         maps.get(maps.size()-1).put("tid", response.get("tid"));
         paymentService.insertOrder(maps, mchtTrdNo, email, mchtTrdNo);
         paymentService.insertPayment(maps, mchtTrdNo, email,tryBuyDto.getKind());
-        request.getSession().setAttribute("mchtTrdNo", mchtTrdNo);
+        request.getSession().setAttribute(email+"mchtTrdNo", mchtTrdNo);
         return utillService.makeJson(true,(String)response.get("next_redirect_pc_url"));
     }
-   /* @Transactional(rollbackFor = Exception.class)
-    public void requestKakaopay(String pgToken) {
+   @Transactional(rollbackFor = Exception.class)
+    public void requestKakaopay(HttpServletRequest request) {
         System.out.println("requestKakaopay");
-  
-        String[][]itemArray=(String[][])httpSession.getAttribute("itemArray");
-        String[]other=(String[])httpSession.getAttribute("other");
-        String email=(String)httpSession.getAttribute("email");
-        String name=(String)httpSession.getAttribute("name");
-        int total_amount=(int)httpSession.getAttribute("totalPrice");
-        String kind=(String)httpSession.getAttribute("kind");
-        String tid=(String)httpSession.getAttribute("tid");
-        List<Integer>timesOrSize=(List<Integer>)httpSession.getAttribute("timesOrSize");
-        String partner_order_id=(String)httpSession.getAttribute("partner_order_id");
-        String tax_free_amount="0";
         try {
-            body.add("cid", cid);
-            body.add("tid",tid);
-            body.add("partner_order_id",partner_order_id);
-            body.add("partner_user_id", email);
-            body.add("quantity",httpSession.getAttribute("count"));
-            body.add("pg_token", pgToken);
-            headers.add("Authorization","KakaoAK "+adminKey);
-            JSONObject response=requestToKakao(approveUrl);
-            System.out.println(response+" 카카오페이 결제완료");
-            String usedKind=aboutPayEnums.kakaoPay.getString();
-            kakaopayService.kakaopayInsert(cid, partner_order_id, email, tax_free_amount, tid, total_amount);
-            if(kind.equals(aboutPayEnums.reservation.getString())){
-                System.out.println("예약 상품 결제");
-                resevationService.doReservation(email,name, tid, itemArray, other,timesOrSize,status,usedKind);
-            }else if(kind.equals(aboutPayEnums.product.getString())){
-                System.out.println("상품결제");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("insertPaymentForkakao error"+e.getMessage());
-            throw new failKakaoPay(e.getMessage(),cid,tid,total_amount);
-        }
-    } */
+        	 String email=utillService.getEmail(request);
+             String pgtoken=request.getParameter("pg_token");
+             String mchtTrdNo=request.getSession().getAttribute(email+"mchtTrdNo").toString();
+             Map<String, Object>kpay=paymentService.selectByMchtTrdNo(mchtTrdNo, "kpay", email);
+             System.out.println("카카오페이 조회 결과"+kpay.toString());
+             if(Integer.parseInt(kpay.get("KDONEFLAG").toString())!=0) {
+            	 utillService.makeJson(true, "구매가 완료된 거래입니다");
+             }
+             HttpHeaders headers=requestTo.getHeaders();
+             MultiValueMap<String, Object>body=requestTo.getMultiValueBody();
+             headers.add("Authorization","KakaoAK "+kakaoAdminKey);
+             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+             body.add("cid", cid);
+             body.add("tid",kpay.get("KTID"));
+             body.add("partner_order_id",kpay.get("KPARTNERORDERID"));
+             body.add("partner_user_id", email);
+             body.add("pg_token", pgtoken);
+             JSONObject jsonObject=requestTo.requestToApi(body,"https://kapi.kakao.com/v1/payment/approve", headers);
+             System.out.println("카카오페이 검증결과 "+jsonObject.toString());
+             LinkedHashMap<String, Object>amount=(LinkedHashMap<String, Object>) jsonObject.get("amount");
+             int dbPrice=Integer.parseInt(kpay.get("KPRICE").toString());
+             if(dbPrice!=Integer.parseInt(amount.get("total").toString())) {
+            	 throw utillService.makeRuntimeEX("금액이 불일치 합니다", "requestKakaopay");
+             }
+             productService.minusProductCount(mchtTrdNo);
+             productService.doneCoupon(kpay.get("KCOUPN").toString() , email, mchtTrdNo);
+             paymentService.updateDonFlag(email, mchtTrdNo, "kpay");
+             paymentService.updateOrderDoneFlag(email, mchtTrdNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("카카오페이 검증 실패");
+		}
+       
+
+    } 
 }

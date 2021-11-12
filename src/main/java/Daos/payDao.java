@@ -16,4 +16,6 @@ public interface payDao {
 	public int updateOrderCancleFlag(Map<String, Object>map);
 	public List<Map<String, Object>>OrderFindByMchtTrdNo(String mchtTrdNo);
 	public int orderUpdateCount(Map<String, Object>map);
+	public Map<String, Object>kpayFindByyMchtTrdNo(Map<String, Object>map);
+	public int kpayUpdateDoneFlag(Map<String, Object>map);
 }

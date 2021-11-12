@@ -21,12 +21,56 @@ import Daos.payDao;
 public class paymentService {
 
 	private final String cid="TC0ONETIME";
-	
+	private final int doneFlag=1;
 	
 	@Autowired
 	private payDao payDao;
 	
-
+	public Map<String, Object> selectByMchtTrdNo(String mchtTrdNo,String buykind,String email) {
+		System.out.println("selectByMchtTrdNo");
+		System.out.println("조회 거래번호 "+mchtTrdNo);
+		Map<String, Object>map=new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("mchtTrdNo", mchtTrdNo);
+		if(buykind.equals("card")) {
+			System.out.println("카드조회");
+			return payDao.cardFindByMchtTrdNo(mchtTrdNo);
+		}else if(buykind.equals("vbank")) {
+			System.out.println("가상계좌 조회");
+			return null;
+		}else if(buykind.equals("kpay")) {
+			System.out.println("카카오페이 조회");
+			return payDao.kpayFindByyMchtTrdNo(map);
+		}else {
+			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
+		}
+	}
+	public void updateDonFlag(Map<String, Object>map,String buykind) {
+		System.out.println("updateDonFlag");
+		if(buykind.equals("card")) {
+			System.out.println("카드조회");
+			 payDao.updateCardDonflag(map);
+		}else if(buykind.equals("vbank")) {
+			System.out.println("가상계좌 조회");
+			 
+		}else if(buykind.equals("kpay")) {
+			System.out.println("카카오페이 조회");
+			 payDao.kpayUpdateDoneFlag(map);
+		}else {
+			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
+		}
+		System.out.println(buykind+"테이블 doneFlag완료");
+		
+	}
+	public void updateOrderDoneFlag(String email,String mchtTrdNo) {
+		System.out.println("updateOrderDoneFlag");
+		Map<String, Object>map=new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("mchtTrdNo", mchtTrdNo);
+		map.put("doneFlag", doneFlag);
+		map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+		payDao.updateOrderDoneFlag(map);
+	}
 	public void insertOrder(List<Map<String,Object>>maps,String mchtTrdNo,String email,String method) {
 		System.out.println("insertOrder");
 			int temp=0;
