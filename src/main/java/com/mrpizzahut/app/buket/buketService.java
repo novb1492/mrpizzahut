@@ -41,7 +41,7 @@ public class buketService {
         	Map<String, Object>product=buketDao.findByPizzaName(map);
         	System.out.println("결과 "+product.toString());
 			int countAndPrice=Integer.parseInt(product.get("PRICE").toString().replace(",", ""))*Integer.parseInt(map.get("CCOUNT").toString());
-			map.put("img", "http://cdn.mrpizza.co.kr/2011/uploadV1/product_new/2021630152735817.jpg");
+			map.put("img", product.get("IMG"));
 			map.put("price", countAndPrice);
 			totalPrice+=countAndPrice;
 		}

@@ -56,6 +56,12 @@ public class productService {
 		String keyword=request.getParameter("keyword");
 		List<Map<String, Object>>products=getProducts(keyword, page);
 		System.out.println("제품 조회"+products.toString());
+		int totalCount=Integer.parseInt(products.get(0).get("TOTALCOUNT").toString());
+		int totalPage=utillService.getTotalPage(totalCount, pageSize);
+		System.out.println("전체페이지 "+totalPage);
+		if(page>totalPage) {
+			throw utillService.makeRuntimeEX("마지막 페이지입니다", "getAllProducts");
+		}
 		model.addAttribute("products", products);
 	}
 	private List<Map<String, Object>> getProducts(String keyword,int page) {
