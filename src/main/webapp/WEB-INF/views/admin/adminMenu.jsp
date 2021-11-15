@@ -24,13 +24,11 @@
 <br>
 메뉴 사이즈 
 <br>
-대문자로 , 로 나누어서 적어주세요 EX=(R,S,L,M)
+대문자로 적어주세요
 <br>
 <input type="text" name="size" class="form-control menuInput mt-2" placeholder="사용가능 사이즈를 적어주세요">
 <br>
 메뉴 엣지
-<br>
-한글로 ,로 나누어서 적어주세요 ex=(오리진,고구마)
 <br>
 <input type="text" name="edge" class="form-control menuInput mt-2" placeholder="사용가능 엣지를 적어주세요">
 메뉴 내용 
@@ -50,29 +48,15 @@
 <br>
 <input type="number" min="1" name="count" class="form-control menuInput mt-2" placeholder="일 최대 판매량을 입력해주세요">
 <br>
-<input type="button"  class="form-control menuInput mt-2" value="메뉴저장" onclick="insertMenu('minsert')">
+<input type="button"  class="form-control menuInput mt-2" value="메뉴저장" onclick="insert('minsert')">
 </form>
 </div>
 <script type="text/javascript">
 let editor;
 var flag=true;
-/*function insert() {
-	flag=false;
-	 let data=JSON.stringify({
-		 "text":editor.getData(),
-		 "title":getnameValue('title'),
-		 "stitle":getnameValue('ititle'),
-		 "size":getnameValue('size'),
-		 "edge":getnameValue('edge'),
-		 "img":getnameValue('productImg'),
-		 "price":getnameValue('price')
-	});
-	var result=requestToFormPost('/app/admin/insert',data);
-	alert(result.message);
-	if(result.flag){
-		location.reload();
-	}
-}*/
+function insert() {
+	insertMenu('minsert',editor.getData());
+}
 class MyUploadAdapter {
     constructor(props) {
         // CKEditor 5's FileLoader instance.

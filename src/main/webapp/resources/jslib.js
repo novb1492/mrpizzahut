@@ -1,8 +1,9 @@
 var result;
-function insertMenu(formId){
+function insertMenu(formId,text){
 	var myForm = document.getElementById(formId);
-	console.log(formId);
+	alert(text);
 	let formdata=new FormData(myForm);
+	formdata.append("text",text);
 	var result=requestToFormPost('/app/admin/menu/insert',formdata);
 	alert(result.message);
 }
