@@ -94,9 +94,6 @@ public class productService {
 	private JSONObject insertMenu(MultipartHttpServletRequest request) {
 		System.out.println("insertMenu");
 		JSONObject imgName=fileService.uploadImg(request);
-		if(!(boolean)imgName.get("uploaded")) {
-			return utillService.makeJson(false, "이미지 업로드에 실패했습니다");
-		}
 		String img=imgName.get("url").toString();
 		System.out.println("사진 업로드 경로"+img);
 		String title=request.getParameter("title");

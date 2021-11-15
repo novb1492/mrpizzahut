@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.mrpizzahut.app.utillService;
 
 @Service
 public class awsService {
@@ -23,15 +24,20 @@ public class awsService {
     
     public JSONObject  uploadAws(MultipartFile multipartFile,String bucketName) {
         System.out.println("uploadAws");
-        File file=convert(multipartFile);
-        String saveName=file.getName();
-        amazonS3.putObject(bucketName, saveName, file);
-        file.delete();
-        System.out.println("파일업로드 완료");
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("uploaded",true ); //ckeditor5
-        jsonObject.put("url",awsS3Url+saveName);
-        return jsonObject;
+        try {
+        	   File file=convert(multipartFile);
+               String saveName=file.getName();
+               amazonS3.putObject(bucketName, saveName, file);
+               file.delete();
+               System.out.println("파일업로드 완료");
+               JSONObject jsonObject=new JSONObject();
+               jsonObject.put("uploaded",true ); //ckeditor5
+               jsonObject.put("url",awsS3Url+saveName);
+               return jsonObject;
+		} catch (Exception e) {
+			throw utillService.makeRuntimeEX("이미지 업로드에 실패했습니다", "uploadAws");
+		}
+     
     }
     private File convert(MultipartFile multipartFile) {
         System.out.println("convert");

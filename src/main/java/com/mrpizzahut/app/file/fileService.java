@@ -26,6 +26,14 @@ public class fileService {
 		multipartFiles = request.getFiles("upload");
 		System.out.println(multipartFiles.toString());
 		System.out.println(multipartFiles.size());
+		MultipartFile multipartFile=multipartFiles.get(0);
+		if(multipartFile.isEmpty()) {
+			System.out.println("이미지가 없음");
+			JSONObject jsonObject=new JSONObject();
+			jsonObject.put("uploaded", false);
+			jsonObject.put("url", "empthy");
+			return jsonObject; 
+		}
 		return awsService.uploadAws(multipartFiles.get(0), buketName);
 	}
 
