@@ -37,6 +37,8 @@ public class restController {
 	private com.mrpizzahut.app.api.kakao.kakaoService kakaoService;
 	@Autowired
 	private adminService adminService;
+	@Autowired
+	private fileService fileService;
 	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
@@ -72,6 +74,11 @@ public class restController {
 			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
 		}
 		adminService.insertMenu(request);
+	}
+	@RequestMapping(value = "/img",method = RequestMethod.POST)
+	public JSONObject uploadImg(MultipartHttpServletRequest request,HttpServletResponse response) {
+		System.out.println("uploadImg");
+		return fileService.uploadImg(request);
 	}
 	
 	
