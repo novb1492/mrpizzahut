@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.buket.deleteCartDto;
+import com.mrpizzahut.app.file.fileService;
 import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
 import com.mrpizzahut.app.pay.settle.settleService;
@@ -32,6 +34,8 @@ public class restController {
 	private settleService settleService;
 	@Autowired
 	private com.mrpizzahut.app.api.kakao.kakaoService kakaoService;
+	@Autowired
+	private fileService fileService;
 	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
@@ -61,9 +65,10 @@ public class restController {
 		kakaoService.processCallback(request,response);
 	}
 	@RequestMapping(value = "/admin/menu/**",method = RequestMethod.POST)
-	public void tryInsertMenu(@RequestParam("productImg")MultipartFile multipartFile,HttpServletRequest request,HttpServletResponse response) {
+	public void tryInsertMenu(MultipartHttpServletRequest request,HttpServletResponse response) {
 		System.out.println("tryInsertMenu");
-		System.out.println(multipartFile.getOriginalFilename());
+	
+		fileService.uploadImg(request);
 	}
 	
 	

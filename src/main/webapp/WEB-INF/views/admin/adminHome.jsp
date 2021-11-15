@@ -2,12 +2,9 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
 <body>
 <%@ include file="../common/adminHeader.jsp" %>
   <%@ include file="../common/adminSide.jsp" %>
+
 </body>
 </html>

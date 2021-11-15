@@ -38,7 +38,7 @@
 <textarea style="wnameth: 650px; height: 300px" id="editor"></textarea>
 메뉴 이미지
 <br>
-<input type="file" name="productImg" multiple>
+<input type="file" name="upload" multiple>
 <br>
 메뉴가격
 <br>
