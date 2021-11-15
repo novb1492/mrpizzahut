@@ -62,6 +62,8 @@ public class productService {
 		if(page>totalPage) {
 			throw utillService.makeRuntimeEX("마지막 페이지입니다", "getAllProducts");
 		}
+		model.addAttribute("page", page);
+		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("products", products);
 	}
 	private List<Map<String, Object>> getProducts(String keyword,int page) {

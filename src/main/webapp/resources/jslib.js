@@ -1,4 +1,11 @@
 var result;
+
+function  changePage(num){
+            var keyword=getParam('keyword');
+            var page=getParam('page');
+            page=(page*1);
+            location.href="/app/admin/menu?scope=메뉴수정삭제&page="+(page+num)+"&keyword="+keyword;
+}
 function insertMenu(formId,text){
 	var myForm = document.getElementById(formId);
 	let formdata=new FormData(myForm);
