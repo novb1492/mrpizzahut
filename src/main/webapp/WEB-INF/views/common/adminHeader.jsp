@@ -10,6 +10,7 @@
 <style type="text/css">
 .side{position: absolute;width: 150px;height: 100%;}
 .contents{margin-left: 300px}
+.menuInput{width:300px;}
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="<c:url value="/resources/jslib.js" />"></script>
