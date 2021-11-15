@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.mrpizzahut.app.admin.menu.adminService;
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.buket.deleteCartDto;
 import com.mrpizzahut.app.file.fileService;
@@ -35,7 +36,7 @@ public class restController {
 	@Autowired
 	private com.mrpizzahut.app.api.kakao.kakaoService kakaoService;
 	@Autowired
-	private fileService fileService;
+	private adminService adminService;
 	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
@@ -67,8 +68,10 @@ public class restController {
 	@RequestMapping(value = "/admin/menu/**",method = RequestMethod.POST)
 	public void tryInsertMenu(MultipartHttpServletRequest request,HttpServletResponse response) {
 		System.out.println("tryInsertMenu");
-	
-		fileService.uploadImg(request);
+		if(!utillService.checkRole(request)) {
+			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
+		}
+		adminService.insertMenu(request);
 	}
 	
 	

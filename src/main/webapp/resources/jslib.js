@@ -3,9 +3,11 @@ function insertMenu(formId){
 	var myForm = document.getElementById(formId);
 	console.log(formId);
 	let formdata=new FormData(myForm);
-	requestToFormPost('/app/admin/menu/insert',formdata);
+	var result=requestToFormPost('/app/admin/menu/insert',formdata);
+	alert(result.message);
 }
 function requestToFormPost(url,data){
+	var result;
 	 $.ajax({
             type : 'POST',
             url : url,
@@ -14,11 +16,12 @@ function requestToFormPost(url,data){
             enctype: 'multipart/form-data',
 			processData: false,	
 			contentType: false,
-			//async: false,
-            success : function(json){
-                alert(json);
+			async: false,
+            success : function(response){
+                result=response;
             }
         });
+        return result;
 }
 function requestOrder(){
 	var carr=document.getElementsByClassName('coupon');
