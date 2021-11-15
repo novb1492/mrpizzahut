@@ -50,6 +50,14 @@ public class productService {
 	@Autowired
 	private productDao productDao;
 	
+	public void getByMnum(HttpServletRequest request,Model model) {
+		System.out.println("getByMnum");
+		int mnum=Integer.parseInt(request.getParameter("mnum"));
+		Map<String, Object>product=productDao.findByMnum(mnum);
+		System.out.println("조회한 제품 정보 "+product);
+		model.addAttribute("product", product);
+	}
+	
 	public void getAllProducts(HttpServletRequest request,Model model) {
 		System.out.println("getAllProducts");
 		int page=Integer.parseInt(request.getParameter("page"));

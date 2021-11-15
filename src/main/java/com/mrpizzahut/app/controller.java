@@ -94,10 +94,14 @@ public class controller {
 		String scope=request.getParameter("scope");
 		if(scope.equals("메뉴등록")) {
 			return "/admin/adminMenu";
-		}else {
+		}else if(scope.equals("메뉴수정삭제")) {
 			productService.getAllProducts(request, model);
 			return "/admin/adminMenuUpdate";
+		}else {
+			productService.getByMnum(request, model);
+			return "/admin/adminMenuShow";
 		}
 	}
+	
 
 }
