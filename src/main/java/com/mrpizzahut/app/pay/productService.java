@@ -73,7 +73,9 @@ public class productService {
 			return productDao.findAll(utillService.getStart(page, pageSize));
 		}else {
 			System.out.println("검색요청");
-			return null;
+			Map<String, Object>search=utillService.getStart(page, pageSize);
+			search.put("keyword", keyword);
+			return productDao.findAllByKey(search);
 		}
 	}
 	public JSONObject insertMenu(MultipartHttpServletRequest request) {

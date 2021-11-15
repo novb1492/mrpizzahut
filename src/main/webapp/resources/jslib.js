@@ -1,5 +1,8 @@
 var result;
-
+function doSearch(){
+	var keyword=getIdValue('searchInput');
+	location.href="/app/admin/menu?scope=메뉴수정삭제&page=1&keyword="+keyword;
+}
 function  changePage(num){
             var keyword=getParam('keyword');
             var page=getParam('page');

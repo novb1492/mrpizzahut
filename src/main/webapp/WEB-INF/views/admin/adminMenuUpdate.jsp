@@ -30,7 +30,7 @@
  		</ul>
  		  <div id="pageArea">
             <input type="text" id="searchInput"   placeholder="상품 이름을 적어주세요">
-            <input type="button" id="searchButton" onclick="doSearch" class="btn btn-outline-primary btn-sm" style="margin-left:10px" value="검색">
+            <input type="button" id="searchButton" onclick="doSearch()" class="btn btn-outline-primary btn-sm" style="margin-left:10px" value="검색">
             <br>
             <div style="margin-top:10px">
             <%
