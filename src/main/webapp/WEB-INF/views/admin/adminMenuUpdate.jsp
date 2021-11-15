@@ -33,9 +33,29 @@
             <input type="button" id="searchButton" onclick="doSearch" class="btn btn-outline-primary btn-sm" style="margin-left:10px" value="검색">
             <br>
             <div style="margin-top:10px">
-             <input type="button" id="beforeButton" onclick="changePage(-1)" class="btn btn-outline-primary btn-sm" value="이전">
-           		<span class="showPage"><%=nowPage %></span>/ <span class="showPage"><%=totalPage %></span>
-           		  <input type="button" id="nextButton" onclick="changePage(1)" class="btn btn-outline-primary btn-sm" value="다음">
+            <%
+            	if(nowPage<=1){
+            		%>
+            		 <input type="button" id="beforeButton"  class="btn btn-outline-primary btn-sm" value="이전" disabled="disabled">
+            		
+            	<%}else{
+            		%>
+            		 <input type="button" id="beforeButton" onclick="changePage(-1)" class="btn btn-outline-primary btn-sm" value="이전">
+            	<%}
+            %>
+            <span class="showPage"><%=nowPage %></span>/ <span class="showPage"><%=totalPage %></span>
+           <% if(nowPage<totalPage){
+            	%>
+            	 <input type="button" id="nextButton" onclick="changePage(1)"  class="btn btn-outline-primary btn-sm" value="다음">
+            
+            <%}else{
+            	%>
+            	<input type="button" id="nextButton"   class="btn btn-outline-primary btn-sm" value="다음" disabled="disabled">
+            <%}
+            
+            %>
+           		
+           		 
             </div>
         </div>
  </div>
