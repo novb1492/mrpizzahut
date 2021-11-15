@@ -72,13 +72,14 @@ public class restController {
 		}
 		return productService.processMenu(request);
 	}
-	@RequestMapping(value = "/admin/menu/**",method = RequestMethod.PUT)
-	public JSONObject tryUpdateMenu(MultipartHttpServletRequest request,HttpServletResponse response) {
-		System.out.println("tryUpdateMenu");
+	@RequestMapping(value = "/admin/menu/**",method = RequestMethod.DELETE)
+	public JSONObject tryDeleteMenu(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("tryDeleteMenu");
 		if(!utillService.checkRole(request)) {
 			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
 		}
-		return null;
+		return productService.deleteProduct(request);
+	
 	}
 	@RequestMapping(value = "/img",method = RequestMethod.POST)
 	public JSONObject uploadImg(MultipartHttpServletRequest request,HttpServletResponse response) {

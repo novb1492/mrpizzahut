@@ -50,6 +50,12 @@ public class productService {
 	@Autowired
 	private productDao productDao;
 	
+	public JSONObject deleteProduct(HttpServletRequest request) {
+		System.out.println("deleteProduct");
+		int mnum=Integer.parseInt(request.getParameter("mnum"));
+		productDao.deleteProduct(mnum);
+		return utillService.makeJson(true, "제품이 삭제 되었습니다");
+	}
 	public void getByMnum(HttpServletRequest request,Model model) {
 		System.out.println("getByMnum");
 		int mnum=Integer.parseInt(request.getParameter("mnum"));

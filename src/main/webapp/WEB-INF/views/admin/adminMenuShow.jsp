@@ -62,9 +62,6 @@
 <script type="text/javascript">
 let editor;
 var flag=true;
-function deleteMenu(mnum) {
-	alert(mnum);
-}
 function update(mnum) {
 	updateMenu('minsert',editor.getData(),mnum);
 }

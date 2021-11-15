@@ -20,4 +20,7 @@
 		</if>
 		,MSIZE=#{size},PRICE=#{price},EDGE=#{edge},INTRO=#{text},MCOUNT=#{count} where MNUM=#{mnum}
 	</update>
+	<delete id="deleteProduct" parameterType="_int">
+		delete from menu where MNUM=#{mnum}
+	</delete>
 </mapper>

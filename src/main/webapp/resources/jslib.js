@@ -1,5 +1,11 @@
 var result;
-
+function deleteMenu(mnum){
+	var result=requestDelteToServer('/app/admin/menu?mnum='+mnum);
+	alert(result.message);
+	if(result.flag){
+		location.href='/app/admin/menu?scope=메뉴수정삭제&page=1&keyword=';
+	}
+}
 function updateMenu(formId,text,mnum){
 	var myForm = document.getElementById(formId);
 	let formdata=new FormData(myForm);

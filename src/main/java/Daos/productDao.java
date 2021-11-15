@@ -9,4 +9,5 @@ public interface productDao {
 	public List<Map<String, Object>>findAllByKey(Map<String, Object>map);
 	public Map<String, Object>findByMnum(int mnum);
 	public int updateProduct(Map<String, Object>map);
+	public int deleteProduct(int mnum);
 }

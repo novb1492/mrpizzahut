@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.management.RuntimeErrorException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class paymentService {
 	@Autowired
 	private payDao payDao;
 	
+
 	public void updateOrderCancleFlag(Map<String, Object>map) {
 		System.out.println("updateOrderCancleFlag");
 		payDao.updateOrderCancleFlag(map);
