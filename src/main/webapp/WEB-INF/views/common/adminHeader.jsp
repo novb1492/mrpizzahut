@@ -11,8 +11,9 @@
 .side{position: absolute;width: 150px;height: 100%;}
 .contents{margin-left: 300px}
 .menuInput{width:300px;}
-ul{padding-left: 0px; list-style: none;float: left;text-align: center;}
-img{width: 150px;height: 100px;}
+ul{list-style: none; float:left;  }
+li{float: left;}
+img{width: 150px;height: 100px; }
 #pageArea{position: absolute; top: 90%; left: 20%;}
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

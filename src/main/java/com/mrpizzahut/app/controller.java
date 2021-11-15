@@ -80,6 +80,8 @@ public class controller {
 	@RequestMapping(value = "/admin/home",method =  RequestMethod.GET)
 	public String goAdminMain(HttpServletRequest request,HttpServletResponse servletResponse) {
 		System.out.println("goAdminMain");
+		request.getSession().setAttribute("email", "kim@kim.com");
+		request.getSession().setAttribute("role", "admin");
 		if(!utillService.checkRole(request)) {
 			return "/home";
 		}
