@@ -19,6 +19,16 @@ import com.mrpizzahut.app.pay.settle.settleDto;
 
 public class utillService {
 	
+	public static boolean checkRole(HttpServletRequest request) {
+		System.out.println("checkRole");
+		String role=(String)request.getSession().getAttribute("role");
+		System.out.println("이계정의 권한은 "+role);
+		if(role.equals("admin")) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static String makeUtf8(String param) {
 		System.out.println("makeUtf8");
 		try {

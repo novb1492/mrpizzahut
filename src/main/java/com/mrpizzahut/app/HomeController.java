@@ -33,7 +33,9 @@ public class HomeController {
 	public String home(Locale locale, Model model,HttpServletRequest request) {
 		System.out.println("home");
 		request.getSession().setAttribute("email", "kim@kim.com");
+		request.getSession().setAttribute("role", "admin");
 		System.out.println(request.getSession().getAttribute("email"));
+		
 		return "home";
 	}
 

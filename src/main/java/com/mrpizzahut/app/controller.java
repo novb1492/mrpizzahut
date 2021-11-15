@@ -74,4 +74,20 @@ public class controller {
 
 		return"/orderPages/donePay";
 	}
+	@RequestMapping(value = "/admin/home",method =  RequestMethod.GET)
+	public String goAdminMain(HttpServletRequest request,HttpServletResponse servletResponse) {
+		System.out.println("goAdminMain");
+		if(!utillService.checkRole(request)) {
+			return "/home";
+		}
+		return "/admin/adminHome";
+	}
+	@RequestMapping(value ="/admin/menu",method = RequestMethod.GET)
+	public String goAdminMenu(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("goAdminMenu");
+		if(!utillService.checkRole(request)) {
+			return "/home";
+		}
+		return "/admin/menu";
+	}
 }
