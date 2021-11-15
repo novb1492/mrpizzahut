@@ -41,6 +41,8 @@
 <textarea style="wnameth: 650px; height: 300px" id="editor"></textarea>
 메뉴 이미지
 <br>
+공백으로 제출시 현재 사진으로 유지 됩니다
+<br>
 <input type="file" name="upload" multiple>
 <br>
 메뉴가격
@@ -53,7 +55,7 @@
 <br>
 <input type="number" min="1" name="count" class="form-control menuInput mt-2" placeholder="일 최대 판매량을 입력해주세요" value="<%=product.get("MCOUNT")%>">
 <br>
-<input type="button"  class="form-control menuInput mt-2" value="메뉴저장" onclick="insert('minsert')">
+<input type="button"  class="form-control menuInput mt-2" value="메뉴수정" onclick="update('minsert')">
 </form>
 </div>
 <script type="text/javascript">
@@ -154,6 +156,7 @@ ClassicEditor
 	.then( newEditor  => {
         console.log( 'Editor was initialized', newEditor  );
         editor = newEditor ;
+        editor.setData('<%=product.get("INTRO")%>');
     } )
 	.catch( error => {
 	   
