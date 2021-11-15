@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mrpizzahut.app.api.kakaoService;
 import com.mrpizzahut.app.buket.buketService;
@@ -59,6 +61,11 @@ public class restController {
 	public void kakaoCallback(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("kakaoCallback");
 		kakaoService.processCallback(request,response);
+	}
+	@RequestMapping(value = "/admin/menu/**",method = RequestMethod.POST)
+	public void tryInsertMenu(@RequestParam("productImg")MultipartFile multipartFile,HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("tryInsertMenu");
+		System.out.println(multipartFile.getOriginalFilename());
 	}
 	
 	

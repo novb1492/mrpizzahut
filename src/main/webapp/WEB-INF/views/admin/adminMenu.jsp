@@ -9,64 +9,66 @@
 </head>
 <body>
 <div class="contents">
+<form  id="minsert" name="minsert">
 메뉴제목:
 <br>
-<input type="text" id="title" class="form-control menuInput mt-2" placeholder="메뉴제목을 적어주세요">
+<input type="text" name="title" class="form-control menuInput mt-2" placeholder="메뉴제목을 적어주세요">
 <br>
 메뉴 STITLE:
 <br>
- <input type="text" id="stitle" class="form-control menuInput mt-2" placeholder="메뉴stitle을 적어주세요">
+ <input type="text" name="stitle" class="form-control menuInput mt-2" placeholder="메뉴stitle을 적어주세요">
 <br>
 메뉴 ITITLE: 
 <br>
-<input type="text" id="ititle" class="form-control menuInput mt-2" placeholder="메뉴ititle을 적어주세요">
+<input type="text" name="ititle" class="form-control menuInput mt-2" placeholder="메뉴ititle을 적어주세요">
 <br>
 메뉴 사이즈 
 <br>
 대문자로 , 로 나누어서 적어주세요 EX=(R,S,L,M)
 <br>
-<input type="text" id="size" class="form-control menuInput mt-2" placeholder="사용가능 사이즈를 적어주세요">
+<input type="text" name="size" class="form-control menuInput mt-2" placeholder="사용가능 사이즈를 적어주세요">
 <br>
 메뉴 엣지
 <br>
 한글로 ,로 나누어서 적어주세요 ex=(오리진,고구마)
 <br>
-<input type="text" id="edge" class="form-control menuInput mt-2" placeholder="사용가능 엣지를 적어주세요">
+<input type="text" name="edge" class="form-control menuInput mt-2" placeholder="사용가능 엣지를 적어주세요">
 메뉴 내용 
 <br>
-<textarea style="width: 650px; height: 300px" id="editor"></textarea>
+<textarea style="wnameth: 650px; height: 300px" id="editor"></textarea>
 메뉴 이미지
 <br>
-<input type="file" id="productImg" multiple>
+<input type="file" name="productImg" multiple>
 <br>
 메뉴가격
 <br>
 구분 표시를 ,로 해주세요 옳은 예 1,000 틀린예 1000
 <br>
-<input type="text" id="price" class="form-control menuInput mt-2" placeholder="가격을 적어주세요">
+<input type="text" name="price" class="form-control menuInput mt-2" placeholder="가격을 적어주세요">
 <br>
-<input type="button"  class="form-control menuInput mt-2" value="메뉴저장" onclick="insert()">
+<input type="button"  class="form-control menuInput mt-2" value="메뉴저장" onclick="insertMenu('minsert')">
+</form>
 </div>
 <script type="text/javascript">
 let editor;
 var flag=true;
-function insert() {
+/*function insert() {
 	flag=false;
 	 let data=JSON.stringify({
 		 "text":editor.getData(),
-		 "title":getIdValue('title'),
-		 "stitle":getIdValue('ititle'),
-		 "size":getIdValue('size'),
-		 "edge":getIdValue('edge'),
-		 "img":getIdValue('productImg'),
-		 "price":getIdValue('price')
+		 "title":getnameValue('title'),
+		 "stitle":getnameValue('ititle'),
+		 "size":getnameValue('size'),
+		 "edge":getnameValue('edge'),
+		 "img":getnameValue('productImg'),
+		 "price":getnameValue('price')
 	});
-	var result=requestToServer('/app/admin/insert',data);
+	var result=requestToFormPost('/app/admin/insert',data);
 	alert(result.message);
 	if(result.flag){
 		location.reload();
 	}
-}
+}*/
 class MyUploadAdapter {
     constructor(props) {
         // CKEditor 5's FileLoader instance.

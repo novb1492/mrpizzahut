@@ -1,5 +1,25 @@
 var result;
-
+function insertMenu(formId){
+	var myForm = document.getElementById(formId);
+	console.log(formId);
+	let formdata=new FormData(myForm);
+	requestToFormPost('/app/admin/menu/insert',formdata);
+}
+function requestToFormPost(url,data){
+	 $.ajax({
+            type : 'POST',
+            url : url,
+            data : data,
+            dataType : 'json',
+            enctype: 'multipart/form-data',
+			processData: false,	
+			contentType: false,
+			//async: false,
+            success : function(json){
+                alert(json);
+            }
+        });
+}
 function requestOrder(){
 	var carr=document.getElementsByClassName('coupon');
 	var coupons='*';
