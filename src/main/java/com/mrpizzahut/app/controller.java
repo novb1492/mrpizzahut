@@ -88,6 +88,12 @@ public class controller {
 		if(!utillService.checkRole(request)) {
 			return "/home";
 		}
-		return "/admin/adminMenu";
+		String scope=request.getParameter("scope");
+		if(scope.equals("메뉴등록")) {
+			return "/admin/adminMenu";
+		}else {
+			return "/admin/adminMenuUpdate";
+		}
 	}
+
 }

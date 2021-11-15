@@ -60,7 +60,7 @@
           </ul>
         </div>
       </li>-->
-    <%}else if(uri.equals("/app/WEB-INF/views//admin/adminMenu.jsp")){
+    <%}else if(uri.equals("/app/WEB-INF/views//admin/adminMenu.jsp")||uri.equals("/app/WEB-INF/views//admin/adminMenuUpdate.jsp")){
     	%>
     	  <li class="mb-1">
            			<a href="/app/admin/menu?scope=메뉴등록">메뉴등록</a>
