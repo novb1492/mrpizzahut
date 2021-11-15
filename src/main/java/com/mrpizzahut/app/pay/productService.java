@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.mrpizzahut.app.utillService;
@@ -31,6 +32,7 @@ import Daos.productDao;
 public class productService {
 	 private final int fullProductMin=10;
 	 private final int doneFlag=1;
+	 private final int pageSize=10;
 
 
 	@Autowired
@@ -48,6 +50,24 @@ public class productService {
 	@Autowired
 	private productDao productDao;
 	
+	public void getAllProducts(HttpServletRequest request,Model model) {
+		System.out.println("getAllProducts");
+		int page=Integer.parseInt(request.getParameter("page"));
+		String keyword=request.getParameter("keyword");
+		List<Map<String, Object>>products=getProducts(keyword, page);
+		System.out.println("제품 조회"+products.toString());
+		model.addAttribute("products", products);
+	}
+	private List<Map<String, Object>> getProducts(String keyword,int page) {
+		System.out.println("getProducts");
+		if(utillService.checkNull(keyword)) {
+			System.out.println("키워드없는 요청");
+			return productDao.findAll(utillService.getStart(page, pageSize));
+		}else {
+			System.out.println("검색요청");
+			return null;
+		}
+	}
 	public JSONObject insertMenu(MultipartHttpServletRequest request) {
 		System.out.println("insertMenu");
 		JSONObject imgName=fileService.uploadImg(request);

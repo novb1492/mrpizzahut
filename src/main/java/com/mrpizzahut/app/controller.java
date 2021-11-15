@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mrpizzahut.app.buket.buketService;
+import com.mrpizzahut.app.pay.productService;
 
 
 
@@ -23,6 +24,8 @@ public class controller {
 
 	@Autowired
 	private buketService buketService;
+	@Autowired
+	private productService productService;
 
 	
 	
@@ -92,6 +95,7 @@ public class controller {
 		if(scope.equals("메뉴등록")) {
 			return "/admin/adminMenu";
 		}else {
+			productService.getAllProducts(request, model);
 			return "/admin/adminMenuUpdate";
 		}
 	}

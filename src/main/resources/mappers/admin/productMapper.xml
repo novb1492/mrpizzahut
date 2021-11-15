@@ -4,5 +4,10 @@
 	<insert id="insertProduct" parameterType="Map">
 		insert into menu values(#{ititle},#{stitle},#{title},#{img},#{size},#{price},#{edge},#{text},#{count},menu_sq.NEXTVAL)
 	</insert>
-
+	<select id="findAll" parameterType="Map" resultType="Map" >
+		select b.*,(select count(*) from menu)totalcount from(select ROW_NUMBER() OVER (ORDER BY MNUM desc)  num, a.* from menu a ) b where num between #{start} and #{end}
+	</select>
+	<select id="findAllByKey" parameterType="Map" resultType="Map" >
+		select b.*,(select count(*) from menu where MNAME like '%'||#{keyword}||'%')totalcount from(select ROW_NUMBER() OVER (ORDER BY MNUM desc)  num, a.* from menu a ) b where MNAME like '%'||#{keyword}||'%' and num between #{start} and #{end}
+	</select>
 </mapper>

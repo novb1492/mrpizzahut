@@ -19,6 +19,33 @@ import com.mrpizzahut.app.pay.settle.settleDto;
 
 public class utillService {
 	
+
+	 public static int getTotalPage(int totalCount,int pagesize) {
+		 System.out.println("getTotalpages");
+		 System.out.println("총 개수"+totalCount);
+	        int totalpage=0;
+	        totalpage=totalCount/pagesize;
+	        if(totalCount%pagesize>0){
+	            totalpage++;
+	        }
+	        System.out.println(totalpage+"전체페이지");
+	        if(totalpage==0){
+	            totalpage=1;
+	        }
+	        System.out.println(totalpage+" 전체 페이지");
+	        return totalpage;
+	}
+	    public static Map<String, Object> getStart(int nowPage,int pagesize) {
+	    	System.out.println("getPagingStartEnd");
+	    	int start=0;
+	    	Map<String, Object>map=new HashMap<>();
+	    	if(nowPage!=1) {
+	    		start=(nowPage-1)*pagesize+1;
+			}
+			map.put("start", start);
+			map.put("end", start+pagesize);
+			return map;
+		}
 	public static boolean checkRole(HttpServletRequest request) {
 		System.out.println("checkRole");
 		String role=(String)request.getSession().getAttribute("role");

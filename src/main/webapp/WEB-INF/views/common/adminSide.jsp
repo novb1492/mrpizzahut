@@ -66,7 +66,7 @@
            			<a href="/app/admin/menu?scope=메뉴등록">메뉴등록</a>
       	</li>
       <li class="mb-1">
-       <a href="/app/admin/menu?scope=메뉴수정삭제">메뉴수정/삭제</a>
+       <a href="/app/admin/menu?scope=메뉴수정삭제&page=1&keyword=">메뉴수정/삭제</a>
       </li>
       <li class="mb-1">
        <!--  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
