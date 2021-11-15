@@ -88,6 +88,6 @@ public class controller {
 		if(!utillService.checkRole(request)) {
 			return "/home";
 		}
-		return "/admin/menu";
+		return "/admin/adminMenu";
 	}
 }
