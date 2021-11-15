@@ -1,4 +1,4 @@
-package com.mrpizzahut.app.api;
+package com.mrpizzahut.app.api.kakao;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -38,7 +38,7 @@ public class kakaopayService {
     private final String realCancleUrl="https://kapi.kakao.com/v1/payment/cancel";
 
     @Autowired
-    private requestTo requestTo;
+    private com.mrpizzahut.app.api.requestTo requestTo;
     @Autowired
     private paymentService paymentService;
     @Autowired

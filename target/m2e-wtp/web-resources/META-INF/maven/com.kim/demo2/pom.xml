@@ -24,7 +24,11 @@
 
 </dependency>
 
-
+	<dependency>
+  <groupId>com.amazonaws</groupId>
+  <artifactId>aws-java-sdk-s3</artifactId>
+  <version>1.11.699</version>
+</dependency>
 
 <dependency>
 

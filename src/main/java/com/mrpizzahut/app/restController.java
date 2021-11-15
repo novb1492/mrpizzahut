@@ -2,7 +2,6 @@ package com.mrpizzahut.app;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mrpizzahut.app.api.kakaoService;
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.buket.deleteCartDto;
 import com.mrpizzahut.app.pay.productService;
@@ -33,7 +31,7 @@ public class restController {
 	@Autowired
 	private settleService settleService;
 	@Autowired
-	private kakaoService kakaoService;
+	private com.mrpizzahut.app.api.kakao.kakaoService kakaoService;
 	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)

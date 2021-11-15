@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mrpizzahut.app.utillService;
-import com.mrpizzahut.app.api.kakaopayService;
+import com.mrpizzahut.app.api.kakao.kakaopayService;
 import com.mrpizzahut.app.pay.settle.settleService;
 
 import Daos.buketDao;
