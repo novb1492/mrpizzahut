@@ -17,9 +17,10 @@
  		<%
  			for(Map<String,Object>product:products){
  				%>
- 				 <li class="itemArea"> 
+ 				 <li class="itemArea " style="margin-left:20px"> 
  				 <a href="/app/admin/menu?scope=detail&mnum=<%=product.get("MNUM")%>">
                   	<img alt="" src="<%=product.get("IMG") %>">
+                  	<br>
                     <span><%=product.get("MNAME") %></span>
                     <br>
            		</a>
