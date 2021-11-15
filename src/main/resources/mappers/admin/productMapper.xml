@@ -13,4 +13,7 @@
 	<select id="findByMnum" parameterType="_int" resultType="Map">
 		select * from menu where MNUM=#{mnum}
 	</select>
+	<update id="updateProduct" parameterType="Map">
+		update menu set ITITLE=#{ititle},STITLE=#{stitle},MNAME=#{title},IMG=#{img},MSIZE=#{size},PRICE=#{price},EDGE=#{edge},INTRO=#{text},MCOUNT=#{count} where MNUM=#{mnum}
+	</update>
 </mapper>

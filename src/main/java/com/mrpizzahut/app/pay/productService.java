@@ -86,7 +86,12 @@ public class productService {
 			return productDao.findAllByKey(search);
 		}
 	}
-	public JSONObject insertMenu(MultipartHttpServletRequest request) {
+	public JSONObject processMenu(MultipartHttpServletRequest request) {
+		System.out.println("processMenu");
+		return insertMenu(request);
+		
+	}
+	private JSONObject insertMenu(MultipartHttpServletRequest request) {
 		System.out.println("insertMenu");
 		JSONObject imgName=fileService.uploadImg(request);
 		if(!(boolean)imgName.get("uploaded")) {
@@ -117,8 +122,21 @@ public class productService {
 				product.put("edge", edge);
 				product.put("count", count);
 				System.out.println("저장 예정 제품정보"+product.toString());
-				productDao.insertProduct(product);
-		return utillService.makeJson(true, "제품등록성공");
+	    String scope=request.getParameter("scope");
+	    String message="제품등록 성공";
+	    if(scope.equals("insert")) {
+	    	System.out.println("메뉴등록 시도");
+	    	productDao.insertProduct(product);
+	    }else if(scope.equals("update")) {
+	    	System.out.println("메뉴수정 시도");
+	    	product.put("mnum", request.getParameter("mnum"));
+	    	productDao.updateProduct(product);
+	    	message="제품 수정 성공";
+	    }else {
+	    	return utillService.makeJson(false, "지원하지 않는 기능입니다");
+	    }
+				
+		return utillService.makeJson(true, message);
 	}
 	
 	private void confrimPriceCountText(String price,int count,String text) {

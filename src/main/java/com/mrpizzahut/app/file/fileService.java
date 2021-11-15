@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.aws.awsService;
 
 @Service
@@ -24,6 +25,8 @@ public class fileService {
 		List<MultipartFile> multipartFiles=new ArrayList<MultipartFile>();
 		multipartFiles = request.getFiles("upload");
 		System.out.println(multipartFiles.toString());
+		System.out.println(multipartFiles.size());
 		return awsService.uploadAws(multipartFiles.get(0), buketName);
 	}
+
 }

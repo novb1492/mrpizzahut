@@ -1,4 +1,16 @@
 var result;
+
+function updateMenu(formId,text,mnum){
+	var myForm = document.getElementById(formId);
+	let formdata=new FormData(myForm);
+	formdata.append("text",text);
+	formdata.append("mnum",mnum);
+	var result=requestToFormPost('/app/admin/menu?scope=update',formdata);
+	alert(result.message);
+	if(result.flag){
+		location.reload();
+	}
+}
 function doSearch(){
 	var keyword=getIdValue('searchInput');
 	location.href="/app/admin/menu?scope=메뉴수정삭제&page=1&keyword="+keyword;
@@ -13,12 +25,13 @@ function insertMenu(formId,text){
 	var myForm = document.getElementById(formId);
 	let formdata=new FormData(myForm);
 	formdata.append("text",text);
-	var result=requestToFormPost('/app/admin/menu/insert',formdata);
+	var result=requestToFormPost('/app/admin/menu?scope=insert',formdata);
 	alert(result.message);
 	if(result.flag){
 		location.reload();
 	}
 }
+
 function requestToFormPost(url,data){
 	var result;
 	 $.ajax({

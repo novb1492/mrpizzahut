@@ -55,14 +55,18 @@
 <br>
 <input type="number" min="1" name="count" class="form-control menuInput mt-2" placeholder="일 최대 판매량을 입력해주세요" value="<%=product.get("MCOUNT")%>">
 <br>
-<input type="button"  class="form-control menuInput mt-2" value="메뉴수정" onclick="update('minsert')">
+<input type="button"  class="form-control menuInput mt-2" value="메뉴수정" onclick="update(<%=product.get("MNUM")%>)">
+<input type="button"  class="form-control menuInput mt-2" value="메뉴삭제" onclick="deleteMenu(<%=product.get("MNUM")%>)">
 </form>
 </div>
 <script type="text/javascript">
 let editor;
 var flag=true;
-function insert() {
-	insertMenu('minsert',editor.getData());
+function deleteMenu(mnum) {
+	alert(mnum);
+}
+function update(mnum) {
+	updateMenu('minsert',editor.getData(),mnum);
 }
 class MyUploadAdapter {
     constructor(props) {

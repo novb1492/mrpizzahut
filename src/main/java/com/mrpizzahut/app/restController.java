@@ -70,11 +70,22 @@ public class restController {
 		if(!utillService.checkRole(request)) {
 			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
 		}
-		return productService.insertMenu(request);
+		return productService.processMenu(request);
+	}
+	@RequestMapping(value = "/admin/menu/**",method = RequestMethod.PUT)
+	public JSONObject tryUpdateMenu(MultipartHttpServletRequest request,HttpServletResponse response) {
+		System.out.println("tryUpdateMenu");
+		if(!utillService.checkRole(request)) {
+			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
+		}
+		return null;
 	}
 	@RequestMapping(value = "/img",method = RequestMethod.POST)
 	public JSONObject uploadImg(MultipartHttpServletRequest request,HttpServletResponse response) {
 		System.out.println("uploadImg");
+		if(utillService.checkNull(request.getSession().getAttribute("email").toString())) {
+			throw utillService.makeRuntimeEX("로그인 후 이용해주세요", "uploadImg");
+		}
 		return fileService.uploadImg(request);
 	}
 	
