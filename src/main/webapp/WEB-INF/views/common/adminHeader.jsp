@@ -11,6 +11,8 @@
 .side{position: absolute;width: 150px;height: 100%;}
 .contents{margin-left: 300px}
 .menuInput{width:300px;}
+ul{padding-left: 0px; list-style: none;float: left;text-align: center;}
+img{width: 150px;height: 100px;}
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="<c:url value="/resources/jslib.js" />"></script>

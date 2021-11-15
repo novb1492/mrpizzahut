@@ -83,7 +83,7 @@ public class controller {
 		return "/admin/adminHome";
 	}
 	@RequestMapping(value ="/admin/menu",method = RequestMethod.GET)
-	public String goAdminMenu(HttpServletRequest request,HttpServletResponse response) {
+	public String goAdminMenu(HttpServletRequest request,HttpServletResponse response,Model model) {
 		System.out.println("goAdminMenu");
 		if(!utillService.checkRole(request)) {
 			return "/home";

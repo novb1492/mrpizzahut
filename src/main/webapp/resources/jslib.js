@@ -1,11 +1,13 @@
 var result;
 function insertMenu(formId,text){
 	var myForm = document.getElementById(formId);
-	alert(text);
 	let formdata=new FormData(myForm);
 	formdata.append("text",text);
 	var result=requestToFormPost('/app/admin/menu/insert',formdata);
 	alert(result.message);
+	if(result.flag){
+		location.reload();
+	}
 }
 function requestToFormPost(url,data){
 	var result;

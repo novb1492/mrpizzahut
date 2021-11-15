@@ -5,6 +5,12 @@
 <body>
 <%@ include file="../common/adminHeader.jsp" %>
   <%@ include file="../common/adminSide.jsp" %>
-  
+<div class="contents">
+ 		<ul>
+ 			<li>
+				sds 			
+ 			</li>
+ 		</ul>
+ </div>
 </body>
 </html>
