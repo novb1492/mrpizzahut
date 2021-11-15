@@ -3,7 +3,6 @@ package com.mrpizzahut.app.admin.menu;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,31 +31,38 @@ public class adminService {
 		String edge=request.getParameter("edge");
 		String text=request.getParameter("text");
 		String price=request.getParameter("price");
+		int count=Integer.parseInt(request.getParameter("count"));
 		String[] sizes=confrimSize(size);
 		String[] edges=confrimEdge(edge);
-		confrimPrice(price);
+		confrimPrice(price,count);
 		Map<String, Object>product=new HashMap<String, Object>();
 		for(String s:sizes) {
-			product.put("productName", title);
-			product.put("stitle", stitle);
-			product.put("ititle", ititle);
-			product.put("text", text);
-			product.put("price", price);
-			product.put("size", s);
-			System.out.println(product.toString());
+			for(String e:edges) {
+				product.put("productName", title);
+				product.put("stitle", stitle);
+				product.put("ititle", ititle);
+				product.put("text", text);
+				product.put("price", price);
+				product.put("size", s);
+				product.put("edge", e);
+				product.put("count", count);
+				System.out.println("저장 예정 제품정보"+product.toString());
+			}
 		}
 		return null;
 	}
-	private void confrimPrice(String price) {
+	private void confrimPrice(String price,int count) {
 		System.out.println("confrimPrice");
 		if(utillService.checkNull(price)) {
 			throw utillService.makeRuntimeEX("금액이 빈칸입니다", "confrimPrice");
 		}else if(price.length()<=3) {
 			System.out.println("천원 이하 제품");
 			return;
-		} 
-		if(!price.contains(",")) {
+		}else if(!price.contains(",")) {
 			throw utillService.makeRuntimeEX("금액 구분문자는 ,입니다 현재"+price, "confrimPrice");
+		}
+		if(count<=0) {
+			throw utillService.makeRuntimeEX("일일 판매최대 수량을 입력해주세요", "confrimPrice");
 		}
 		System.out.println("금액 유효성 검사 통과");
 	}

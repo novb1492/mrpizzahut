@@ -46,6 +46,10 @@
 <br>
 <input type="text" name="price" class="form-control menuInput mt-2" placeholder="가격을 적어주세요">
 <br>
+일 최대 판매량을 입력해주세요
+<br>
+<input type="number" min="1" name="count" class="form-control menuInput mt-2" placeholder="일 최대 판매량을 입력해주세요">
+<br>
 <input type="button"  class="form-control menuInput mt-2" value="메뉴저장" onclick="insertMenu('minsert')">
 </form>
 </div>
