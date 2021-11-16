@@ -12,7 +12,13 @@
 			</if>
 	</select>
 	<insert id="insert" parameterType="Map">
-		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null,#{size},#{edge})
+	<if test="size!=null">
+			insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null,#{size},#{edge})
+	</if>
+	<if test="size==null">
+					insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null,null,null)
+		
+	</if>
 	</insert>
 	<insert id="insertCard" parameterType="Map">
 		insert into card values(card_sq.NEXTVAL,0,0,#{email},null,#{mchtTrdNo},null,#{method},#{price},null,null,#{created},0,null,#{phone},#{couponNames})
@@ -43,7 +49,14 @@
 		select * from orders where OMCHTTRDNO=#{mchtTrdNo}
 	</select>
 	<update id="orderUpdateCount" parameterType="Map">
-		update menu set MCOUNT=#{count} where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
+		update menu set MCOUNT=#{count} where MNAME=#{CMENU}
+		<if test="CSIZE!=null">
+			and MSIZE=#{CSIZE}
+		</if>
+			<if test="CEDGE">
+			 and EDGE=#{CEDGE}
+		</if>
+
 	</update>
 	<select id="kpayFindByyMchtTrdNo" parameterType="String" resultType="Map">
 		select *from kpay where KPARTNERORDERID=#{mchtTrdNo}

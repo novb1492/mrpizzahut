@@ -98,14 +98,16 @@ public class paymentService {
 		System.out.println("insertOrder");
 			int temp=0;
 			int size=maps.size();
+			System.out.println(size);
 			for(Map<String, Object>map:maps) {
+				System.out.println(temp);
 				if(temp==size-1) {
 					break;
 				}
 				map.put("mchtTrdNo", mchtTrdNo);
 				map.put("email", email);
 				map.put("method", method);
-				
+				System.out.println(map.get("size"));
 				String counpon=(String)map.get("coupon");
 				System.out.println(counpon);
 				if(counpon==null) {
