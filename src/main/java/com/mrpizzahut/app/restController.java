@@ -20,6 +20,7 @@ import com.mrpizzahut.app.buket.deleteCartDto;
 import com.mrpizzahut.app.file.fileService;
 import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
+import com.mrpizzahut.app.pay.coupon.couponService;
 import com.mrpizzahut.app.pay.settle.settleService;
 
 @RestController
@@ -36,6 +37,8 @@ public class restController {
 	private com.mrpizzahut.app.api.kakao.kakaoService kakaoService;
 	@Autowired
 	private fileService fileService;
+	@Autowired
+	private couponService couponService;
 	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
@@ -68,7 +71,7 @@ public class restController {
 	public JSONObject tryInsertMenu(MultipartHttpServletRequest request,HttpServletResponse response) {
 		System.out.println("tryInsertMenu");
 		if(!utillService.checkRole(request)) {
-			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
+			return utillService.makeJson(false, "관리자 계정이아닙니다");
 		}
 		return productService.processMenu(request);
 	}
@@ -76,7 +79,7 @@ public class restController {
 	public JSONObject tryDeleteMenu(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("tryDeleteMenu");
 		if(!utillService.checkRole(request)) {
-			throw utillService.makeRuntimeEX("관리자 계정이아닙니다", "tryInsertMenu");
+			return utillService.makeJson(false, "관리자 계정이아닙니다");
 		}
 		return productService.deleteProduct(request);
 	
@@ -88,6 +91,14 @@ public class restController {
 			throw utillService.makeRuntimeEX("로그인 후 이용해주세요", "uploadImg");
 		}
 		return fileService.uploadImg(request);
+	}
+	@RequestMapping(value = "/admin/coupon/**",method = RequestMethod.POST)
+	public void tryInsertCoupon(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("tryInsertCoupon");
+		if(!utillService.checkRole(request)) {
+			//return utillService.makeJson(false, "관리자 계정이아닙니다");
+		}
+		couponService.inserCoupon(request, response);
 	}
 	
 	
