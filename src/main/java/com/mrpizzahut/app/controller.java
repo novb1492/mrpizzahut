@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mrpizzahut.app.buket.buketService;
+import com.mrpizzahut.app.order.orderService;
 import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.coupon.couponService;
 
@@ -29,6 +30,8 @@ public class controller {
 	private productService productService;
 	@Autowired
 	private couponService couponService;
+	@Autowired
+	private orderService orderService;
 
 	
 	
@@ -123,6 +126,12 @@ public class controller {
 			couponService.getCoupon(request, model);
 			return "/admin/showCoupon";
 		}
+	}
+	@RequestMapping(value = "/admin/order",method = RequestMethod.GET)
+	public String showOrders(HttpServletRequest request,HttpServletResponse response,Model model) {
+		System.out.println("showOrders");
+		orderService.getAllOrders(request, model);
+		return "/admin/showOrders";
 	}
 	
 
