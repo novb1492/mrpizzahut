@@ -26,8 +26,13 @@ public class orderService {
 	public void getAllPrice(HttpServletRequest request,Model model) {
 		System.out.println("getAllPrice");
 		String year=request.getParameter("year");
+		System.out.println("조회연도 "+year);
 		int flag=1;
 		String productName=request.getParameter("productName");
+		System.out.println("조회 제품 "+productName);
+		if(utillService.checkNull(productName)) {
+			productName=null;
+		}
 		Map<String,Integer>byDayPrice=new LinkedHashMap<String, Integer>();
 		Map<Integer, Integer>byMonthPrice=new LinkedHashMap<Integer, Integer>();
 		int yp=0;
