@@ -25,8 +25,9 @@ public class orderService {
 	
 	public void getAllPrice(HttpServletRequest request,Model model) {
 		System.out.println("getAllPrice");
-		String year="2021";
+		String year=request.getParameter("year");
 		int flag=1;
+		String productName=request.getParameter("productName");
 		Map<String,Integer>byDayPrice=new LinkedHashMap<String, Integer>();
 		Map<Integer, Integer>byMonthPrice=new LinkedHashMap<Integer, Integer>();
 		int yp=0;
@@ -51,6 +52,7 @@ public class orderService {
 				period.put("start", Timestamp.valueOf(year+"-"+month+"-"+day+" 00:00:00"));
 				period.put("end", Timestamp.valueOf(year+"-"+month+"-"+day+" 23:59:59"));
 				period.put("flag", flag);
+				period.put("productName", productName);
 				List<Integer>allPrice=orderDao.findByDate(period);
 				System.out.println(i+"월 "+ii+"일 조회 금액 "+allPrice.toString());
 				for(int price:allPrice) {

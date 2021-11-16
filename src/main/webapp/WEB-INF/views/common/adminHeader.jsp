@@ -41,7 +41,7 @@ img{width: 150px;height: 100px; }
           <a class="nav-link active" aria-current="page" href="/app/admin/order?detail=all&page=1&keyword=">주문조회</a>
         </li>
          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/app/admin/sales?year=2021">매출조회</a>
+          <a class="nav-link active" aria-current="page" href="/app/admin/sales?year=2021&productName=">매출조회</a>
         </li>
        <!--  <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

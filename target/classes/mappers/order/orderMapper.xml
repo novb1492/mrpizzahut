@@ -10,5 +10,8 @@
 		<if test="flag==1">
 			and ODONEFLAG=1 and OCANCLEFLAG=0
 		</if>
+		<if test="productName!=null">
+			and ONAME=#{productName}
+		</if>
 	</select>
 </mapper>
