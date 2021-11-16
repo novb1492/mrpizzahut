@@ -11,4 +11,10 @@
 	<insert id="insertCoupon" parameterType="Map">
 		 insert into coupon values(coupon_sq.NEXTVAL,null,#{title},0,null,null,#{action},#{price},#{created},#{expireDate})
 	</insert>
+	<select id="findAll" parameterType="Map" resultType="Map">
+			select b.*,(select count(*) from coupon)totalcount from(select ROW_NUMBER() OVER (ORDER BY CONUM desc)  num, a.* from coupon a ) b where num between #{start} and #{end}
+	</select>
+	<select id="findAllByKey" parameterType="Map" resultType="Map">
+			select b.*,(select count(*) from coupon where COUPONNAME like '%'||#{keyword}||'%')totalcount from(select ROW_NUMBER() OVER (ORDER BY CONUM desc)  num, a.* from coupon a ) b where COUPONNAME like '%'||#{keyword}||'%' and num between #{start} and #{end}
+	</select>
 </mapper>

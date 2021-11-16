@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.pay.productService;
+import com.mrpizzahut.app.pay.coupon.couponService;
 
 
 
@@ -26,6 +27,8 @@ public class controller {
 	private buketService buketService;
 	@Autowired
 	private productService productService;
+	@Autowired
+	private couponService couponService;
 
 	
 	
@@ -105,7 +108,7 @@ public class controller {
 		}
 	}
 	@RequestMapping(value ="/admin/event",method = RequestMethod.GET)
-	public String goAdminEvent(HttpServletRequest request, HttpServletResponse response) {
+	public String goAdminEvent(HttpServletRequest request, HttpServletResponse response,Model model) {
 		System.out.println("goAdminEvent");
 		if(!utillService.checkRole(request)) {
 			return "/home";
@@ -113,8 +116,8 @@ public class controller {
 		String scope=request.getParameter("scope");
 		if(scope.equals("쿠폰등록")) {
 			return "/admin/insertCoupon";
-		}else if(scope.equals("메뉴수정삭제")) {
-			
+		}else if(scope.equals("쿠폰수정삭제")) {
+			couponService.getAllCoupon(request, response,model);
 			return "/admin/updateCoupon";
 		}else {
 		
