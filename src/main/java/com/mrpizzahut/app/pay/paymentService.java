@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mrpizzahut.app.utillService;
 
+import Daos.orderDao;
 import Daos.payDao;
 
 
@@ -26,7 +27,6 @@ public class paymentService {
 	
 	@Autowired
 	private payDao payDao;
-	
 
 	public void updateOrderCancleFlag(Map<String, Object>map) {
 		System.out.println("updateOrderCancleFlag");

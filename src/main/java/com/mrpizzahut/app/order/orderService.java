@@ -1,5 +1,8 @@
 package com.mrpizzahut.app.order;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +22,56 @@ public class orderService {
 	
 	@Autowired
 	private orderDao orderDao;
+	
+	public void getAllPrice(HttpServletRequest request,Model model) {
+		System.out.println("getAllPrice");
+		String year="2021";
+		int flag=1;
+		Map<String,Integer>byDayPrice=new LinkedHashMap<String, Integer>();
+		Map<Integer, Integer>byMonthPrice=new LinkedHashMap<Integer, Integer>();
+		int yp=0;
+		int mp=0;
+		for(int i=1;i<=12;i++) {
+			mp=0;
+			for(int ii=1;ii<=31;ii++) {
+				Map<String, Object>period=new HashMap<String, Object>();
+				int p=0;
+				String month=null;
+				String day=null;
+				if(i<10) {
+					month="0"+Integer.toString(i);
+				}else {
+					month=Integer.toString(i);
+				}
+				if(ii<10) {
+					day="0"+Integer.toString(ii);
+				}else {
+					day=Integer.toString(ii);
+				}
+				period.put("start", Timestamp.valueOf(year+"-"+month+"-"+day+" 00:00:00"));
+				period.put("end", Timestamp.valueOf(year+"-"+month+"-"+day+" 23:59:59"));
+				period.put("flag", flag);
+				List<Integer>allPrice=orderDao.findByDate(period);
+				System.out.println(i+"월 "+ii+"일 조회 금액 "+allPrice.toString());
+				for(int price:allPrice) {
+					p+=price;
+				}
+				byDayPrice.put(i+"/"+ii, p);
+				mp+=p;
+			}
+			byMonthPrice.put(i, mp);
+			yp+=mp;
+		}
+		
+		System.out.println("일별 매출 "+byDayPrice.toString());
+		System.out.println("월별 매출 "+byMonthPrice.toString());
+		System.out.println("연도별 매출 "+yp);
+		model.addAttribute("year", yp);
+		model.addAttribute("moths", byMonthPrice);
+		model.addAttribute("days", byDayPrice);
+		
+		
+	}
 	
 	public void getAllOrders(HttpServletRequest request,Model model) {
 		System.out.println("getAllOrders");

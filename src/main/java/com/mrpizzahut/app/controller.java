@@ -133,6 +133,13 @@ public class controller {
 		orderService.getAllOrders(request, model);
 		return "/admin/showOrders";
 	}
+	@RequestMapping(value = "/admin/sales",method = RequestMethod.GET)
+	public String showSales(HttpServletRequest request,HttpServletResponse response,Model model) {
+		System.out.println("showSales");
+		orderService.getAllPrice(request, model);
+		return "/admin/showPay";
+	}
+	
 	
 
 }

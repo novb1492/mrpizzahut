@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+a{ text-decoration:none} 
 .side{position: absolute;width: 150px;height: 100%;}
 .contents{margin-left: 150px}
 .menuInput{width:300px;}
@@ -38,6 +39,9 @@ img{width: 150px;height: 100px; }
         </li>
          <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/app/admin/order?detail=all&page=1&keyword=">주문조회</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/app/admin/sales?year=2021">매출조회</a>
         </li>
        <!--  <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
