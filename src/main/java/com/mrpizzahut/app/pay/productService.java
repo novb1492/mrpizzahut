@@ -163,7 +163,8 @@ public class productService {
 	private void confrimSize(String size) {
 		System.out.println("confrimSize");
 		if(utillService.checkNull(size)) {
-			throw utillService.makeRuntimeEX("사이즈를 입력해주세요", "confrimSize");
+			System.out.println("사이즈가 없는 상품");
+			return;
 		}
 
 			if(size.length()<1||size.length()>2) {
@@ -179,9 +180,9 @@ public class productService {
 	}
 	private  void confrimEdge(String edge) {
 		System.out.println("confrimEdge");
-		if(utillService.checkNull(edge)) {
+		/*if(utillService.checkNull(edge)) {
 			throw utillService.makeRuntimeEX("엣지를 입력해주세요", "confrimSize");
-		}
+		}*/
 		System.out.println("엣지유효성 통과");
 	}
 	
