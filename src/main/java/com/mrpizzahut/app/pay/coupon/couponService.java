@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -25,6 +26,21 @@ public class couponService {
 	@Autowired
 	private couponDao couponDao;
 	
+	public void getCoupon(HttpServletRequest request,Model model) {
+		System.out.println("getCoupon");
+		int conum=Integer.parseInt(request.getParameter("conum"));
+		Map<String, Object>coupon=couponDao.findByConum(conum);
+		String created= coupon.get("COEXPIRED").toString().replace(" ", "T");
+		int usedFlag=Integer.parseInt(coupon.get("USEDFLAG").toString());
+		String susedFlag="사용된 쿠폰입니다";
+		if(usedFlag!=1) {
+			susedFlag="미사용 쿠폰입니다";
+		}
+		coupon.put("usedFlag", susedFlag);
+		coupon.put("COEXPIRED",created.substring(0, 16));
+		System.out.println("쿠폰 정보 "+coupon.toString());
+		model.addAttribute("coupon", coupon);
+	}
 	public void getAllCoupon(HttpServletRequest request,HttpServletResponse response,Model model) {
 		System.out.println("getAllCoupon");
 		int page=Integer.parseInt(request.getParameter("page"));
@@ -53,8 +69,9 @@ public class couponService {
 			return couponDao.findAllByKey(search);
 		}
 	}
-	public void inserCoupon(HttpServletRequest request,HttpServletResponse response) {
+	public JSONObject inserCoupon(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("inserCoupon");
+		String scope=request.getParameter("scope");
 		String title=request.getParameter("title");
 		String action=request.getParameter("action");
 		String price=request.getParameter("price");
@@ -66,10 +83,31 @@ public class couponService {
 		coupon.put("price", price);
 		coupon.put("expireDate", expireDate);
 		coupon.put("created", Timestamp.valueOf(LocalDateTime.now()));
-		couponDao.insertCoupon(coupon);
+		String message="쿠폰 등록이 완료되었습니다";
+		 if(scope.equals("insert")) {
+		    	System.out.println("쿠폰등록 시도");
+		    	couponDao.insertCoupon(coupon);
+		    }else if(scope.equals("update")) {
+		    	System.out.println("메뉴수정 시도");
+		    	int flag=Integer.parseInt(request.getParameter("flag"));
+		    	confrimFlag(flag);
+		    	coupon.put("flag", flag);
+		    	coupon.put("conum", request.getParameter("conum"));
+		    	couponDao.updateCoupon(coupon);
+		    	message="쿠폰 수정 성공";
+		    }else {
+		    	return utillService.makeJson(false, "지원하지 않는 기능입니다");
+		    }
+		return utillService.makeJson(true, message);
 		
 	}
-
+	private void confrimFlag(int flag) {
+		System.out.println("confrimFlag");
+		if(flag>1) {
+			throw utillService.makeRuntimeEX("사용여부는 0 아니면 1입니다 현재 "+flag, "confrimFlag");
+		}
+		System.out.println("플래그 유효성 통과");
+	}
 	private void confrimActionAndPriceAndTitle(String action,String price,String title) {
 		System.out.println("confrimActionAndPrice");
 		if(utillService.checkNull(title)) {
@@ -87,9 +125,12 @@ public class couponService {
 			if(iprice>100) {
 				throw utillService.makeRuntimeEX("할인금액은 최대 100프로입니다 현재"+iprice, "confrimActionAndPrice");
 			}
+		}else if(action.equals("minus")) {
+			System.out.println("마이너스 쿠폰");
 		}else {
 			throw utillService.makeRuntimeEX("쿠폰 할인방식은 per/minus입니다 현재 "+action, "confrimActionAndPrice");
 		}
+		System.out.println("할인 방식 유효성 통과");
 		
 	}
 	private Timestamp confrimExpriDate(String sExpireDate) {

@@ -18,7 +18,7 @@
  			for(Map<String,Object>coupon:coupons){
  				%>
  				 <li class="itemArea " style="margin-left:20px"> 
- 				 <a href="/app/admin/enent?scope=coupon&conum=<%=coupon.get("CONUM")%>">
+ 				 <a href="/app/admin/event?scope=coupon&conum=<%=coupon.get("CONUM")%>">
              
                   	<br>
                     <span><%=coupon.get("COUPONNAME") %></span>

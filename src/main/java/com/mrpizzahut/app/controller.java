@@ -120,7 +120,7 @@ public class controller {
 			couponService.getAllCoupon(request, response,model);
 			return "/admin/updateCoupon";
 		}else {
-		
+			couponService.getCoupon(request, model);
 			return "/admin/showCoupon";
 		}
 	}

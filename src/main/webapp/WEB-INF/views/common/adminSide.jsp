@@ -95,7 +95,7 @@
           </ul>
         </div>
       </li> -->
-    <%}else if(uri.equals("/app/WEB-INF/views//admin/insertCoupon.jsp")||uri.equals("/app/WEB-INF/views//admin/updateCoupon.jsp")){
+    <%}else if(uri.equals("/app/WEB-INF/views//admin/insertCoupon.jsp")||uri.equals("/app/WEB-INF/views//admin/updateCoupon.jsp")||uri.equals("/app/WEB-INF/views//admin/showCoupon.jsp")){
     	%>
     	    	  <li class="mb-1">
            			<a href="/app/admin/event?scope=쿠폰등록">쿠폰등록</a>

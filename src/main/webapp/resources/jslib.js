@@ -1,4 +1,13 @@
 var result;
+function updateCoupon(formId){
+	var myForm = document.getElementById(formId);
+	let formdata=new FormData(myForm);
+	var result=requestToFormPost('/app/admin/coupon?scope=update',formdata);
+	alert(result.message);
+	if(result.flag){
+		location.reload();
+	}
+}
 function insertCoupon(formId){
 	var myForm = document.getElementById(formId);
 	let formdata=new FormData(myForm);

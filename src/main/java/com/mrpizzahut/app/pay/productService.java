@@ -132,7 +132,7 @@ public class productService {
 	    	productDao.insertProduct(product);
 	    }else if(scope.equals("update")) {
 	    	System.out.println("메뉴수정 시도");
-	    	product.put("mnum", request.getParameter("mnum"));
+	    	product.put("conum", request.getParameter("conum"));
 	    	productDao.updateProduct(product);
 	    	message="제품 수정 성공";
 	    }else {

@@ -93,12 +93,12 @@ public class restController {
 		return fileService.uploadImg(request);
 	}
 	@RequestMapping(value = "/admin/coupon/**",method = RequestMethod.POST)
-	public void tryInsertCoupon(HttpServletRequest request,HttpServletResponse response) {
+	public JSONObject tryInsertCoupon(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("tryInsertCoupon");
 		if(!utillService.checkRole(request)) {
 			//return utillService.makeJson(false, "관리자 계정이아닙니다");
 		}
-		couponService.inserCoupon(request, response);
+		return couponService.inserCoupon(request, response);
 	}
 	
 	
