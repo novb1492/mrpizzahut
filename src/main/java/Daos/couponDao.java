@@ -11,4 +11,5 @@ public interface couponDao {
  public List<Map<String, Object>>findAllByKey(Map<String, Object>map);
  public Map<String, Object>findByConum(int conum);
  public int updateCoupon(Map<String, Object>map);
+ public int deleteByConum(int conum);
 }

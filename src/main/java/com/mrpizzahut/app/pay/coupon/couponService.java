@@ -26,6 +26,13 @@ public class couponService {
 	@Autowired
 	private couponDao couponDao;
 	
+	public JSONObject deleteCoupon(HttpServletRequest request) {
+		System.out.println("deleteCoupon");
+		int conum=Integer.parseInt(request.getParameter("conum"));
+		couponDao.deleteByConum(conum);
+		return utillService.makeJson(true, "쿠폰을 삭제했습니다");
+	}
+	
 	public void getCoupon(HttpServletRequest request,Model model) {
 		System.out.println("getCoupon");
 		int conum=Integer.parseInt(request.getParameter("conum"));

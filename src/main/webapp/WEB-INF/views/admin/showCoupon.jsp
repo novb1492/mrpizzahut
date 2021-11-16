@@ -55,7 +55,7 @@ per= 100이하 minus는 금액으로 구분기호 ,없이 적어주세요
 쿠폰을 살리려면 1을 입력해주세요
 <br>
 <input type="number" name="flag" class="form-control  mt-2"  placeholder="쿠폰을 사용가능으로 만드시려면 1을 입력해주세요" min="0" max="1" value="0">
-<input type="hidden" name="conum" value="<%=coupon.get("CONUM")%>"> 	
+<input type="hidden" id="conum" name="conum" value="<%=coupon.get("CONUM")%>"> 	
 <input type="button"  class="form-control  mt-2" value="쿠폰수정" onclick="updateCoupon('minsert')">
 <br>
 <input type="button"  class="form-control  mt-2" value="쿠폰삭제" onclick="deleteCoupon()">

@@ -1,4 +1,12 @@
 var result;
+function deleteCoupon(){
+	var conum=document.getElementById('conum').value;
+	var result=requestDelteToServer('/app/admin/coupon?conum='+conum);
+	alert(result.message);
+	if(result.flag){
+		location.href='/app/admin/event?scope=쿠폰수정삭제&page=1&keyword=';
+	}
+}
 function updateCoupon(formId){
 	var myForm = document.getElementById(formId);
 	let formdata=new FormData(myForm);

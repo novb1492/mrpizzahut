@@ -96,9 +96,17 @@ public class restController {
 	public JSONObject tryInsertCoupon(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("tryInsertCoupon");
 		if(!utillService.checkRole(request)) {
-			//return utillService.makeJson(false, "관리자 계정이아닙니다");
+			return utillService.makeJson(false, "관리자 계정이아닙니다");
 		}
 		return couponService.inserCoupon(request, response);
+	}
+	@RequestMapping(value = "/admin/coupon/**",method = RequestMethod.DELETE)
+	public JSONObject tryDeleteCoupon(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("tryDeleteCoupon");
+		if(!utillService.checkRole(request)) {
+			return utillService.makeJson(false, "관리자 계정이아닙니다");
+		}
+		return couponService.deleteCoupon(request);
 	}
 	
 	

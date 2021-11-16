@@ -21,11 +21,13 @@
 		select * from coupon where CONUM=#{conum}
 	</select>
 	<update id="updateCoupon" parameterType="Map">
-	
 		update coupon set COEXPIRED=#{expireDate},COUPONNAME=#{title},COKIND=#{action},COPRICE=#{price}
 		<if test="flag==1">
 			,USEDFLAG=0
 		</if>
 		where CONUM=#{conum}
 	</update>
+	<delete id="deleteByConum" parameterType="_int">
+		delete from coupon where CONUM=#{conum}
+	</delete>
 </mapper>
