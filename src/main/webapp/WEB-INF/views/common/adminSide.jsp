@@ -68,8 +68,8 @@
       <li class="mb-1">
        <a href="/app/admin/menu?scope=메뉴수정삭제&page=1&keyword=">메뉴수정/삭제</a>
       </li>
-      <li class="mb-1">
-       <!--  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+     <!--   <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
           Orders
         </button>
         <div class="collapse" id="orders-collapse">
@@ -95,6 +95,14 @@
           </ul>
         </div>
       </li> -->
+    <%}else if(uri.equals("/app/WEB-INF/views//admin/insertCoupon.jsp")){
+    	%>
+    	    	  <li class="mb-1">
+           			<a href="/app/admin/event?scope=쿠폰등록">쿠폰등록</a>
+      	</li>
+      <li class="mb-1">
+       <a href="/app/admin/event?scope=쿠폰수정삭제&page=1&keyword=">쿠폰수정/삭제</a>
+      </li>
     <%}
     
     

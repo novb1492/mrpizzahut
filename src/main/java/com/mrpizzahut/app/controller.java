@@ -104,6 +104,23 @@ public class controller {
 			return "/admin/adminMenuShow";
 		}
 	}
+	@RequestMapping(value ="/admin/event",method = RequestMethod.GET)
+	public String goAdminEvent(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("goAdminEvent");
+		if(!utillService.checkRole(request)) {
+			return "/home";
+		}
+		String scope=request.getParameter("scope");
+		if(scope.equals("쿠폰등록")) {
+			return "/admin/insertCoupon";
+		}else if(scope.equals("메뉴수정삭제")) {
+			
+			return "/admin/updateCoupon";
+		}else {
+		
+			return "/admin/showCoupon";
+		}
+	}
 	
 
 }

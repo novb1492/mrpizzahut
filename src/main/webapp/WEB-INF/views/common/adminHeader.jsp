@@ -28,7 +28,7 @@ img{width: 150px;height: 100px; }
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <a class="navbar-brand" href="/shopMainPage?kind=coffee">쿠폰(이벤트)</b-nav-item>
+          <a class="navbar-brand" href="/app/admin/event?scope=쿠폰등록">쿠폰(이벤트)</b-nav-item>
           <a class="navbar-brand"href="/app/admin/menu?scope=메뉴등록" >메뉴설정</b-nav-item>
            <a class="navbar-brand"href="/" >유저정보수정</b-nav-item>
         </b-navbar-nav>

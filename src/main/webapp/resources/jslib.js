@@ -1,4 +1,13 @@
 var result;
+function insertCoupon(formId){
+	var myForm = document.getElementById(formId);
+	let formdata=new FormData(myForm);
+	var result=requestToFormPost('/app/admin/coupon?scope=insert',formdata);
+	alert(result.message);
+	if(result.flag){
+		location.reload();
+	}
+}
 function deleteMenu(mnum){
 	var result=requestDelteToServer('/app/admin/menu?mnum='+mnum);
 	alert(result.message);
