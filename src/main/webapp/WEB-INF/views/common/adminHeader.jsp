@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 .side{position: absolute;width: 150px;height: 100%;}
-.contents{margin-left: 300px}
+.contents{margin-left: 150px}
 .menuInput{width:300px;}
 ul{list-style: none; float:left;  }
 li{float: left;}
