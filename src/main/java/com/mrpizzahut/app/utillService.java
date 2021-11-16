@@ -44,6 +44,7 @@ public class utillService {
 			}
 			map.put("start", start);
 			map.put("end", start+pagesize);
+			System.out.println("페이지 종료 "+ start+pagesize);
 			return map;
 		}
 	public static boolean checkRole(HttpServletRequest request) {

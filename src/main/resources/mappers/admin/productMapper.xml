@@ -8,7 +8,8 @@
 		select b.*,(select count(*) from menu)totalcount from(select ROW_NUMBER() OVER (ORDER BY MNUM desc)  num, a.* from menu a ) b where num between #{start} and #{end}
 	</select>
 	<select id="findAllByKey" parameterType="Map" resultType="Map" >
-		select b.*,(select count(*) from menu where MNAME like '%'||#{keyword}||'%')totalcount from(select ROW_NUMBER() OVER (ORDER BY MNUM desc)  num, a.* from menu a ) b where MNAME like '%'||#{keyword}||'%' and num between #{start} and #{end}
+	 select b.*,(select count(*) from menu where MNAME like '%'||#{keyword}||'%')totalcount from(select ROW_NUMBER() OVER (ORDER BY MNUM desc)  num, a.* from menu a  where a.MNAME like '%'||#{keyword}||'%' ) b where MNAME like '%'||#{keyword}||'%' and num between #{start} and #{end}
+	
 	</select>
 	<select id="findByMnum" parameterType="_int" resultType="Map">
 		select * from menu where MNUM=#{mnum}

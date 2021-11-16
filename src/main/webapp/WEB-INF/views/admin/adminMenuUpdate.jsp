@@ -31,7 +31,7 @@
  		</ul>
  		  <div id="pageArea">
             <input type="text" id="searchInput"   placeholder="상품 이름을 적어주세요">
-            <input type="button" id="searchButton" onclick="doSearch()" class="btn btn-outline-primary btn-sm" style="margin-left:10px" value="검색">
+            <input type="button" id="searchButton" onclick="doSearch('/app/admin/menu?scope=메뉴수정삭제&page=1&keyword=')" class="btn btn-outline-primary btn-sm" style="margin-left:10px" value="검색">
             <br>
             <div style="margin-top:10px">
             <%
@@ -41,13 +41,13 @@
             		
             	<%}else{
             		%>
-            		 <input type="button" id="beforeButton" onclick="changePage(-1)" class="btn btn-outline-primary btn-sm" value="이전">
+            		 <input type="button" id="beforeButton" onclick="changePage(-1,'/app/admin/menu?scope=메뉴수정삭제')" class="btn btn-outline-primary btn-sm" value="이전">
             	<%}
             %>
             <span class="showPage"><%=nowPage %></span>/ <span class="showPage"><%=totalPage %></span>
            <% if(nowPage<totalPage){
             	%>
-            	 <input type="button" id="nextButton" onclick="changePage(1)"  class="btn btn-outline-primary btn-sm" value="다음">
+            	 <input type="button" id="nextButton" onclick="changePage(1,'/app/admin/menu?scope=메뉴수정삭제')"  class="btn btn-outline-primary btn-sm" value="다음">
             
             <%}else{
             	%>

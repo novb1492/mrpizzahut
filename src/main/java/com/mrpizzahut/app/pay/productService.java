@@ -84,10 +84,10 @@ public class productService {
 		System.out.println("getProducts");
 		if(utillService.checkNull(keyword)) {
 			System.out.println("키워드없는 요청");
-			return productDao.findAll(utillService.getStart(page, pageSize));
+			return productDao.findAll(utillService.getStart(page-1, pageSize));
 		}else {
-			System.out.println("검색요청");
-			Map<String, Object>search=utillService.getStart(page, pageSize);
+			System.out.println("검색요청 "+keyword);
+			Map<String, Object>search=utillService.getStart(page-1, pageSize);
 			search.put("keyword", keyword);
 			return productDao.findAllByKey(search);
 		}

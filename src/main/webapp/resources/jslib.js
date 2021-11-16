@@ -26,15 +26,15 @@ function updateMenu(formId,text,mnum){
 		location.reload();
 	}
 }
-function doSearch(){
+function doSearch(url){
 	var keyword=getIdValue('searchInput');
-	location.href="/app/admin/menu?scope=메뉴수정삭제&page=1&keyword="+keyword;
+	location.href=url+keyword;
 }
-function  changePage(num){
+function  changePage(num,url){
             var keyword=getParam('keyword');
             var page=getParam('page');
             page=(page*1);
-            location.href="/app/admin/menu?scope=메뉴수정삭제&page="+(page+num)+"&keyword="+keyword;
+            location.href=url+"&page="+(page+num)+"&keyword="+keyword;
 }
 function insertMenu(formId,text){
 	var myForm = document.getElementById(formId);
