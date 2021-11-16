@@ -219,10 +219,6 @@ public class productService {
 			System.out.println("장바구니 "+carts.toString());
 	        int itemArraySize=carts.size();
 	        String[] coupons=tryBuyDto.getcoupon().toString().split("/");
-	        for(String s:coupons) {
-	        	 System.out.println("쿠폰 "+s);
-	        }
-	        
 	        String itemNames="";
 	        int onlyCash=0;
 	        int totalCash=0;

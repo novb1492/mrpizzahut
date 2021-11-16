@@ -21,7 +21,7 @@
  				 <a href="/app/admin/menu?scope=detail&mnum=<%=product.get("MNUM")%>">
                   	<img alt="" src="<%=product.get("IMG") %>">
                   	<br>
-                    <span><%=product.get("MNAME") %></span>
+                    <span><%=product.get("MNAME") %>+<%=product.get("MSIZE") %>+<%=product.get("EDGE") %></span>
                     <br>
            		</a>
               </li>

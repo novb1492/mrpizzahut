@@ -270,9 +270,20 @@ int totalPrice=(int)request.getAttribute("totalPrice");
 							<td class="t_left">
 								<p><strong class="f16"><%=map.get("CMENU") %></strong></p>
 								
+								<%
+								if(map.get("CSIZE")!=null){
+									%>
 									<p>사이즈 :<%=map.get("CSIZE") %></p>
-
+								<%}
+								if(map.get("CEDGE")!=null){
+									%>
 									<p>엣지 :<%=map.get("CEDGE") %></p>
+								<%}
+								
+								%>
+									
+
+									
 								
 								
 							</td>

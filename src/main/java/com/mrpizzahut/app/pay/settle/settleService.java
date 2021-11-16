@@ -37,7 +37,6 @@ public class settleService {
 	public void callbackProcess(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("callbackProcess");
 		String scope=request.getParameter("scope");
-		 String email=utillService.getEmail(request);
 		if(scope.equals("confrim")) {
 			System.out.println("카드결제 검증 및 가상계좌 채번 등록");
 			confrimPayment(request, response);

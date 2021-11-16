@@ -21,7 +21,13 @@
 		select *from member where email=#{email}
 	</select>
 	<select id="findByPizzaName" parameterType="Map" resultType="Map">
-		select *from menu where MNAME=#{CMENU} and MSIZE=#{CSIZE} and EDGE=#{CEDGE}
+		select *from menu where MNAME=#{CMENU}
+			<if test='CSIZE!=null'>
+			and MSIZE=#{CSIZE}
+			</if>
+			<if test='CEDGE!=null'>
+			 and EDGE=#{CEDGE}
+			</if>
 	</select>
 	<delete id="deleteByEmail" parameterType="String" > 
 			delete from cart where CEMAIL = #{email} 
