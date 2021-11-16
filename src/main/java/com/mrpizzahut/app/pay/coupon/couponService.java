@@ -2,6 +2,8 @@ package com.mrpizzahut.app.pay.coupon;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +27,22 @@ public class couponService {
 		String action=request.getParameter("action");
 		String price=request.getParameter("price");
 		Timestamp expireDate=confrimExpriDate(request.getParameter("expireDate"));
+		confrimActionAndPriceAndTitle(action, price,title);
+		Map<String, Object>coupon=new HashMap<String, Object>();
+		coupon.put("title", title);
+		coupon.put("action", action);
+		coupon.put("price", price);
+		coupon.put("expireDate", expireDate);
+		coupon.put("created", Timestamp.valueOf(LocalDateTime.now()));
+		couponDao.insertCoupon(coupon);
 		
 	}
-	private void confrimActionAndPrice(String action,String price) {
+
+	private void confrimActionAndPriceAndTitle(String action,String price,String title) {
 		System.out.println("confrimActionAndPrice");
-		if(utillService.checkNull(action)) {
+		if(utillService.checkNull(title)) {
+			throw utillService.makeRuntimeEX("쿠폰 이름을 적어주세요", "confrimActionAndPrice");
+		}else if(utillService.checkNull(action)) {
 			throw utillService.makeRuntimeEX("쿠폰 할인 방식이 빈칸입니다", "confrimActionAndPrice");
 		}else if(utillService.checkNull(price)) {
 			throw utillService.makeRuntimeEX("할인금액이 빈칸입니다", "confrimActionAndPrice");
@@ -42,9 +55,6 @@ public class couponService {
 			if(iprice>100) {
 				throw utillService.makeRuntimeEX("할인금액은 최대 100프로입니다 현재"+iprice, "confrimActionAndPrice");
 			}
-		}else if(action.equals("minus")) {
-			if()
-			
 		}else {
 			throw utillService.makeRuntimeEX("쿠폰 할인방식은 per/minus입니다 현재 "+action, "confrimActionAndPrice");
 		}
