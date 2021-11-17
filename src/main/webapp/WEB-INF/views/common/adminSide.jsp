@@ -118,6 +118,19 @@
           </ul>
         </div>
       </li>
+       <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse2" aria-expanded="false">
+          	클래식피자
+        </button>
+        <div class="collapse" id="account-collapse2">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="/app/admin/sales?year=<%=year2 %>&productName=콤비네이션" class="link-dark rounded">콤비네이션 피자</a></li>
+            <li><a href="/app/admin/sales?year=<%=year2 %>&productName=불고기" class="link-dark rounded">불고기 피자</a></li>
+            <li><a href="/app/admin/sales?year=<%=year2 %>&productName=포테이토" class="link-dark rounded">포테이토 피자</a></li>
+             <li><a href="/app/admin/sales?year=<%=year2 %>&productName=페퍼로니플러스" class="link-dark rounded">페퍼로니플러스</a></li>
+          </ul>
+        </div>
+      </li>
     <%}
     
     
