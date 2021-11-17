@@ -8,4 +8,5 @@ public interface orderDao {
 	public List<Map<String, Object>>findAllByKey(Map<String, Object>map);
 	public List<Integer>findByDate(Map<String, Object>map);
 	public List<String>getAllStitle();
+	public List<Integer>finByDateCancel(Map<String, Object>map);
 }

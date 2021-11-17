@@ -6,10 +6,14 @@
 		select b.*,(select count(*) from orders)totalcount from(select ROW_NUMBER() OVER (ORDER BY ONUM desc)  num, a.* from orders a ) b where num between #{start} and #{end}
 	</select>
 	<select id="findByDate" parameterType="Map" resultType="_int">
-		select OPRICE from orders where OCREATED between #{start} and  #{end}
-		<if test="flag==1">
-			and ODONEFLAG=1 and OCANCLEFLAG=0
+		select OPRICE from orders where OCREATED between #{start} and  #{end} and ODONEFLAG=1 and OCANCLEFLAG=0
+		<if test="productName!=null">
+			and ONAME=#{productName}
 		</if>
+	</select>
+		<select id="finByDateCancel" parameterType="Map" resultType="_int">
+		select OPRICE from orders where OCREATED between #{start} and  #{end} and OCANCLEFLAG=0 
+		
 		<if test="productName!=null">
 			and ONAME=#{productName}
 		</if>

@@ -39,13 +39,19 @@ public class orderService {
 		}
 		Map<String,Integer>byDayPrice=new LinkedHashMap<String, Integer>();
 		Map<Integer, Integer>byMonthPrice=new LinkedHashMap<Integer, Integer>();
+		Map<String,Integer>cByDayPrice=new LinkedHashMap<String, Integer>();
+		Map<Integer, Integer>cByMonthPrice=new LinkedHashMap<Integer, Integer>();
 		int yp=0;
 		int mp=0;
+		int cyp=0;
+		int cmp=0;
 		for(int i=1;i<=12;i++) {
 			mp=0;
+			cmp=0;
 			for(int ii=1;ii<=31;ii++) {
 				Map<String, Object>period=new HashMap<String, Object>();
 				int p=0;
+				int cp=0;
 				String month=null;
 				String day=null;
 				if(i<10) {
@@ -62,28 +68,42 @@ public class orderService {
 				period.put("end", Timestamp.valueOf(year+"-"+month+"-"+day+" 23:59:59"));
 				period.put("flag", flag);
 				period.put("productName", productName);
-				List<Integer>allPrice=orderDao.findByDate(period);
-				System.out.println(i+"월 "+ii+"일 조회 금액 "+allPrice.toString());
-				for(int price:allPrice) {
+				List<Integer>allPayPrice=orderDao.findByDate(period);
+				List<Integer>allCanclePrice=orderDao.finByDateCancel(period);
+				System.out.println(i+"월 "+ii+"일 조회 금액 "+allPayPrice.toString());
+				System.out.println(i+"월 "+ii+"일 취소 조회 금액 "+allCanclePrice.toString());
+				for(int price:allPayPrice) {
 					p+=price;
+					
+				}
+				for(int price:allCanclePrice) {
+					cp+=price;
+					
 				}
 				if(requestmonth==i) {
 					byDayPrice.put(i+"/"+ii, p);
+					cByDayPrice.put(i+"/"+ii, cp);
 				}
 				mp+=p;
+				cmp+=cp;
 			}
 			
 			byMonthPrice.put(i, mp);
+			cByMonthPrice.put(i, cmp);
 			yp+=mp;
+			cyp+=cmp;
 		}
 		
 		System.out.println("일별 매출 "+byDayPrice.toString());
 		System.out.println("월별 매출 "+byMonthPrice.toString());
 		System.out.println("연도별 매출 "+yp);
 		model.addAttribute("year", yp);
-		model.addAttribute("moths", byMonthPrice);
+		model.addAttribute("months", byMonthPrice);
 		model.addAttribute("days", byDayPrice);
-		
+		model.addAttribute("cyear", cyp);
+		model.addAttribute("cmonths", cByMonthPrice);
+		model.addAttribute("cdays", cByDayPrice);
+		System.out.println("매출조회 성공");
 		
 	}
 	
