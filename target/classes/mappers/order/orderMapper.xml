@@ -14,4 +14,7 @@
 			and ONAME=#{productName}
 		</if>
 	</select>
+	<select id="getAllStitle" parameterType="Map">
+		select STITLE from menu;
+	</select>
 </mapper>

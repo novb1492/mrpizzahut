@@ -24,6 +24,12 @@ public class orderService {
 	@Autowired
 	private orderDao orderDao;
 	
+	public void getByStitle() {
+		System.out.println("getByStitle");
+		List<String>stitles=orderDao.getAllStitle();
+		System.out.println("현재 모든 stitle "+stitles);
+		
+	}
 	public void getAllPrice(HttpServletRequest request,Model model) {
 		System.out.println("getAllPrice");
 		String year=request.getParameter("year");
