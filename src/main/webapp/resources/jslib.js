@@ -1,4 +1,9 @@
 var result;
+function changeYear(num){
+	var productName=getParam('productName');
+	var year=getParam('year');
+	location.href='/app/admin/sales?year='+(year*1+num)+'&productName='+productName;
+}
 function deleteCoupon(){
 	var conum=document.getElementById('conum').value;
 	var result=requestDelteToServer('/app/admin/coupon?conum='+conum);

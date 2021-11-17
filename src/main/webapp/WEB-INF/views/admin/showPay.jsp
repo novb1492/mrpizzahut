@@ -4,6 +4,8 @@
     <%
     Map<String,Integer>byDayPrice=(Map<String,Integer>)request.getAttribute("days");
 	Map<Integer, Integer>byMonthPrice=(Map<Integer,Integer>)request.getAttribute("moths");
+
+	int nowYear=Integer.parseInt(request.getParameter("year"));
     %>
 <!DOCTYPE html>
 <html>
@@ -29,7 +31,35 @@
  				<%}
  			}
  		%>
+  <div id="pageArea">
+            <div style="margin-top:10px">
+            <%
+            	if(nowYear>year){
+            		%>
+            		 <input type="button" id="beforeButton"  class="btn btn-outline-primary btn-sm" value="이전" disabled="disabled">
+            		
+            	<%}else{
+            		%>
+            		 <input type="button" id="beforeButton" onclick="changeYear(-1,)" class="btn btn-outline-primary btn-sm" value="이전">
+            	<%}
+            %>
+            <%=nowYear %>/<%=year %>
+           <% if(nowYear<year){
+            	%>
+            	 <input type="button" id="nextButton" onclick="changeYear(1,)"  class="btn btn-outline-primary btn-sm" value="다음">
+            
+            <%}else{
+            	%>
+            	<input type="button" id="nextButton"   class="btn btn-outline-primary btn-sm" value="다음" disabled="disabled">
+            <%}
+            
+            %>
+           		
+           		 
+            </div>
+        </div>
  </div>
+ 
 
 </body>
 </html>
