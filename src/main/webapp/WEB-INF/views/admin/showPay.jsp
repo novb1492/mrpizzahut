@@ -4,7 +4,7 @@
     <%
     Map<String,Integer>byDayPrice=(Map<String,Integer>)request.getAttribute("days");
 	Map<Integer, Integer>byMonthPrice=(Map<Integer,Integer>)request.getAttribute("moths");
-
+	String producName=request.getParameter("productName");
 	int nowYear=Integer.parseInt(request.getParameter("year"));
     %>
 <!DOCTYPE html>
@@ -12,7 +12,12 @@
 <body>
   <%@ include file="../common/adminHeader.jsp" %>
   <%@ include file="../common/adminSide.jsp" %>
+  
   <div class="contents">
+  연도 <%=nowYear %> 
+  <br>
+  제품 <%=producName %>
+  <br>
  		<ul>
 		  <%
 		  	for(int i=1;i<=12;i++){
