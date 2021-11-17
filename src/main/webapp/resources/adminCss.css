@@ -1,0 +1,9 @@
+@charset "UTF-8";
+a{ text-decoration:none} 
+.side{position: absolute;width: 150px;height: 100%;}
+.contents{margin-left: 150px}
+.menuInput{width:300px;}
+ul{list-style: none; float:left;  }
+li{float: left;}
+img{width: 150px;height: 100px; }
+#pageArea{position: absolute; top: 90%; left: 20%;}

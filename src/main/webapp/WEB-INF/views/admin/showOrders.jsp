@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ include file="../common/adminHeader.jsp" %>
+  <%@ include file="../common/adminSide.jsp" %>
     <%
     List<Map<String,Object>>orders=(List<Map<String,Object>>)request.getAttribute("orders");
 	int nowPage=(int)request.getAttribute("page");
@@ -10,8 +12,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <%@ include file="../common/adminHeader.jsp" %>
-  <%@ include file="../common/adminSide.jsp" %>
+
   <div class="contents">
  		<ul>
  		<%

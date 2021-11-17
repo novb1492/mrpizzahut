@@ -1,6 +1,8 @@
 <%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ include file="../common/adminHeader.jsp" %>
+  <%@ include file="../common/adminSide.jsp" %>
     <%
     Map<String,Integer>byDayPrice=(Map<String,Integer>)request.getAttribute("days");
 	Map<Integer, Integer>byMonthPrice=(Map<Integer,Integer>)request.getAttribute("moths");
@@ -10,8 +12,6 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <%@ include file="../common/adminHeader.jsp" %>
-  <%@ include file="../common/adminSide.jsp" %>
   
   <div class="contents">
   연도 <%=nowYear %> 
