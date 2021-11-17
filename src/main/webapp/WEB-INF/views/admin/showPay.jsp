@@ -60,15 +60,17 @@
             %>
            	<br>
            	<%
-           		if(nowMonth>month2){
+           		if(nowMonth<=1){
            			%>
            			<input type="button" id="beforeButton"  class="btn btn-outline-primary btn-sm" value="이전달" disabled="disabled">
            		<%}else{
            			%>
            			 <input type="button" id="beforeButton" onclick="changeMonth(-1)" class="btn btn-outline-primary btn-sm" value="이전달">
-           		<%}
-           		if(nowMonth>=month2){
+           		<%}%>
+ 			 <%=nowMonth %>/12
+           		<%if(nowMonth>=12){
            			%>
+           			
            			<input type="button" id="nextButton"   class="btn btn-outline-primary btn-sm" value="다음달" disabled="disabled">
            		<%}else{
            			%>
