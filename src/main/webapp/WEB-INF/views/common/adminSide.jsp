@@ -1,9 +1,9 @@
+<%@page import="java.time.LocalDateTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
  <%
  	String uri=request.getRequestURI();
- 
  %>
 <!DOCTYPE html>
 <html>
@@ -102,6 +102,21 @@
       	</li>
       <li class="mb-1">
        <a href="/app/admin/event?scope=쿠폰수정삭제&page=1&keyword=">쿠폰수정/삭제</a>
+      </li>
+    <%}else if(uri.equals("/app/WEB-INF/views//admin/showPay.jsp")){
+    	int year2=LocalDateTime.now().getYear();
+    	%>
+    	 <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+          	씬크러스트피자
+        </button>
+        <div class="collapse" id="account-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="/app/admin/sales?year=<%=year2 %>&productName=멕시칸 하바네로 피자 세트" class="link-dark rounded">멕시칸 하바네로 피자 세트</a></li>
+            <li><a href="/app/admin/sales?year=<%=year2 %>&productName=찐페퍼로니 피자" class="link-dark rounded">찐페퍼로니 피자</a></li>
+            <li><a href="/app/admin/sales?year=<%=year2 %>&productName=포슬포슬감자 피자" class="link-dark rounded">포슬포슬감자 피자</a></li>
+          </ul>
+        </div>
       </li>
     <%}
     

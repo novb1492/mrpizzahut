@@ -30,6 +30,7 @@ public class orderService {
 		System.out.println("조회연도 "+year);
 		int flag=1;
 		String productName=request.getParameter("productName");
+		productName.replace("%20", " ");
 		System.out.println("조회 제품 "+productName);
 		if(utillService.checkNull(productName)) {
 			productName=null;
