@@ -29,6 +29,8 @@ public class orderService {
 		String year=request.getParameter("year");
 		System.out.println("조회연도 "+year);
 		int flag=1;
+		int requestmonth=Integer.parseInt(request.getParameter("month"));
+		System.out.println("조회달 "+requestmonth);
 		String productName=request.getParameter("productName");
 		productName.replace("%20", " ");
 		System.out.println("조회 제품 "+productName);
@@ -65,9 +67,12 @@ public class orderService {
 				for(int price:allPrice) {
 					p+=price;
 				}
-				byDayPrice.put(i+"/"+ii, p);
+				if(requestmonth==i) {
+					byDayPrice.put(i+"/"+ii, p);
+				}
 				mp+=p;
 			}
+			
 			byMonthPrice.put(i, mp);
 			yp+=mp;
 		}

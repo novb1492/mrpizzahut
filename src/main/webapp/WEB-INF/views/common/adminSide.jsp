@@ -8,9 +8,7 @@
  <%
  	String uri=request.getRequestURI();
  %>
-<!DOCTYPE html>
-<html>
-<body>
+
 <%
 	
 	if(!uri.equals("/app/WEB-INF/views//admin/adminHome.jsp")){
@@ -173,5 +171,3 @@
   	<%}
 	
 %>
-</body>
-</html>

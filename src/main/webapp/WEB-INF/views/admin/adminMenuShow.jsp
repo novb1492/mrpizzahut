@@ -7,12 +7,9 @@
     Map<String,Object>product=(Map<String,Object>)request.getAttribute("product");
     
     %>
-<!DOCTYPE html>
-<html>
-<head>
+
 <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
-</head>
-<body>
+
 
 <div class="contents">
 <form  id="minsert" name="minsert">
@@ -165,5 +162,3 @@ ClassicEditor
 } );
 
 </script>	
-</body>
-</html>

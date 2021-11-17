@@ -2,12 +2,9 @@
     pageEncoding="UTF-8"%>
     <%@ include file="../common/adminHeader.jsp" %>
   <%@ include file="../common/adminSide.jsp" %>
-<!DOCTYPE html>
-<html>
-<head>
+
 <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
-</head>
-<body>
+
 <div class="contents">
 <form  id="minsert" name="minsert">
 메뉴제목:
@@ -155,5 +152,3 @@ ClassicEditor
 } );
 
 </script>	
-</body>
-</html>

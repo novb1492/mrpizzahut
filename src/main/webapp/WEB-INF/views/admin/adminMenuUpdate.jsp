@@ -9,9 +9,7 @@
    		int nowPage=(int)request.getAttribute("page");
    		int totalPage=(int)request.getAttribute("totalPage");
     %>
-<!DOCTYPE html>
-<html>
-<body>
+
 <div class="contents">
  		<ul>
  		<%
@@ -60,5 +58,3 @@
             </div>
         </div>
  </div>
-</body>
-</html>

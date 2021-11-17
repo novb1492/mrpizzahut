@@ -1,8 +1,16 @@
 var result;
+
+function changeMonth(num){
+	var year=getParam('year');
+	var month=getParam('month');
+	var productName=getParam('productName');
+	location.href='/app/admin/sales?month='+(month*1+num)+'&year='+year+'&productName='+productName;
+}
 function changeYear(num){
 	var productName=getParam('productName');
 	var year=getParam('year');
-	location.href='/app/admin/sales?year='+(year*1+num)+'&productName='+productName;
+	var month=getParam('month');
+	location.href='/app/admin/sales?month='+month+'&year='+(year*1+num)+'&productName='+productName;
 }
 function deleteCoupon(){
 	var conum=document.getElementById('conum').value;
