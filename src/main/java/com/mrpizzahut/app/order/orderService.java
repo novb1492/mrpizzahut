@@ -24,6 +24,20 @@ public class orderService {
 	@Autowired
 	private orderDao orderDao;
 	
+	public void getOrder(HttpServletRequest request,Model model) {
+		System.out.println("getOrder");
+		int onum=Integer.parseInt(request.getParameter("onum"));
+		System.out.println("조회 주문 번호 "+onum);
+		model.addAttribute("order",  orderDao.findByOnum(onum));
+	}
+	/*public List<Map<String, Object>> getAllStitleAndProduct() {
+		System.out.println("getAllStitleAndProduct");
+		 orderDao orderDao2=orderDao;
+		List<String>allStitle=orderDao2.getAllStitle();
+		System.out.println("모든 stitle"+ allStitle.toString());
+		return null;
+	}*/
+	
 	public void getAllPrice(HttpServletRequest request,Model model) {
 		System.out.println("getAllPrice");
 		String year=request.getParameter("year");

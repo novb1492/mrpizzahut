@@ -130,8 +130,15 @@ public class controller {
 	@RequestMapping(value = "/admin/order",method = RequestMethod.GET)
 	public String showOrders(HttpServletRequest request,HttpServletResponse response,Model model) {
 		System.out.println("showOrders");
-		orderService.getAllOrders(request, model);
-		return "/admin/showOrders";
+		String detail=request.getParameter("detail");
+		if(detail.equals("all")) {
+			orderService.getAllOrders(request, model);
+			return "/admin/showOrders";
+		}else {
+			orderService.getOrder(request,model);
+			return "/admin/showOrder";
+		}
+
 	}
 	@RequestMapping(value = "/admin/sales",method = RequestMethod.GET)
 	public String showSales(HttpServletRequest request,HttpServletResponse response,Model model) {
@@ -139,6 +146,7 @@ public class controller {
 		orderService.getAllPrice(request, model);
 		return "/admin/showPay";
 	}
+
 	
 	
 
