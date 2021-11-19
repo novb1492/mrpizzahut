@@ -37,7 +37,14 @@
 		update card set CFNNM=#{fnnm},CMCHTID=#{mchtid}, CDONEFLAG=#{doneFlag},CDONEDATE=#{doneDate},CTRDNO=#{trdNo} where CMCHTTRDNO=#{mchtTrdNo}
 	</update>
 	<update id="updateOrderDoneFlag" parameterType="Map">
-		update orders set ODONEFLAG=#{doneFlag},ODONEDATE=#{doneDate} where OMCHTTRDNO=#{mchtTrdNo} and OEMAIL=#{email}
+		update orders set ODONEFLAG=#{doneFlag},ODONEDATE=#{doneDate} where  OMCHTTRDNO=#{OMCHTTRDNO}  and OEMAIL=#{OEMAIL} and ONAME=#{ONAME} 
+		<if test="OSIZE!=null">
+			and OSIZE=#{OSIZE} 
+		</if>
+		<if test="OEDGE!=null">
+			and OEDGE=#{OEDGE}
+		</if>
+		
 	</update>
 	<update id="updateCardCancleFlag" parameterType="Map" >
 		update card set CCNCLORD=#{cnclord}, CCANCLEFLAG=#{cancleFlag},CCANCLEDATE=#{cancleDate} where CMCHTTRDNO=#{mchtTrdNo} and CEMAIL=#{email}

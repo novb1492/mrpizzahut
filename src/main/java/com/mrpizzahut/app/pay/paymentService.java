@@ -89,11 +89,6 @@ public class paymentService {
 		System.out.println(buykind+"테이블 doneFlag완료");
 		
 	}
-	public void updateOrderDoneFlag(Map<String, Object>map) {
-		System.out.println("updateOrderDoneFlag");
-		payDao.updateOrderDoneFlag(map);
-		System.out.println("주문 테이블 done완료");
-	}
 	public void insertOrder(List<Map<String,Object>>maps,String mchtTrdNo,String email,String method) {
 		System.out.println("insertOrder");
 			int temp=0;

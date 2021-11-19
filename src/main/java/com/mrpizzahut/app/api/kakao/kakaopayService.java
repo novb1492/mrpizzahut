@@ -109,7 +109,6 @@ public class kakaopayService {
              map.put("mchtTrdNo", mchtTrdNo);
              map.put("email", email);
              paymentService.updateDonFlag(map,"kpay");
-             paymentService.updateOrderDoneFlag(map);
              reponse.put("flag", true);
              reponse.put("buykind", buykind);
              reponse.put("price", dbPrice);

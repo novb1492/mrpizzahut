@@ -27,6 +27,7 @@ import Daos.buketDao;
 import Daos.couponDao;
 import Daos.payDao;
 import Daos.productDao;
+import oracle.sql.TIMESTAMP;
 
 @Service
 public class productService {
@@ -403,20 +404,21 @@ public class productService {
 		List<Map<String, Object>>maps=payDao.OrderFindByMchtTrdNo(mchtTrdNo);
 		System.out.println("결제 요청 제품 정보 "+maps.toString());
 		for(Map<String, Object>map:maps) {
-			Map<String, Object>map2=new HashMap<String, Object>();
-			map2.put("CEDGE", map.get("OEDGE"));
-			map2.put("CSIZE", map.get("OSIZE"));
-			map2.put("CMENU", map.get("ONAME"));
-			Map<String, Object>map3=payDao.findByPizzaName(map2);
+			map.put("CEDGE", map.get("OEDGE"));
+			map.put("CSIZE", map.get("OSIZE"));
+			map.put("CMENU", map.get("ONAME"));
+			Map<String, Object>map3=payDao.findByPizzaName(map);
 			System.out.println("현재 제품 정보 "+map3.toString());
 			int dbCount=Integer.parseInt(map3.get("MCOUNT").toString());
 			dbCount-=Integer.parseInt(map.get("OCOUNT").toString());
 			if(dbCount<0) {
 				throw utillService.makeRuntimeEX(map.get("ONAME")+"상품의 재고가 부족합니다", "minusProductCount");
 			}
-			map2.put("count", dbCount);
-			payDao.orderUpdateCount(map2);
-			
+			map.put("count", dbCount);
+			payDao.orderUpdateCount(map);
+			map.put("doneFlag",doneFlag);
+			map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+			payDao.updateOrderDoneFlag(map);
 		}
 		System.out.println("재고 유효성 통과");
 	}

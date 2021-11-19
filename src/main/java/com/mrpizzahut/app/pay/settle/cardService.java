@@ -70,7 +70,6 @@ public class cardService {
             productService.minusProductCount(mchtTrdNo);
             productService.doneCoupon(card.get("CCOUPON").toString(),email,mchtTrdNo);
             paymentService.updateDonFlag(map, buyKind);
-            paymentService.updateOrderDoneFlag(map);
             buketService.deleteBuket(email);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);

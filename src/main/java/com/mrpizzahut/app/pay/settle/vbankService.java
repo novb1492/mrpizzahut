@@ -164,7 +164,6 @@ public class vbankService {
 		            map.put("email",email);
 		            productService.doneCoupon(vbank.get("VCOUPON").toString(),email,mchtTrdNo);
 		            paymentService.updateDonFlag(map, buyKind2);
-		            paymentService.updateOrderDoneFlag(map);
 				System.out.println("가상계좌 입금 처리 완료");
 			} catch (Exception e) {
 				System.out.println("가상계좌 입금 완료 처리중 예외발생");

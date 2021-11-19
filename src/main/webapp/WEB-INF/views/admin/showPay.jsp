@@ -11,6 +11,7 @@
 	String producName=request.getParameter("productName");
 	int nowYear=Integer.parseInt(request.getParameter("year"));
 	int nowMonth=Integer.parseInt(request.getParameter("month"));
+
     %>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <%@ include file="../common/adminSide.jsp" %>
