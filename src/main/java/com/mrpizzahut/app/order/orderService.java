@@ -68,17 +68,17 @@ public class orderService {
 				period.put("end", Timestamp.valueOf(year+"-"+month+"-"+day+" 23:59:59"));
 				period.put("flag", flag);
 				period.put("productName", productName);
-				List<Integer>allPayPrice=orderDao.findByDate(period);
-				List<Integer>allCanclePrice=orderDao.finByDateCancel(period);
-				System.out.println(i+"월 "+ii+"일 조회 금액 "+allPayPrice.toString());
-				System.out.println(i+"월 "+ii+"일 취소 조회 금액 "+allCanclePrice.toString());
-				for(int price:allPayPrice) {
-					p+=price;
-					
-				}
-				for(int price:allCanclePrice) {
-					cp+=price;
-					
+				List<Map<String, Object>>allPayPrices=orderDao.findByDate(period);
+				System.out.println(i+"월 "+ii+"일 거래내역 "+allPayPrices.toString());
+				for(Map<String, Object>allpice:allPayPrices) {
+					int doneFlag=Integer.parseInt(allpice.get("ODONEFLAG").toString());
+					int cancleFlag=Integer.parseInt(allpice.get("OCANCLEFLAG").toString());
+					int dbPrice=Integer.parseInt(allpice.get("OPRICE").toString());
+					if(doneFlag==1&&cancleFlag==0) {
+						p+=dbPrice;
+					}else {
+						cp+=dbPrice;
+					}
 				}
 				if(requestmonth==i) {
 					byDayPrice.put(i+"/"+ii, p);
