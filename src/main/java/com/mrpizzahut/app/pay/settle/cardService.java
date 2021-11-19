@@ -112,10 +112,10 @@ public class cardService {
 		orderAndPay.put("CCNCLORD", cnclOrd);
 		paymentService.updateCardCancle(orderAndPay);
 		settleDto settleDto=new settleDto();
-		settleDto.setTrdAmt(orderAndPay.get("CTRDAMT").toString());
+		settleDto.setTrdAmt(orderAndPay.get("OPRICE").toString());
 		settleDto.setCnclOrd(cnclOrd);
 		settleDto.setMchtTrdNo(orderAndPay.get("CMCHTTRDNO").toString());
-		settleDto.setTrdNo(orderAndPay.get("OPRICE").toString());
+		settleDto.setTrdNo(orderAndPay.get("CTRDNO").toString());
 		return requestToSettle(cancle(settleDto));
 	}
 	private JSONObject cancle(settleDto settleDto){

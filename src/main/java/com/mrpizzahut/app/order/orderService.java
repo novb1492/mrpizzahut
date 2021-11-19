@@ -64,11 +64,13 @@ public class orderService {
 		orderAndPay.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
 		orderAndPay.put("onum",onum);
 		orderDao.updateOrderCancleFlag(orderAndPay);
+		System.out.println("주문 캔슬 플래그 성공");
 		String productName=orderAndPay.get("ONAME").toString();
-		int dbCount=orderDao.findByProductName(productName);
+		int dbCount=orderDao.findByProductName(orderAndPay);
 		dbCount+=Integer.parseInt(orderAndPay.get("OCOUNT").toString());
 		orderAndPay.put("count", dbCount);
 		orderDao.updateProductCount(orderAndPay);
+		System.out.println("재고 정리 성공");
 		if(orderAndPay.get("OMETHOD").equals("kpay")) {
 			System.out.println("카카오로 결제 되었던것");
 			if(kakaopayService.cancleKPAY(orderAndPay)) {

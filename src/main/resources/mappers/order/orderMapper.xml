@@ -23,10 +23,22 @@
 	<update id="updateOrderCancleFlag" parameterType="Map" >
 		update orders set OCANCLEFLAG=#{cancleFlag},OCANCLEDATE=#{cancleDate} where ONUM=#{onum}
 	</update>
-	<select id="findByProductName" parameterType="String" resultType="_int">
-		select MCOUNT from menu where MNAME=#{mname}
+	<select id="findByProductName" parameterType="Map" resultType="_int">
+		select MCOUNT from menu where MNAME=#{ONAME}
+		<if test="OSIZE!=null">
+			and MSIZE=#{OSIZE}
+		</if>
+		<if test="OEDGE!=null">
+			and EDGE=#{OEDGE}
+		</if>
 	</select>
 	<update id="updateProductCount" parameterType="Map">
 		update menu set MCOUNT=#{count} where MNAME=#{ONAME}
+		<if test="OSIZE!=null">
+			and MSIZE=#{OSIZE}
+		</if>
+		<if test="OEDGE!=null">
+			and EDGE=#{OEDGE}
+		</if>
 	</update>
 </mapper>

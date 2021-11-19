@@ -12,6 +12,6 @@ public interface orderDao {
 	public Map<String, Object>findByOnum(int onum);
 	public Map<String, Object>findByMchttrdnoAndOnumJoin(Map<String, Object>map);
 	public int updateOrderCancleFlag(Map<String, Object>map);
-	public int findByProductName(String productName);
+	public int findByProductName(Map<String, Object>map);
 	public int updateProductCount(Map<String, Object>map);
 }
