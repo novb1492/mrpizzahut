@@ -65,7 +65,8 @@ public class orderService {
 		orderAndPay.put("onum",onum);
 		orderDao.updateOrderCancleFlag(orderAndPay);
 		System.out.println("주문 캔슬 플래그 성공");
-		String productName=orderAndPay.get("ONAME").toString();
+		int newPrice=Integer.parseInt(orderAndPay.get("CTRDAMT").toString())-Integer.parseInt(orderAndPay.get("OPRICE").toString());
+		orderAndPay.put("newPrice", newPrice);
 		int dbCount=orderDao.findByProductName(orderAndPay);
 		dbCount+=Integer.parseInt(orderAndPay.get("OCOUNT").toString());
 		orderAndPay.put("count", dbCount);
