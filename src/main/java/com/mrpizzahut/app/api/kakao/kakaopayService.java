@@ -103,12 +103,9 @@ public class kakaopayService {
              }
              productService.minusProductCount(mchtTrdNo);
              productService.doneCoupon(kpay.get("KCOUPN").toString() , email, mchtTrdNo);
-             Map<String, Object>map=new HashMap<String, Object>();
-             map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
-             map.put("doneFlag", doneFlag);
-             map.put("mchtTrdNo", mchtTrdNo);
-             map.put("email", email);
-             paymentService.updateDonFlag(map,"kpay");
+             kpay.put("doneDate",  Timestamp.valueOf(LocalDateTime.now()));
+             kpay.put("doneFlag", doneFlag);
+             paymentService.updateDonFlag(kpay,"kpay");
              reponse.put("flag", true);
              reponse.put("buykind", buykind);
              reponse.put("price", dbPrice);

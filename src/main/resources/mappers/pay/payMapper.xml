@@ -69,7 +69,7 @@
 		select *from kpay where KPARTNERORDERID=#{mchtTrdNo}
 	</select>
 	<update id="kpayUpdateDoneFlag" parameterType="Map">
-		update kpay set KDONEFLAG=#{doneFlag},KDONEDATE=#{doneDate} where KEMAIL=#{email} and KPARTNERORDERID=#{mchtTrdNo}
+		update kpay set KDONEFLAG=#{doneFlag},KDONEDATE=#{doneDate} where KEMAIL=#{KEMAIL} and KPARTNERORDERID=#{KPARTNERORDERID}
 	</update>
 	<update id="kpayUpdateCancleFlag" parameterType="Map">
 		update kpay set KCANCLEFLAG=#{cancleFlag},KCANCLEDATE=#{cancleDate} where KPARTNERORDERID=#{mchtTrdNo} and KEMAIL=#{email}
