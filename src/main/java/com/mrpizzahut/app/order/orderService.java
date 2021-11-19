@@ -20,6 +20,7 @@ import com.mrpizzahut.app.api.kakao.kakaopayService;
 
 import Daos.orderDao;
 import Daos.payDao;
+import oracle.net.aso.e;
 
 @Service
 public class orderService {
@@ -31,14 +32,13 @@ public class orderService {
 	@Autowired
 	private orderDao orderDao;
 	@Autowired
-	private payDao payDao;
-	@Autowired
 	private kakaopayService kakaopayService;
 	
 	@Transactional(rollbackFor = Exception.class)
-	public void cancleOrder(JSONObject jsonObject,HttpServletRequest request) {
+	public JSONObject cancleOrder(JSONObject jsonObject,HttpServletRequest request) {
 		System.out.println("cancleOrder");
 		String email=utillService.getEmail(request);
+		String role=request.getSession().getAttribute("role").toString();
 		int onum=Integer.parseInt(jsonObject.get("onum").toString());
 		String mchtTrdNo= jsonObject.get("mchttrdno").toString();
 		System.out.println("주문 취소 번호 "+onum);
@@ -49,17 +49,33 @@ public class orderService {
 		System.out.println("취소정보 불러오기 성공 "+orderAndPay.toString());
 		if(Integer.parseInt(orderAndPay.get("OCANCLEFLAG").toString())!=0) {
 			throw utillService.makeRuntimeEX("이미 환불 처리되었던 제품입니다 ", "cancleOrder");
+		}else if(!orderAndPay.get("OEMAIL").equals(email)) {
+			System.out.println("환불시 이메일 불일치 발생");
+			if(role.equals("admin")) {
+				System.out.println("관리자가 환불시도");
+			}else {
+				return utillService.makeJson(false, "관리자도 아닌계정이 이메일이 일치하지 않으므로 환불실패");
+			}
 		}
 		orderAndPay.put("cancleFlag", cancleFlag);
 		orderAndPay.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
-		orderAndPay.put("mchtTrdNo",mchtTrdNo);
-		payDao.updateOrderCancleFlag(orderAndPay);
-		
-		
+		orderAndPay.put("onum",onum);
+		orderDao.updateOrderCancleFlag(orderAndPay);
+		String productName=orderAndPay.get("ONAME").toString();
+		int dbCount=orderDao.findByProductName(productName);
+		dbCount+=Integer.parseInt(orderAndPay.get("OCOUNT").toString());
+		orderAndPay.put("count", dbCount);
+		orderDao.updateProductCount(orderAndPay);
 		if(orderAndPay.get("OMETHOD").equals("kpay")) {
 			System.out.println("카카오로 결제 되었던것");
+			if(kakaopayService.cancleKPAY(orderAndPay)) {
+				return utillService.makeJson(true, "환불에 성공하였습니다");
+			}else {
+				return null;
+			}
 		}else {
 			System.out.println("세틀뱅크 가야함");
+			return null;
 		}
 	}
 	

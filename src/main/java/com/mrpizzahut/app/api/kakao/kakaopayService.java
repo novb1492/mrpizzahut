@@ -140,7 +140,18 @@ public class kakaopayService {
 			return reponse;
 		}
     } 
-   public boolean cancleKakaoPAY(MultiValueMap<String, Object>body) {
+   public boolean cancleKPAY(Map<String, Object>kpay) {
+	   System.out.println("cancleKPAY");
+	   MultiValueMap<String, Object>body=requestTo.getMultiValueBody();
+	   body.add("cid", kpay.get("KCID"));
+       body.add("tid",kpay.get("KTID"));
+       body.add("cancel_amount",Integer.parseInt(kpay.get("OPRICE").toString()));
+       body.add("cancel_tax_free_amount",0);
+	   return cancleKakaoPAY(body);
+	   
+	   
+   }
+   private boolean cancleKakaoPAY(MultiValueMap<String, Object>body) {
 	   System.out.println("cancleKakaoPAY");
 	   HttpHeaders headers=requestTo.getHeaders();
 	   headers.add("Authorization","KakaoAK "+kakaoAdminKey);
