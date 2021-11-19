@@ -76,7 +76,7 @@ public class orderService {
 					int dbPrice=Integer.parseInt(allpice.get("OPRICE").toString());
 					if(doneFlag==1&&cancleFlag==0) {
 						p+=dbPrice;
-					}else {
+					}else if(cancleFlag!=0) {
 						cp+=dbPrice;
 					}
 				}
