@@ -11,4 +11,5 @@ public interface orderDao {
 	public List<Integer>finByDateCancel(Map<String, Object>map);
 	public Map<String, Object>findByOnum(int onum);
 	public Map<String, Object>findByMchttrdnoAndOnumJoin(Map<String, Object>map);
+
 }

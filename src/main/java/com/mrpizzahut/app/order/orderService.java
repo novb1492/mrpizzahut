@@ -1,6 +1,7 @@
 package com.mrpizzahut.app.order;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,32 +16,47 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
+import com.mrpizzahut.app.api.kakao.kakaopayService;
 
 import Daos.orderDao;
+import Daos.payDao;
 
 @Service
 public class orderService {
 	
 	private final int pageSize=10;
+	private final int cancleFlag=1;
 
 	
 	@Autowired
 	private orderDao orderDao;
+	@Autowired
+	private payDao payDao;
+	@Autowired
+	private kakaopayService kakaopayService;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public void cancleOrder(JSONObject jsonObject,HttpServletRequest request) {
 		System.out.println("cancleOrder");
 		String email=utillService.getEmail(request);
 		int onum=Integer.parseInt(jsonObject.get("onum").toString());
+		String mchtTrdNo= jsonObject.get("mchttrdno").toString();
 		System.out.println("주문 취소 번호 "+onum);
 		Map<String, Object>onumAndMu=new HashMap<String, Object>();
-		onumAndMu.put("onum", jsonObject.get("onum"));
-		onumAndMu.put("MCHTTRDNO", jsonObject.get("mchttrdno"));
+		onumAndMu.put("onum", onum);
+		onumAndMu.put("MCHTTRDNO", mchtTrdNo);
 		Map<String, Object>orderAndPay=orderDao.findByMchttrdnoAndOnumJoin(onumAndMu);
 		System.out.println("취소정보 불러오기 성공 "+orderAndPay.toString());
 		if(Integer.parseInt(orderAndPay.get("OCANCLEFLAG").toString())!=0) {
 			throw utillService.makeRuntimeEX("이미 환불 처리되었던 제품입니다 ", "cancleOrder");
-		}else if(orderAndPay.get("OMETHOD").equals("kpay")) {
+		}
+		orderAndPay.put("cancleFlag", cancleFlag);
+		orderAndPay.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
+		orderAndPay.put("mchtTrdNo",mchtTrdNo);
+		payDao.updateOrderCancleFlag(orderAndPay);
+		
+		
+		if(orderAndPay.get("OMETHOD").equals("kpay")) {
 			System.out.println("카카오로 결제 되었던것");
 		}else {
 			System.out.println("세틀뱅크 가야함");
