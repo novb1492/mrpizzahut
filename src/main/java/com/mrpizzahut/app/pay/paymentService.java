@@ -27,7 +27,12 @@ public class paymentService {
 	
 	@Autowired
 	private payDao payDao;
-
+	
+	public void updateCardCancle(Map<String, Object>map) {
+		System.out.println("updateCardCancle");
+		payDao.updateCardCancleTime(map);
+		System.out.println("카드 환불카운트 증가 완료");
+	}
 	public void updateOrderCancleFlag(Map<String, Object>map) {
 		System.out.println("updateOrderCancleFlag");
 		payDao.updateOrderCancleFlag(map);

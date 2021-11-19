@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.kakao.kakaopayService;
+import com.mrpizzahut.app.pay.settle.settleService;
 
 import Daos.orderDao;
 import Daos.payDao;
@@ -33,6 +34,8 @@ public class orderService {
 	private orderDao orderDao;
 	@Autowired
 	private kakaopayService kakaopayService;
+	@Autowired
+	private settleService settleService;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public JSONObject cancleOrder(JSONObject jsonObject,HttpServletRequest request) {
@@ -69,14 +72,19 @@ public class orderService {
 		if(orderAndPay.get("OMETHOD").equals("kpay")) {
 			System.out.println("카카오로 결제 되었던것");
 			if(kakaopayService.cancleKPAY(orderAndPay)) {
-				return utillService.makeJson(true, "환불에 성공하였습니다");
+				
 			}else {
-				return null;
+				return utillService.makeJson(false, "환불에 실패했습니다");
 			}
 		}else {
 			System.out.println("세틀뱅크 가야함");
-			return null;
+			JSONObject response=settleService.canclePay(orderAndPay);
+			if(!(boolean)response.get("flag")) {
+				return response;
+			}
+		
 		}
+		return utillService.makeJson(true, "환불에 성공하였습니다");
 	}
 	
 	public void getOrder(HttpServletRequest request,Model model) {

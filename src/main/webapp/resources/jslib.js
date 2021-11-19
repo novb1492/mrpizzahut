@@ -7,6 +7,10 @@ function cancleOrder(){
          "mchttrdno":mchttrdno
 	}); 
 	var result=requestPutToServer('/app/cancleOrder',data);
+	alert(result.message);
+	if(result.flag){
+		location.href='/app/admin/order?detail=all&page=1&keyword=';
+	}
 	
 }
 function changeMonth(num){

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -104,6 +105,19 @@ public class cardService {
         }
         
     }
+	public JSONObject canclePay(Map<String, Object>orderAndPay) {
+		System.out.println("canclepay");
+		int cnclOrd=Integer.parseInt(orderAndPay.get("CCNCLORD").toString());
+		cnclOrd+=1;
+		orderAndPay.put("CCNCLORD", cnclOrd);
+		paymentService.updateCardCancle(orderAndPay);
+		settleDto settleDto=new settleDto();
+		settleDto.setTrdAmt(orderAndPay.get("CTRDAMT").toString());
+		settleDto.setCnclOrd(cnclOrd);
+		settleDto.setMchtTrdNo(orderAndPay.get("CMCHTTRDNO").toString());
+		settleDto.setTrdNo(orderAndPay.get("OPRICE").toString());
+		return requestToSettle(cancle(settleDto));
+	}
 	private JSONObject cancle(settleDto settleDto){
         System.out.println("cancle");
         Map<String,String>map=utillService.getTrdDtTrdTm();

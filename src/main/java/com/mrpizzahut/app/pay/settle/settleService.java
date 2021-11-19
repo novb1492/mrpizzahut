@@ -34,6 +34,19 @@ public class settleService {
 	@Autowired
 	private vbankService vbankService;
 	
+	
+	public JSONObject canclePay(Map<String, Object>orderAndPay) {
+		System.out.println("canclePay");
+		String kind=orderAndPay.get("OMETHOD").toString();
+		if(kind.equals("card")) {
+			System.out.println("카드 결제 한거 취소 시도");
+			return cardService.canclePay(orderAndPay);
+		}else if(kind.equals("vbank")) {
+			System.out.println("가상계좌 취소시도");
+		}
+		return null;
+	}
+	
 	public void callbackProcess(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("callbackProcess");
 		String scope=request.getParameter("scope");
