@@ -99,7 +99,10 @@
    };
 
    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
+   var formatter = new google.visualization.NumberFormat(
+		 {prefix: '원', negativeColor: 'red', negativeParens: true});
+   		formatter.format(data, 1);
+		formatter.format(data, 2); // Apply formatter to second column
    chart.draw(data, google.charts.Bar.convertOptions(options));
  }
  function drawChart2() {
@@ -146,7 +149,10 @@
    };
 
    var chart2 = new google.charts.Bar(document.getElementById('columnchart_material2'));
-
+   var formatter = new google.visualization.NumberFormat(
+			 {prefix: '원', negativeColor: 'red', negativeParens: true});
+	   		formatter.format(data2, 1);
+			formatter.format(data2, 2); // Apply formatter to second column
    chart2.draw(data2, google.charts.Bar.convertOptions(options2));
  }
 
