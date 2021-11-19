@@ -8,8 +8,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.utillService;
@@ -18,11 +20,32 @@ import Daos.orderDao;
 
 @Service
 public class orderService {
+	
 	private final int pageSize=10;
 
 	
 	@Autowired
 	private orderDao orderDao;
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void cancleOrder(JSONObject jsonObject,HttpServletRequest request) {
+		System.out.println("cancleOrder");
+		String email=utillService.getEmail(request);
+		int onum=Integer.parseInt(jsonObject.get("onum").toString());
+		System.out.println("주문 취소 번호 "+onum);
+		Map<String, Object>onumAndMu=new HashMap<String, Object>();
+		onumAndMu.put("onum", jsonObject.get("onum"));
+		onumAndMu.put("MCHTTRDNO", jsonObject.get("mchttrdno"));
+		Map<String, Object>orderAndPay=orderDao.findByMchttrdnoAndOnumJoin(onumAndMu);
+		System.out.println("취소정보 불러오기 성공 "+orderAndPay.toString());
+		if(Integer.parseInt(orderAndPay.get("OCANCLEFLAG").toString())!=0) {
+			throw utillService.makeRuntimeEX("이미 환불 처리되었던 제품입니다 ", "cancleOrder");
+		}else if(orderAndPay.get("OMETHOD").equals("kpay")) {
+			System.out.println("카카오로 결제 되었던것");
+		}else {
+			System.out.println("세틀뱅크 가야함");
+		}
+	}
 	
 	public void getOrder(HttpServletRequest request,Model model) {
 		System.out.println("getOrder");

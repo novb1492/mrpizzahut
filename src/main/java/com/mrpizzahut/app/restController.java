@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.mrpizzahut.app.buket.buketService;
 import com.mrpizzahut.app.buket.deleteCartDto;
 import com.mrpizzahut.app.file.fileService;
+import com.mrpizzahut.app.order.orderService;
 import com.mrpizzahut.app.pay.productService;
 import com.mrpizzahut.app.pay.tryBuyDto;
 import com.mrpizzahut.app.pay.coupon.couponService;
@@ -39,6 +40,8 @@ public class restController {
 	private fileService fileService;
 	@Autowired
 	private couponService couponService;
+	@Autowired
+	private orderService orderService;
 	
 	
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
@@ -107,6 +110,11 @@ public class restController {
 			return utillService.makeJson(false, "관리자 계정이아닙니다");
 		}
 		return couponService.deleteCoupon(request);
+	}
+	@RequestMapping(value = "/cancleOrder",method = RequestMethod.PUT)
+	public void tryCancleOrder(@RequestBody JSONObject jsonObject,HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("tryCancleOrder");
+		orderService.cancleOrder(jsonObject, request);
 	}
 	
 	

@@ -1,5 +1,14 @@
 var result;
-
+function cancleOrder(){
+	var onum=document.getElementById('onum').value;
+	var mchttrdno=document.getElementById('mchttrdno').value;
+	let	data=JSON.stringify({
+         "onum":onum,
+         "mchttrdno":mchttrdno
+	}); 
+	var result=requestPutToServer('/app/cancleOrder',data);
+	
+}
 function changeMonth(num){
 	var year=getParam('year');
 	var month=getParam('month');

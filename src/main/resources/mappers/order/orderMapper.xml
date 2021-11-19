@@ -17,4 +17,7 @@
 	<select id="findByOnum" parameterType="_int" resultType="Map">
 		select * from orders where ONUM=#{onum}
 	</select>
+	<select id="findByMchttrdnoAndOnumJoin" parameterType="Map" resultType="Map">
+		 select o.*,b.*,c.*,v.* from orders o left join kpay b on b.KPARTNERORDERID=o.OMCHTTRDNO left join card c on c.CMCHTTRDNO=o.OMCHTTRDNO  left join vbank v on v.VMCHTTRDNO=o.OMCHTTRDNO where o.OMCHTTRDNO=#{MCHTTRDNO} and o.onum=#{onum}
+	</select>
 </mapper>

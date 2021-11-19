@@ -11,7 +11,7 @@ int cancleFlag=Integer.parseInt(order.get("OCANCLEFLAG").toString());
 <html>
 <body>
  <div class="contents">
-<form  id="minsert" name="minsert">
+
 주문번호:
 <br>
 <%=order.get("ONUM") %>
@@ -56,7 +56,9 @@ int cancleFlag=Integer.parseInt(order.get("OCANCLEFLAG").toString());
 <br>
 <%=order.get("ODONEDATE") %>
 <br>
-<input type="button"  class="form-control  mt-2" value="주문 취소" onclick="updateorder('minsert')">
+<input type="hidden"  id="mchttrdno" value="<%=order.get("OMCHTTRDNO")%>">
+<input type="hidden"  id="onum" value="<%=order.get("ONUM")%>">
+<input type="button"  class="form-control  mt-2" value="주문 취소" onclick="cancleOrder()">
 <%}else if(cancleFlag!=0){
 %>
 결제 취소된 상품입니다
@@ -72,7 +74,6 @@ int cancleFlag=Integer.parseInt(order.get("OCANCLEFLAG").toString());
 
 
 
-</form>
 </div>	
 </body>
 </html>
