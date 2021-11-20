@@ -54,16 +54,23 @@
 <input type="number" min="1" name="count" class="form-control menuInput mt-2" placeholder="일 최대 판매량을 입력해주세요" value="<%=product.get("MCOUNT")%>">
 <br>
 <input type="button"  class="form-control menuInput mt-2" value="메뉴수정" onclick="update(<%=product.get("MNUM")%>)">
-<input type="button"  class="form-control menuInput mt-2" value="메뉴삭제" onclick="deleteMenu(<%=product.get("MNUM")%>)">
+<input type="button"  class="form-control menuInput mt-2" value="메뉴삭제" onclick="deleteM(<%=product.get("MNUM")%>)">
 </form>
 </div>
 <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
 <script type="text/javascript">
 let editor;
 var flag=true;
+function deleteM(mnum) {
+	deleteMenu(mnum);
+}
 function update(mnum) {
+	flag=false;
 	updateMenu('minsert',editor.getData(),mnum);
 }
+window.onbeforeunload = function(e) {
+	cancleArticle(flag);
+};
 class MyUploadAdapter {
     constructor(props) {
         // CKEditor 5's FileLoader instance.
