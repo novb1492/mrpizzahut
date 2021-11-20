@@ -54,13 +54,10 @@ var flag=true;
 
 function insert() {
 	flag=false;
-	alert(flag);
 	insertMenu('minsert',editor.getData());
 }
 window.onbeforeunload = function(e) {
-	if(flag){
-		cancleArticle();
-	}
+		cancleArticle(flag);
 };
 
 class MyUploadAdapter {

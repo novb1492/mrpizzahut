@@ -1,6 +1,10 @@
 var result;
-function cancleArticle() {
- requestToServer2('/app/deleteimg');
+function cancleArticle(flag) {
+	alert(flag);
+	if(flag){
+	
+		 requestToServer2('/app/deleteimg');
+	}
 }
 function cancleOrder(){
 	var onum=document.getElementById('onum').value;

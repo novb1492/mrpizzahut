@@ -133,13 +133,13 @@ public class productService {
 	    	productDao.insertProduct(product);
 	    }else if(scope.equals("update")) {
 	    	System.out.println("메뉴수정 시도");
-	    	product.put("conum", request.getParameter("conum"));
+	    	product.put("mnum", request.getParameter("mnum"));
 	    	productDao.updateProduct(product);
 	    	message="제품 수정 성공";
 	    }else {
 	    	return utillService.makeJson(false, "지원하지 않는 기능입니다");
-	    }
-				
+	    }	
+	    request.getSession().removeAttribute("imgs");
 		return utillService.makeJson(true, message);
 	}
 	
