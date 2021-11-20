@@ -130,6 +130,8 @@ public class utillService {
 			return true;
 		}else if(s.isBlank()) {
 			return true;
+		}else if(s.equals("null")) {
+			return true;
 		}
 		return false;
 	}

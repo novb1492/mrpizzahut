@@ -426,22 +426,23 @@ public class productService {
 		System.out.println("doneCoupon");
 		String[] coupons=coupon.split(",");
 		for(String s: coupons) {
-			if(!s.equals("null")) {
 				System.out.println("쿠폰 조회"+s);
-				Map<String, Object>map=couponDao.findByCouponName(s);
-				System.out.println("쿠폰 정보 "+map.toString());
-				 if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COEXPIRED").toString()).toLocalDateTime())){
-	                    throw utillService.makeRuntimeEX(s+"기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
-	              }else if(Integer.parseInt(map.get("USEDFLAG").toString())!=0){
-	                    throw utillService.makeRuntimeEX(s+"이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
-	              }
-				 map.put("mchtTrdNo", mchtTrdNo);
-				 map.put("email", email);
-				 map.put("doneFlag", doneFlag);
-				 map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
-				 map.put("name", s);
+				if(!utillService.checkNull(s)) {
+					Map<String, Object>map=couponDao.findByCouponName(s);
+					System.out.println("쿠폰 정보 "+map.toString());
+					 if(LocalDateTime.now().isAfter(Timestamp.valueOf(map.get("COEXPIRED").toString()).toLocalDateTime())){
+		                    throw utillService.makeRuntimeEX(s+"기간이 지난 쿠폰입니다", "getTotalPriceAndOther");
+		              }else if(Integer.parseInt(map.get("USEDFLAG").toString())!=0){
+		                    throw utillService.makeRuntimeEX(s+"이미 사용된 쿠폰입니다", "getTotalPriceAndOther");
+		              }
+					 map.put("mchtTrdNo", mchtTrdNo);
+					 map.put("email", email);
+					 map.put("doneFlag", doneFlag);
+					 map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+					 map.put("name", s);
 				 couponDao.updateDone(map);
-			}
+				}
+		
 		}
 		System.out.println("쿠폰유효성통과");
 	}
