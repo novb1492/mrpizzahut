@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +26,20 @@ public class awsService {
 	
     private final String awsS3Url="https://s3.ap-northeast-2.amazonaws.com/mrpizzahut/imgs/";
     
-    public JSONObject  uploadAws(MultipartFile multipartFile,String bucketName) {
+    public JSONObject  uploadAws(MultipartFile multipartFile,String bucketName,HttpSession session) {
         System.out.println("uploadAws");
         try {
         	   File file=convert(multipartFile);
                String saveName=file.getName();
+               List<String>imgs=(List<String>)session.getAttribute("imgs");
+	       		try {
+	       			imgs.add(saveName);
+	       		} catch (NullPointerException e) {
+	       			System.out.println("이미지 배열이 없으므로 생성");
+	       			imgs=new ArrayList<String>();
+	       			imgs.add(saveName);
+	       			session.setAttribute("imgs", imgs);
+	       		}
                amazonS3.putObject(bucketName, saveName, file);
                file.delete();
                System.out.println("파일업로드 완료");

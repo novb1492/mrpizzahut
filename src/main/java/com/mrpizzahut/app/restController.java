@@ -1,7 +1,11 @@
 package com.mrpizzahut.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -116,7 +120,15 @@ public class restController {
 		System.out.println("tryCancleOrder");
 		return orderService.cancleOrder(jsonObject, request);
 	}
-	
+	@RequestMapping(value = "/deleteimg",method = RequestMethod.POST)
+	public void deleteImg(HttpServletRequest request,HttpServletResponse response) {
+		System.out.println("deleteImg");
+		utillService.getEmail(request);
+		List<String>imgs=(List<String>)request.getSession().getAttribute("imgs");
+		System.out.println("삭제할 이미지"+imgs.toString());
+		fileService.deleteImg(imgs);
+		
+	}
 	
 
 }

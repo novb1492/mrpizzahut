@@ -134,7 +134,14 @@ public class utillService {
 		return false;
 	}
     public static String getEmail(HttpServletRequest request) {
-		return (String)request.getSession().getAttribute("email");
+    	System.out.println("getEmail");
+    	try {
+    		return (String)request.getSession().getAttribute("email");
+		} catch (Exception e) {
+			System.out.println("로그인 이메일 불러오기 실패");
+			throw makeRuntimeEX("로그인 검증 실패", "getEmail");
+		}
+		
 	}
     public static String getSettleVBankExpireDate(String expireDate) {
         System.out.println("requestToSettleDto");

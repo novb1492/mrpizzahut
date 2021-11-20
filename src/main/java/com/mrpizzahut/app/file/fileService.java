@@ -34,7 +34,15 @@ public class fileService {
 			jsonObject.put("url", "empthy");
 			return jsonObject; 
 		}
-		return awsService.uploadAws(multipartFiles.get(0), buketName);
+		
+		return awsService.uploadAws(multipartFiles.get(0), buketName,request.getSession());
+	}
+	public void deleteImg(List<String>imgs) {
+		System.out.println("deleteImg");
+		for(String i:imgs) {
+			awsService.deleteFile(buketName,i);
+		}
+	
 	}
 
 }

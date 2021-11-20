@@ -51,9 +51,18 @@
 <script type="text/javascript">
 let editor;
 var flag=true;
+
 function insert() {
+	flag=false;
+	alert(flag);
 	insertMenu('minsert',editor.getData());
 }
+window.onbeforeunload = function(e) {
+	if(flag){
+		cancleArticle();
+	}
+};
+
 class MyUploadAdapter {
     constructor(props) {
         // CKEditor 5's FileLoader instance.

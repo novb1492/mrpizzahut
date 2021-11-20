@@ -1,4 +1,7 @@
 var result;
+function cancleArticle() {
+ requestToServer2('/app/deleteimg');
+}
 function cancleOrder(){
 	var onum=document.getElementById('onum').value;
 	var mchttrdno=document.getElementById('mchttrdno').value;
