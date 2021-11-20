@@ -135,9 +135,9 @@
         </button>
         <div class="collapse" id="account-collapse2">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=콤비네이션" class="link-dark rounded">콤비네이션 피자</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=불고기" class="link-dark rounded">불고기 피자</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=포테이토" class="link-dark rounded">포테이토 피자</a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=콤비네이션" class="link-dark rounded">콤비네이션 </a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=불고기" class="link-dark rounded">불고기 </a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=포테이토" class="link-dark rounded">포테이토</a></li>
              <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=페퍼로니플러스" class="link-dark rounded">페퍼로니플러스</a></li>
              <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=스윗고구마피자" class="link-dark rounded">스윗고구마피자</a></li>
              <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=아몬드슬라이스" class="link-dark rounded">아몬드슬라이스</a></li>
@@ -154,11 +154,11 @@
         <div class="collapse" id="account-collapse3">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=멕시칸 하바네로 피자 세트" class="link-dark rounded">멕시칸 하바네로 피자 세트</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=햄벅한새우" class="link-dark rounded">햄벅한새우 피자</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=미스터트리오" class="link-dark rounded">미스터트리오 피자</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=치즈블라썸스테이크" class="link-dark rounded">치즈블라썸스테이크 피자</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=포테이토 골드" class="link-dark rounded">포테이토 골드 피자</a></li>
-            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=쉬림프 골드" class="link-dark rounded">쉬림프 골드 피자</a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=햄벅한새우" class="link-dark rounded">햄벅한새우</a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=미스터트리오" class="link-dark rounded">미스터트리오</a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=치즈블라썸스테이크" class="link-dark rounded">치즈블라썸스테이크</a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=포테이토 골드" class="link-dark rounded">포테이토 골드</a></li>
+            <li><a href="/app/admin/sales?month=<%=month%>&year=<%=year2 %>&productName=쉬림프 골드" class="link-dark rounded">쉬림프 골드</a></li>
           </ul>
         </div>
       </li>
