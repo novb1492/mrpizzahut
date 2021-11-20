@@ -62,6 +62,7 @@
 let editor;
 var flag=true;
 function deleteM(mnum) {
+	flag=true;
 	deleteMenu(mnum);
 }
 function update(mnum) {
