@@ -87,6 +87,6 @@
 		update card set CCNCLORD=#{CCNCLORD},CTRDAMT=#{newPrice},CCANCLEDATE=#{cancleDate},CCANCLEFLAG=#{cancleFlag} where CMCHTTRDNO=#{CMCHTTRDNO}
 	</update>
 	<update id="updateKpayCancleTime" parameterType="Map">
-		update card set KPRICE=#{newPrice} where KPARTNERORDERID=#{KPARTNERORDERID}
+		update kpay set KPRICE=#{newPrice},KCANCLEFLAG=#{cancleFlag},KCANCLEDATE=#{cancleDate} where KPARTNERORDERID=#{KPARTNERORDERID}
 	</update>
 </mapper>

@@ -30,6 +30,8 @@ public class paymentService {
 	
 	public void updateKpayCancle(Map<String, Object>map) {
 		System.out.println("updateKpayCancle");
+		payDao.updateKpayCancleTime(map);
+		System.out.println("카카오페이 환불 db수정완료");
 	}
 	public void updateCardCancle(Map<String, Object>map) {
 		System.out.println("updateCardCancle");

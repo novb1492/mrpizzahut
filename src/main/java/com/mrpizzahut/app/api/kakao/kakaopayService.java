@@ -67,7 +67,7 @@ public class kakaopayService {
         JSONObject response=requestTo.requestToApi(body, readyUrl, headers);
         System.out.println("카카오페이 결제요청 결과"+response);
         maps.get(maps.size()-1).put("tid", response.get("tid"));
-        paymentService.insertOrder(maps, mchtTrdNo, email, mchtTrdNo);
+        paymentService.insertOrder(maps, mchtTrdNo, email, buykind);
         paymentService.insertPayment(maps, mchtTrdNo, email,tryBuyDto.getKind());
         request.getSession().setAttribute(email+"mchtTrdNo", mchtTrdNo);
         return utillService.makeJson(true,(String)response.get("next_redirect_pc_url"));
@@ -143,7 +143,9 @@ public class kakaopayService {
    public boolean cancleKPAY(Map<String, Object>kpay) {
 	   System.out.println("cancleKPAY");
 	   int newPrice=Integer.parseInt(kpay.get("KPRICE").toString())-Integer.parseInt(kpay.get("OPRICE").toString());
-	   
+	   kpay.put("newPrice", newPrice);
+	   System.out.println("환불후 남은 잔액 "+newPrice);
+	   paymentService.updateKpayCancle(kpay);
 	   MultiValueMap<String, Object>body=requestTo.getMultiValueBody();
 	   body.add("cid", kpay.get("KCID"));
        body.add("tid",kpay.get("KTID"));
