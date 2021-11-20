@@ -13,10 +13,24 @@
 	</select>
 	<insert id="insert" parameterType="Map">
 	<if test="size!=null">
-			insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null,#{size},#{edge})
+			insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,
+			<if test="coupon.equals('empthy')">
+				null
+			</if>
+			<if test="!coupon.equals('empthy')">
+				#{coupon}
+			</if>
+			,#{method},#{price},#{created},0,null,#{size},#{edge})
 	</if>
 	<if test="size==null">
-					insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,#{coupon},#{method},#{price},#{created},0,null,null,null)
+		insert into orders values(order_sq.NEXTVAL,#{email},#{mchtTrdNo},#{itemName},#{count},0,null,
+		<if test="coupon.equals('empthy')">
+				null
+		</if>
+		<if test="!coupon.equals('empthy')">
+				#{coupon}
+		</if>
+		,#{method},#{price},#{created},0,null,null,null)
 		
 	</if>
 	</insert>

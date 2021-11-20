@@ -116,7 +116,7 @@ public class paymentService {
 				String counpon=(String)map.get("coupon");
 				System.out.println(counpon);
 				if(counpon==null) {
-					map.put("coupon", "emthy");
+					map.put("coupon", "empthy");
 				}else {
 					map.put("coupon", counpon);
 				}
