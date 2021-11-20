@@ -28,6 +28,9 @@ public class paymentService {
 	@Autowired
 	private payDao payDao;
 	
+	public void updateKpayCancle(Map<String, Object>map) {
+		System.out.println("updateKpayCancle");
+	}
 	public void updateCardCancle(Map<String, Object>map) {
 		System.out.println("updateCardCancle");
 		payDao.updateCardCancleTime(map);

@@ -84,6 +84,9 @@
 			update vbank set VDONEFLAG=#{doneFlag},VDONEDATE=#{doneDate} where VEMAIL=#{email} and VMCHTTRDNO=#{mchtTrdNo}
 	</update>
 	<update id="updateCardCancleTime" parameterType="Map">
-		update card set CCNCLORD=#{CCNCLORD},CTRDAMT=#{newPrice} where CMCHTTRDNO=#{CMCHTTRDNO}
+		update card set CCNCLORD=#{CCNCLORD},CTRDAMT=#{newPrice},CCANCLEDATE=#{cancleDate},CCANCLEFLAG=#{cancleFlag} where CMCHTTRDNO=#{CMCHTTRDNO}
+	</update>
+	<update id="updateKpayCancleTime" parameterType="Map">
+		update card set KPRICE=#{newPrice} where KPARTNERORDERID=#{KPARTNERORDERID}
 	</update>
 </mapper>

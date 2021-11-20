@@ -24,4 +24,5 @@ public interface payDao {
 	public int updateVbankDoneFlag(Map<String, Object>map);
 	public int updateOrderCanclePay(Map<String, Object>map);
 	public int updateCardCancleTime(Map<String, Object>map);
+	public int updateKpayCancleTime(Map<String, Object>map);
 }

@@ -72,9 +72,7 @@ public class orderService {
 		System.out.println("재고 정리 성공");
 		if(orderAndPay.get("OMETHOD").equals("kpay")) {
 			System.out.println("카카오로 결제 되었던것");
-			if(kakaopayService.cancleKPAY(orderAndPay)) {
-				
-			}else {
+			if(!kakaopayService.cancleKPAY(orderAndPay)) {
 				return utillService.makeJson(false, "환불에 실패했습니다");
 			}
 		}else {

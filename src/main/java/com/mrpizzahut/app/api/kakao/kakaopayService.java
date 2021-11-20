@@ -142,6 +142,8 @@ public class kakaopayService {
     } 
    public boolean cancleKPAY(Map<String, Object>kpay) {
 	   System.out.println("cancleKPAY");
+	   int newPrice=Integer.parseInt(kpay.get("KPRICE").toString())-Integer.parseInt(kpay.get("OPRICE").toString());
+	   
 	   MultiValueMap<String, Object>body=requestTo.getMultiValueBody();
 	   body.add("cid", kpay.get("KCID"));
        body.add("tid",kpay.get("KTID"));
