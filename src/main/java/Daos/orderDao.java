@@ -14,4 +14,5 @@ public interface orderDao {
 	public int updateOrderCancleFlag(Map<String, Object>map);
 	public int findByProductName(Map<String, Object>map);
 	public int updateProductCount(Map<String, Object>map);
+	public int updateCouponToDone(Map<String, Object>map);
 }

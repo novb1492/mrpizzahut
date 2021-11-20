@@ -28,6 +28,7 @@ public class orderService {
 	
 	private final int pageSize=10;
 	private final int cancleFlag=1;
+	private final int doneFlag=1;
 
 	
 	@Autowired
@@ -60,6 +61,22 @@ public class orderService {
 				return utillService.makeJson(false, "관리자도 아닌계정이 이메일이 일치하지 않으므로 환불실패");
 			}
 		}
+		try {
+			String coupon=orderAndPay.get("OCOUPONS").toString();
+			if(!utillService.checkNull(coupon)) {
+				System.out.println("쿠폰이 존재하는 상품 취소시도"+coupon);
+				String[] coupons=coupon.split(",");
+				orderAndPay.put("doneFlag", 0);
+				for(String c:coupons) {
+					orderAndPay.put("couponName", c);
+					orderDao.updateCouponToDone(orderAndPay);
+				}
+				System.out.println("쿠폰 살리기 성공");
+			}
+		} catch (Exception e) {
+			System.out.println("쿠폰이 존재 하지 않는 상품 시도");
+		}
+		
 		orderAndPay.put("cancleFlag", cancleFlag);
 		orderAndPay.put("cancleDate", Timestamp.valueOf(LocalDateTime.now()));
 		orderAndPay.put("onum",onum);

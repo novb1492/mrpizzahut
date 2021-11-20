@@ -41,4 +41,7 @@
 			and EDGE=#{OEDGE}
 		</if>
 	</update>
+	<update id="updateCouponToDone" parameterType="Map">
+		update coupon set usedFlag=#{doneFlag} where COUPONNAME=#{couponName}
+	</update>
 </mapper>

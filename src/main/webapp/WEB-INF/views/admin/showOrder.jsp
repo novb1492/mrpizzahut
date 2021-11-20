@@ -48,6 +48,12 @@ int cancleFlag=Integer.parseInt(order.get("OCANCLEFLAG").toString());
 <br>
 <%=order.get("OEDGE") %>
 <br>
+금액:
+<br>
+<%=order.get("OPRICE") %>
+<br>
+결제 상태:
+<br>
 <%if(donflag==1&&cancleFlag==0){
 %>
 결제 완료 상품입니다
