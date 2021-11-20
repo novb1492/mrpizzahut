@@ -109,6 +109,8 @@ public class cardService {
 		System.out.println("canclepay");
 		int cnclOrd=Integer.parseInt(orderAndPay.get("CCNCLORD").toString());
 		cnclOrd+=1;
+		int newPrice=Integer.parseInt(orderAndPay.get("CTRDAMT").toString())-Integer.parseInt(orderAndPay.get("OPRICE").toString());
+		orderAndPay.put("newPrice", newPrice);
 		orderAndPay.put("CCNCLORD", cnclOrd);
 		paymentService.updateCardCancle(orderAndPay);
 		settleDto settleDto=new settleDto();
