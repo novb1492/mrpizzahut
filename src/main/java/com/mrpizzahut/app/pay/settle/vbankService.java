@@ -165,6 +165,7 @@ public class vbankService {
 		            map.put("doneFlag", doneFlag);
 		            map.put("mchtTrdNo", settleDto.getMchtTrdNo());
 		            map.put("email",email);
+		            productService.minusProductCountVbank(mchtTrdNo);
 		            productService.doneCoupon(vbank.get("VCOUPON").toString(),email,mchtTrdNo);
 		            paymentService.updateDonFlag(map, buyKind2);
 				System.out.println("가상계좌 입금 처리 완료");

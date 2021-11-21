@@ -423,7 +423,23 @@ public class productService {
 			}else {
 				map.put("doneFlag",doneFlag);
 			}
-			
+		
+			map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
+			payDao.updateOrderDoneFlag(map);
+		}
+		System.out.println("재고 유효성 통과");
+	}
+    public void minusProductCountVbank(String mchtTrdNo) {
+		System.out.println("minusProductCountVbank");
+		List<Map<String, Object>>maps=payDao.OrderFindByMchtTrdNo(mchtTrdNo);
+		System.out.println("결제 요청 제품 정보 "+maps.toString());
+		for(Map<String, Object>map:maps) {
+			map.put("CEDGE", map.get("OEDGE"));
+			map.put("CSIZE", map.get("OSIZE"));
+			map.put("CMENU", map.get("ONAME"));
+			Map<String, Object>map3=payDao.findByPizzaName(map);
+			System.out.println("현재 제품 정보 "+map3.toString());
+			map.put("doneFlag",doneFlag);
 			map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
 			payDao.updateOrderDoneFlag(map);
 		}
