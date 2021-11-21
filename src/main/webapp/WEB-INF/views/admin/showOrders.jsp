@@ -33,7 +33,11 @@
  			 
  		</ul>
  		  <div id="pageArea" >
-            <input type="text" id="searchInput"   placeholder="상품 이름을 적어주세요">
+           상품이름: <input type="text" id="productName"   placeholder="상품 이름을 적어주세요">
+           <br>
+           주문날짜:  <input type="datetime-local" id="date"   placeholder="">
+           <br>
+           주문자 이메일:   <input type="text" id="email"   placeholder="상품 이름을 적어주세요">
             <input type="button" id="searchButton" onclick="doSearch('/app/admin/event?scope=쿠폰수정삭제&page=1&keyword=')" class="btn btn-outline-primary btn-sm" style="margin-left:10px" value="검색">
             <br>
             <div style="margin-top:10px">
