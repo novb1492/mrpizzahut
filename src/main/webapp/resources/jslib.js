@@ -1,4 +1,10 @@
 var result;
+function doSearchMenu(url){
+	var email=getIdValue('email');
+	var date=getIdValue('date');
+	var productName=getIdValue('productName');
+	location.href=url+email+'&date='+date+'&productName='+productName;
+}
 function cancleArticle(flag) {
 	alert(flag);
 	if(flag){

@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -138,7 +139,8 @@ public class utillService {
     public static String getEmail(HttpServletRequest request) {
     	System.out.println("getEmail");
     	try {
-    		return (String)request.getSession().getAttribute("email");
+    		//return (String)request.getSession().getAttribute("email");
+    		return Optional.ofNullable(request.getSession().getAttribute("email")).orElseThrow(()->makeRuntimeEX("비로그인 사요자입니다", "getEmail")).toString();
 		} catch (Exception e) {
 			System.out.println("로그인 이메일 불러오기 실패");
 			throw makeRuntimeEX("로그인 검증 실패", "getEmail");

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,7 +50,7 @@ public class orderService {
 		Map<String, Object>onumAndMu=new HashMap<String, Object>();
 		onumAndMu.put("onum", onum);
 		onumAndMu.put("MCHTTRDNO", mchtTrdNo);
-		Map<String, Object>orderAndPay=orderDao.findByMchttrdnoAndOnumJoin(onumAndMu);
+		Map<String, Object>orderAndPay=Optional.ofNullable(orderDao.findByMchttrdnoAndOnumJoin(onumAndMu)).orElseThrow(()->utillService.makeRuntimeEX("거래정보가 존재하지 않습니다", "cancleOrder"));
 		System.out.println("취소정보 불러오기 성공 "+orderAndPay.toString());
 		if(Integer.parseInt(orderAndPay.get("OCANCLEFLAG").toString())!=0) {
 			throw utillService.makeRuntimeEX("이미 환불 처리되었던 제품입니다 ", "cancleOrder");
