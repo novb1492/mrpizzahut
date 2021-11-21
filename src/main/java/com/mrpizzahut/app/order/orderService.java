@@ -83,7 +83,15 @@ public class orderService {
 		orderAndPay.put("onum",onum);
 		orderDao.updateOrderCancleFlag(orderAndPay);
 		System.out.println("주문 캔슬 플래그 성공");
-		int dbCount=orderDao.findByProductName(orderAndPay);
+		String kind=orderAndPay.get("OMETHOD").toString();
+		int dbCount=0;
+		if(kind.equals("kpay")) {
+			dbCount=Integer.parseInt(orderAndPay.get("KPRICE").toString());
+		}else if(kind.equals("card")) {
+			dbCount=Integer.parseInt(orderAndPay.get("CTRDAMT").toString());
+		}else if(kind.equals("vbank")) {
+			dbCount=Integer.parseInt(orderAndPay.get("VTRDAMT").toString());
+		}
 		dbCount+=Integer.parseInt(orderAndPay.get("OCOUNT").toString());
 		orderAndPay.put("count", dbCount);
 		orderDao.updateProductCount(orderAndPay);
@@ -207,6 +215,9 @@ public class orderService {
 		String keyword=request.getParameter("keyword");
 		List<Map<String, Object>>orders=getOrders(keyword, page);
 		System.out.println("제품 조회"+orders.toString());
+		if(utillService.checkEmpthy(orders)) {
+			throw utillService.makeRuntimeEX("검색결과가 존재하지 않습니다", "getAllOrders");
+		}
 		int totalCount=Integer.parseInt(orders.get(0).get("TOTALCOUNT").toString());
 		int totalPage=utillService.getTotalPage(totalCount, pageSize);
 		System.out.println("전체페이지 "+totalPage);

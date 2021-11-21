@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +37,7 @@ public class couponService {
 	public void getCoupon(HttpServletRequest request,Model model) {
 		System.out.println("getCoupon");
 		int conum=Integer.parseInt(request.getParameter("conum"));
-		Map<String, Object>coupon=couponDao.findByConum(conum);
+		Map<String, Object>coupon=Optional.ofNullable(couponDao.findByConum(5000)).orElseThrow(()->utillService.makeRuntimeEX("쿠폰이 존재하지 않습니다", ""));
 		String created= coupon.get("COEXPIRED").toString().replace(" ", "T");
 		int usedFlag=Integer.parseInt(coupon.get("USEDFLAG").toString());
 		String susedFlag="사용된 쿠폰입니다";
@@ -54,6 +55,9 @@ public class couponService {
 		String keyword=request.getParameter("keyword");
 		List<Map<String, Object>>coupons=getAllCoupon(keyword, page);
 		System.out.println("제품 조회"+coupons.toString());
+		if(utillService.checkEmpthy(coupons)) {
+			throw utillService.makeRuntimeEX("검색이 존재하지 않습니다", "getAllCoupon");
+		}
 		int totalCount=Integer.parseInt(coupons.get(0).get("TOTALCOUNT").toString());
 		int totalPage=utillService.getTotalPage(totalCount, pageSize);
 		System.out.println("전체페이지 "+totalPage);

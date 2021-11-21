@@ -89,7 +89,6 @@ public class productService {
 		System.out.println("getProducts");
 		if(utillService.checkNull(keyword)) {
 			System.out.println("키워드없는 요청");
-			//return productDao.findAll(utillService.getStart(page, pageSize));
 			return Optional.ofNullable(productDao.findAll(utillService.getStart(page, pageSize))).orElseThrow(()->utillService.makeRuntimeEX("검색결과가 존재하지 않습니다", "getProducts"));
 		}else {
 			System.out.println("검색요청 "+keyword);
@@ -219,10 +218,11 @@ public class productService {
 	public List<Map<String,Object>> confrimbuket(tryBuyDto tryBuyDto,String email){
 		System.out.println("confrimbuket");
 		///첫 db 접속 select
-		 List<Map<String, Object>>carts=buketDao.findByEmail(email);
-			if(carts.isEmpty()) {
-				throw utillService.makeRuntimeEX("장바구니가 비었습니다", "getPayInfor");
-			}
+		 List<Map<String, Object>>carts=Optional.ofNullable(buketDao.findByEmail(email)).orElseThrow(()->utillService.makeRuntimeEX("장바구니가 없습니다", "confrimbuket"));
+		 if(utillService.checkEmpthy(carts)) {
+			 throw utillService.makeRuntimeEX("장바구니가 비었습니다", "getPayInfor");
+		 }
+			
 			System.out.println("장바구니 "+carts.toString());
 	        int itemArraySize=carts.size();
 	        String[] coupons=tryBuyDto.getcoupon().toString().split("/");
@@ -236,11 +236,7 @@ public class productService {
 	        String couponNames="";
 	        for(Map<String, Object>map:carts){
 	        	System.out.println("조회 "+map.toString());
-	        	Map<String, Object>product=payDao.findByPizzaName(map);
-	        	String productName=map.get("CMENU").toString();
-	        	if(product==null) {
-	        		throw utillService.makeRuntimeEX("존재하지 않는 상품입니다"+productName, "confrimbuket");
-	        	}
+	        	Map<String, Object>product=Optional.ofNullable(payDao.findByPizzaName(map)).orElseThrow(()->utillService.makeRuntimeEX("존재하지 않는 제품입니다", "confrimbuket"));
 	        	System.out.println("결과 "+product.toString());
 	        	int dbcount=Integer.parseInt(product.get("MCOUNT").toString());
 	        	System.out.println("남은 재고 "+dbcount);
@@ -264,6 +260,7 @@ public class productService {
 					co=null;
 				}
 	            temp+=1;
+	            String productName=map.get("CMENU").toString();
 	            LinkedHashMap<String,LinkedHashMap<String,Object>>eventmap=new LinkedHashMap<>();
 	            confrimCoupon(co,requestCount,eventmap,couponNamesAndCodeNames,productName);
 	            System.out.println("최종 쿠폰 정보 "+eventmap.toString());
@@ -337,10 +334,7 @@ public class productService {
         int temp=0;
             for(String s:splite){
             	System.out.println("조회쿠폰 "+s);
-            	Map<String, Object>coupon=couponDao.findByCouponName(s);
-            	if(coupon==null) {
-            		throw utillService.makeRuntimeEX("존재하지 않는 쿠폰 "+s, "confrimCoupon");
-            	}
+            	Map<String, Object>coupon=Optional.ofNullable(couponDao.findByCouponName(s)).orElseThrow(()->utillService.makeRuntimeEX("존재하지 않는 쿠폰 "+s, "confrimCoupon"));
             	System.out.println("쿠폰 정보"+ coupon.toString());
                 LinkedHashMap<String,Object>map=new LinkedHashMap<>();
                 if(LocalDateTime.now().isAfter(Timestamp.valueOf(coupon.get("COEXPIRED").toString()).toLocalDateTime())){

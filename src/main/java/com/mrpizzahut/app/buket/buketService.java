@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -82,11 +83,11 @@ public class buketService {
 	}
 	@Transactional(rollbackFor = Exception.class)
 	public JSONObject deleteCart(deleteCartDto dto,String loginEmail) {
-		logger.info("deleteCart");
+		System.out.println("deleteCart");
 		List<Map<String, Object>>maps=new ArrayList<Map<String,Object>>();
 		List<Integer>integers=dto.getArr();
 		for(int i:integers) {
-			Map<String, Object>map=buketDao.findByBid(i);
+			Map<String, Object>map=Optional.ofNullable(buketDao.findByBid(i)).orElseThrow(()->utillService.makeRuntimeEX("장바구니에 물건이 존재하지 않습니다", "deleteCart"));
 			maps.add(map);
 		}
 		for(Map<String, Object>map:maps) {
@@ -94,8 +95,9 @@ public class buketService {
 			if(!dbemail.equals(loginEmail)) {
 				throw utillService.makeRuntimeEX("장바구니 이메일이 일치하지 않습니다", "deleteCart");
 			}
-			
-			buketDao.deleteById(Integer.parseInt(map.get("CNUM").toString()));
+			int cnum=Integer.parseInt(map.get("CNUM").toString());
+			System.out.println("장바구니 삭제번호 "+cnum);
+			buketDao.deleteById(cnum);
 		}
 		return utillService.makeJson(true,"장바구니삭제");
 		
