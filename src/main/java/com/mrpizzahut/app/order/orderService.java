@@ -84,15 +84,7 @@ public class orderService {
 		orderAndPay.put("onum",onum);
 		orderDao.updateOrderCancleFlag(orderAndPay);
 		System.out.println("주문 캔슬 플래그 성공");
-		String kind=orderAndPay.get("OMETHOD").toString();
-		int dbCount=0;
-		if(kind.equals("kpay")) {
-			dbCount=Integer.parseInt(orderAndPay.get("KPRICE").toString());
-		}else if(kind.equals("card")) {
-			dbCount=Integer.parseInt(orderAndPay.get("CTRDAMT").toString());
-		}else if(kind.equals("vbank")) {
-			dbCount=Integer.parseInt(orderAndPay.get("VTRDAMT").toString());
-		}
+		int dbCount=orderDao.findByProductName(orderAndPay);
 		dbCount+=Integer.parseInt(orderAndPay.get("OCOUNT").toString());
 		orderAndPay.put("count", dbCount);
 		orderDao.updateProductCount(orderAndPay);

@@ -24,4 +24,17 @@
 	<delete id="deleteProduct" parameterType="_int">
 		delete from menu where MNUM=#{mnum}
 	</delete>
+	<select id="findByCreatedInVbank" parameterType="Map" resultType="Map">
+		select o.oname,o.ocount,o.OSIZE,o.OEDGE from (select VMCHTTRDNO from vbank  where<![CDATA[ VEXPIREDATE <#{now} ]]>  and VCANCLEORD=#{defaultFlag} and VDONEFLAG=#{defaultFlag}) v left join orders o on o.OMCHTTRDNO=v.VMCHTTRDNO
+	</select>
+	<select id="findBySizeAndEdgeAndNameInMenu" parameterType="Map" resultType="Map">
+		select MCOUNT,MNAME from menu where MNAME=#{ONAME}
+		<if test="OSIZE!=null">
+		and MSIZE=#{OSIZE}
+		</if>
+		<if test="OEDGE!=null">
+			and EDGE=#{OEDGE}
+		</if>
+	</select>
+	
 </mapper>
