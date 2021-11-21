@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.mrpizzahut.app.intenum;
+import com.mrpizzahut.app.stringenums;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.kakao.kakaopayService;
 import com.mrpizzahut.app.file.fileService;
@@ -36,6 +37,7 @@ public class productService {
 	 private final int fullProductMin=intenum.vbankExpireMin.getInt();
 	 private final int doneFlag=intenum.doneFlag.getInt();
 	 private final int pageSize=10;
+	 private final int defaultFlag=intenum.defaultFlag.getInt();
 
 
 	@Autowired
@@ -416,7 +418,12 @@ public class productService {
 			}
 			map.put("count", dbCount);
 			payDao.orderUpdateCount(map);
-			map.put("doneFlag",doneFlag);
+			if(map.get("OMETHOD").equals(stringenums.vbank.getString())) {
+				map.put("doneFlag",defaultFlag);
+			}else {
+				map.put("doneFlag",doneFlag);
+			}
+			
 			map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
 			payDao.updateOrderDoneFlag(map);
 		}

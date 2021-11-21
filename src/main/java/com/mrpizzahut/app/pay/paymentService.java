@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mrpizzahut.app.intenum;
 import com.mrpizzahut.app.utillService;
 
 import Daos.orderDao;
@@ -22,7 +23,7 @@ import Daos.payDao;
 
 @Service
 public class paymentService {
-
+	private final int defaultFlag=intenum.defaultFlag.getInt();
 	private final String cid="TC0ONETIME";
 
 	
@@ -149,7 +150,7 @@ public class paymentService {
 		infor.put("method", method);
 		infor.put("price", infor.get("totalCash"));
 		infor.put("created", Timestamp.valueOf(LocalDateTime.now()));
-		infor.put("doneFlag", 0);
+		infor.put("doneFlag", defaultFlag);
 		infor.put("phone", infor.get("phone"));
 		infor.put("couponNames", infor.get("couponNames"));
 		payDao.insertCard(infor);
@@ -161,9 +162,10 @@ public class paymentService {
 		infor.put("mchtTrdNo", mchtTrdNo);
 		infor.put("method", method);
 		infor.put("price", infor.get("totalCash"));
-		infor.put("doneFlag", 0);
+		infor.put("doneFlag", defaultFlag);
 		infor.put("phone", infor.get("phone"));
 		infor.put("email",email);
+		infor.put("defaultFlag", defaultFlag);
 		infor.put("couponNames", infor.get("couponNames"));
 		payDao.insertVbank(infor);
 	}
@@ -174,7 +176,7 @@ public class paymentService {
 		infor.put("mchtTrdNo", mchtTrdNo);
 		infor.put("email",email);
 		infor.put("price", infor.get("totalCash"));
-		infor.put("doneFlag", 0);
+		infor.put("doneFlag", defaultFlag);
 		infor.put("phone", infor.get("phone"));
 		infor.put("couponNames", infor.get("couponNames"));
 		payDao.insertKpay(infor);

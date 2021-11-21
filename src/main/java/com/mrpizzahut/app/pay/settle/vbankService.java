@@ -71,7 +71,6 @@ public class vbankService {
             map.put("vtlAcntNo",vtlAcntNo);
             map.put("fncd",settleDto.getFnCd());
             productService.minusProductCount(mchtTrdNo);
-            paymentService.updateDonFlag(map, buyKind);
             buketService.deleteBuket(email);
             reseponse.put("flag", true);
             reseponse.put("mchtTrdNo", mchtTrdNo);
@@ -151,11 +150,14 @@ public class vbankService {
                 System.out.println("결제 성공 코드아님 "+settleDto.getOutRsltCd());
                 return;
             }
-			JSONObject reseponse=new JSONObject();
 		    String mchtTrdNo=settleDto.getMchtTrdNo();
 		    System.out.println(settleDto.getFnNm()+","+settleDto.getMchtParam());
 			try {
 				Map<String, Object>vbank=paymentService.selectByMchtTrdNo(mchtTrdNo,buyKind);
+				if(Integer.parseInt(vbank.get("VDONEFLAG").toString())==doneFlag) {
+					System.out.println("이미 입금된 결제");
+					return;
+				}
 				String email=vbank.get("VEMAIL").toString();
 				System.out.println("결제정보 "+vbank.toString());
 				Map<String, Object>map=new HashMap<String, Object>();
