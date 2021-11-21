@@ -3,8 +3,8 @@ package com.mrpizzahut.app;
 public enum intenum {
 	  doneFlag(1),
 	  cancleFlag(1),
-	  defaultFlag(0);
-
+	  defaultFlag(0),
+	 vbankExpireMin(10);
 
 
 	    private int num;

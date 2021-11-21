@@ -33,7 +33,7 @@ import oracle.sql.TIMESTAMP;
 
 @Service
 public class productService {
-	 private final int fullProductMin=10;
+	 private final int fullProductMin=intenum.vbankExpireMin.getInt();
 	 private final int doneFlag=intenum.doneFlag.getInt();
 	 private final int pageSize=10;
 
