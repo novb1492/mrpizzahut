@@ -76,17 +76,15 @@ public class settleService {
 				e.printStackTrace();
 			}
 	        settleDto settleDto=utillService.requestToSettleDto(request);
-	        String email=utillService.getEmail(request);
-	        System.out.println(email+"이메일");
 	        JSONObject result=new JSONObject();
 	        String uri=null;
 			String parm=null;
 			String settleID=settleDto.getMchtId();
 	        if(settleID.equals(cardMchtId)){
-	        	result=cardService.cardConfrim(settleDto,email);
+	        	result=cardService.cardConfrim(settleDto);
 	        }else if(settleID.equals(vbankMchtid)) {
 	        	System.out.println("가상게좌검증");
-	        	result=vbankService.vbankConfrim(settleDto, email);
+	        	result=vbankService.vbankConfrim(settleDto);
 	        }else{
 	            throw utillService.makeRuntimeEX("지원하지 않는 결제 형식입니다","confrimPayment");
 	        }

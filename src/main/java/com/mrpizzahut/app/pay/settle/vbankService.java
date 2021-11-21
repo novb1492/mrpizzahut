@@ -41,11 +41,12 @@ public class vbankService {
 	private paymentService paymentService;
 	
 	@Transactional(rollbackFor = Exception.class)
-    public JSONObject vbankConfrim(settleDto settleDto,String email) {
+    public JSONObject vbankConfrim(settleDto settleDto ) {
         System.out.println("vbankConfrim");
         JSONObject reseponse=new JSONObject();
         String mchtTrdNo=settleDto.getMchtTrdNo();
         System.out.println(settleDto.getFnNm()+","+settleDto.getMchtParam());
+        String email=utillService.aesToNomal(settleDto.getMchtCustId());
         try {
         	if(!settleDto.getOutStatCd().equals(sucPayNum)){
                 System.out.println("결제실패 실패 코드 "+settleDto.getOutRsltCd());

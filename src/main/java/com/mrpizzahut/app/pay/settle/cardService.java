@@ -43,11 +43,12 @@ public class cardService {
 	private paymentService paymentService;
 	
 	@Transactional(rollbackFor = Exception.class)
-    public JSONObject cardConfrim(settleDto settleDto,String email) {
+    public JSONObject cardConfrim(settleDto settleDto ) {
         System.out.println("cardConfrim");
         JSONObject reseponse=new JSONObject();
         String mchtTrdNo=settleDto.getMchtTrdNo();
         System.out.println(settleDto.getFnNm()+","+settleDto.getMchtParam());
+        String email=utillService.aesToNomal(settleDto.getMchtCustId());
         try {
         	if(!settleDto.getOutStatCd().equals(sucPayNum)){
                 System.out.println("결제실패 실패 코드 "+settleDto.getOutRsltCd());
@@ -62,6 +63,7 @@ public class cardService {
             	System.out.println("금액이 일치하지 않음");
             	throw new RuntimeException("금액이 일치하지 않습니다");
             }
+          
             Map<String, Object>map=new HashMap<String, Object>();
             map.put("doneDate", Timestamp.valueOf(LocalDateTime.now()));
             map.put("doneFlag", doneFlag);
