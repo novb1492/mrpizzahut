@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
+import com.mrpizzahut.app.intenum;
+import com.mrpizzahut.app.stringenums;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.pay.paymentService;
 import com.mrpizzahut.app.pay.productService;
@@ -32,9 +34,9 @@ public class kakaopayService {
     private final String callbackUrl="app/kakao/callback?scope=pay";
     private final  String backDomain="http://localhost:8085/";
     private final String kakaoAdminKey="a813510779a54f77f1fe028ffd3e1d81";
-    private final int doneFlag=1;
-    private final int cancleFlag=1;
-    private final String buykind="kpay";
+    private final int doneFlag=intenum.doneFlag.getInt();
+    private final int cancleFlag=intenum.cancleFlag.getInt();
+    private final String buykind=stringenums.kakaoPay.getString();
     private final String realCancleUrl="https://kapi.kakao.com/v1/payment/cancel";
 
     @Autowired

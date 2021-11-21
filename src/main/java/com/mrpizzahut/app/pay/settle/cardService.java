@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mrpizzahut.app.intenum;
+import com.mrpizzahut.app.stringenums;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.requestTo;
 import com.mrpizzahut.app.buket.buketService;
@@ -24,11 +26,11 @@ import Daos.payDao;
 
 @Service
 public class cardService {
-	private final String MchtId="nxca_jt_il";
-	private final String sucPayNum="0021";
-	private final int doneFlag=1;
-	private final int cancleFlag=1;
-	private final String buyKind="card";
+	private final String MchtId=stringenums.cardMchtId.getString();
+	private final String sucPayNum=stringenums.sucPayNum.getString();
+	private final int doneFlag=intenum.doneFlag.getInt();
+	private final int cancleFlag=intenum.cancleFlag.getInt();
+	private final String buyKind=stringenums.card.getString();
 	 
 
 	@Autowired

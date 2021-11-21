@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mrpizzahut.app.stringenums;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.hash.aes256;
 import com.mrpizzahut.app.hash.sha256;
@@ -23,8 +24,8 @@ import com.mrpizzahut.app.pay.tryBuyDto;
 @Service
 public class settleService {
 	
-	private final String cardMchtId="nxca_jt_il";
-	private final String vbankMchtid="nx_mid_il";
+	private final String cardMchtId=stringenums.cardMchtId.getString();
+	private final String vbankMchtid=stringenums.vbanMchtId.getString();
 
 	
 	@Autowired

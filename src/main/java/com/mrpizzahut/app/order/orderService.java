@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
+import com.mrpizzahut.app.intenum;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.kakao.kakaopayService;
 import com.mrpizzahut.app.pay.settle.settleService;
@@ -28,8 +29,8 @@ import oracle.net.aso.e;
 public class orderService {
 	
 	private final int pageSize=10;
-	private final int cancleFlag=1;
-	private final int doneFlag=1;
+	private final int cancleFlag=intenum.cancleFlag.getInt();
+	private final int doneFlag=intenum.doneFlag.getInt();
 
 	
 	@Autowired

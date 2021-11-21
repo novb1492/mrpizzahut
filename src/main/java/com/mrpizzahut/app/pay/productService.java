@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.mrpizzahut.app.intenum;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.kakao.kakaopayService;
 import com.mrpizzahut.app.file.fileService;
@@ -33,7 +34,7 @@ import oracle.sql.TIMESTAMP;
 @Service
 public class productService {
 	 private final int fullProductMin=10;
-	 private final int doneFlag=1;
+	 private final int doneFlag=intenum.doneFlag.getInt();
 	 private final int pageSize=10;
 
 
