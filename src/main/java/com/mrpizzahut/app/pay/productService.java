@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -71,6 +72,9 @@ public class productService {
 		String keyword=request.getParameter("keyword");
 		List<Map<String, Object>>products=getProducts(keyword, page);
 		System.out.println("제품 조회"+products.toString());
+		if(utillService.checkEmpthy(products)) {
+			throw utillService.makeRuntimeEX("제품이 존재하지 않습니다", "getAllProducts");
+		}
 		int totalCount=Integer.parseInt(products.get(0).get("TOTALCOUNT").toString());
 		int totalPage=utillService.getTotalPage(totalCount, pageSize);
 		System.out.println("전체페이지 "+totalPage);
@@ -85,12 +89,13 @@ public class productService {
 		System.out.println("getProducts");
 		if(utillService.checkNull(keyword)) {
 			System.out.println("키워드없는 요청");
-			return productDao.findAll(utillService.getStart(page, pageSize));
+			//return productDao.findAll(utillService.getStart(page, pageSize));
+			return Optional.ofNullable(productDao.findAll(utillService.getStart(page, pageSize))).orElseThrow(()->utillService.makeRuntimeEX("검색결과가 존재하지 않습니다", "getProducts"));
 		}else {
 			System.out.println("검색요청 "+keyword);
 			Map<String, Object>search=utillService.getStart(page, pageSize);
 			search.put("keyword", keyword);
-			return productDao.findAllByKey(search);
+			return Optional.ofNullable(productDao.findAllByKey(search)).orElseThrow(()->utillService.makeRuntimeEX("검색결과가 존재하지 않습니다", "getProducts"));
 		}
 	}
 	public JSONObject processMenu(MultipartHttpServletRequest request) {

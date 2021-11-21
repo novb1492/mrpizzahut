@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
@@ -64,17 +65,16 @@ public class paymentService {
 		System.out.println("selectByMchtTrdNo");
 		System.out.println("조회 거래번호 "+mchtTrdNo);
 		Map<String, Object>map=new HashMap<String, Object>();
-
 		map.put("mchtTrdNo", mchtTrdNo);
 		if(buykind.equals("card")) {
 			System.out.println("카드조회");
-			return payDao.cardFindByMchtTrdNo(mchtTrdNo);
+			return Optional.ofNullable(payDao.cardFindByMchtTrdNo(mchtTrdNo)).orElseThrow(()->utillService.makeRuntimeEX("거래정보 조회실패 카드", "selectByMchtTrdNo"));
 		}else if(buykind.equals("vbank")) {
 			System.out.println("가상계좌 조회");
-			return payDao.vbankFindByMchtTrdNo(mchtTrdNo);
+			return  Optional.ofNullable(payDao.vbankFindByMchtTrdNo(mchtTrdNo)).orElseThrow(()->utillService.makeRuntimeEX("거래정보 조회실패 가상계좌", "selectByMchtTrdNo"));
 		}else if(buykind.equals("kpay")) {
 			System.out.println("카카오페이 조회");
-			return payDao.kpayFindByyMchtTrdNo(mchtTrdNo);
+			return  Optional.ofNullable(payDao.kpayFindByyMchtTrdNo(mchtTrdNo)).orElseThrow(()->utillService.makeRuntimeEX("거래정보 조회실패 가상계좌", "selectByMchtTrdNo"));
 		}else {
 			throw utillService.makeRuntimeEX("존재하지 않는 거래테이블 입니다", "selectByMchtTrdNo");
 		}

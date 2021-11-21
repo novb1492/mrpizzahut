@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -20,7 +21,13 @@ import com.mrpizzahut.app.pay.settle.settleDto;
 
 public class utillService {
 	
-
+	public static <T> boolean checkEmpthy(List<T>list) {
+		System.out.println("checkEmpthy");
+		if(list.isEmpty()||list.size()==0) {
+			return true;
+		}
+		return false;
+	}
 	 public static int getTotalPage(int totalCount,int pagesize) {
 		 System.out.println("getTotalpages");
 		 System.out.println("총 개수"+totalCount);
@@ -139,7 +146,6 @@ public class utillService {
     public static String getEmail(HttpServletRequest request) {
     	System.out.println("getEmail");
     	try {
-    		//return (String)request.getSession().getAttribute("email");
     		return Optional.ofNullable(request.getSession().getAttribute("email")).orElseThrow(()->makeRuntimeEX("비로그인 사요자입니다", "getEmail")).toString();
 		} catch (Exception e) {
 			System.out.println("로그인 이메일 불러오기 실패");
