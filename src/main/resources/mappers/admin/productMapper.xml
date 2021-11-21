@@ -25,10 +25,10 @@
 		delete from menu where MNUM=#{mnum}
 	</delete>
 	<select id="findByCreatedInVbank" parameterType="Map" resultType="Map">
-		select o.oname,o.ocount,o.OSIZE,o.OEDGE from (select VMCHTTRDNO from vbank  where<![CDATA[ VEXPIREDATE <#{now} ]]>  and VCANCLEORD=#{defaultFlag} and VDONEFLAG=#{defaultFlag}) v left join orders o on o.OMCHTTRDNO=v.VMCHTTRDNO
+		select o.oname,o.ocount,o.OSIZE,o.OEDGE,v.VNUM from (select VMCHTTRDNO,VNUM from vbank  where<![CDATA[ VEXPIREDATE <#{now} ]]>  and VCANCLEORD=#{defaultFlag} and VDONEFLAG=#{defaultFlag} and CHECKFLAG=#{defaultFlag}) v left join orders o on o.OMCHTTRDNO=v.VMCHTTRDNO
 	</select>
-	<select id="findBySizeAndEdgeAndNameInMenu" parameterType="Map" resultType="Map">
-		select MCOUNT,MNAME from menu where MNAME=#{ONAME}
+	<select id="findBySizeAndEdgeAndNameInMenu" parameterType="Map" resultType="_int">
+		select MCOUNT from menu where MNAME=#{ONAME}
 		<if test="OSIZE!=null">
 		and MSIZE=#{OSIZE}
 		</if>
@@ -36,5 +36,16 @@
 			and EDGE=#{OEDGE}
 		</if>
 	</select>
-	
+	<update id="updateCount" parameterType="Map">
+		update menu set MCOUNT=#{count} where MNAME=#{ONAME} 
+			<if test="OSIZE!=null">
+		and MSIZE=#{OSIZE}
+		</if>
+		<if test="OEDGE!=null">
+			and EDGE=#{OEDGE}
+		</if>
+	</update>
+	<update id="updateVbankToCheckDone" parameterType="Map">
+		update vbank set CHECKFLAG=#{doneFlag} where VNUM=#{VNUM}
+	</update>
 </mapper>
