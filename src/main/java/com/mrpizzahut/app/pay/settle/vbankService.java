@@ -70,7 +70,6 @@ public class vbankService {
             map.put("email", email);
             map.put("vtlAcntNo",vtlAcntNo);
             map.put("fncd",settleDto.getFnCd());
-     
             productService.minusProductCount(mchtTrdNo);
             paymentService.updateDonFlag(map, buyKind);
             buketService.deleteBuket(email);
