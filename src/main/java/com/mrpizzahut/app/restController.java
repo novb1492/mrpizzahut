@@ -124,9 +124,16 @@ public class restController {
 	public void deleteImg(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("deleteImg");
 		utillService.getEmail(request);
-		List<String>imgs=(List<String>)request.getSession().getAttribute("imgs");
-		System.out.println("삭제할 이미지"+imgs.toString());
-		fileService.deleteImg(imgs);
+		try {
+			List<String>imgs=(List<String>)request.getSession().getAttribute("imgs");
+			System.out.println("삭제할 이미지"+imgs.toString());
+			fileService.deleteImg(imgs);
+			request.getSession().removeAttribute("imgs");
+		} catch (NullPointerException e) {
+			System.out.println("삭제할 이미지없음");
+		}
+	
+		
 		
 	}
 	
