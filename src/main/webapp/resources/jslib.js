@@ -1,4 +1,9 @@
 var result;
+function doSearchOrder(){
+	var email=getIdValue('email');
+	var productName=getIdValue('productName');
+	location.href='/app/admin/order?detail=all&page=1&keyword=yes&email='+email+'&productName='+productName;
+}
 function doSearchMenu(url){
 	var email=getIdValue('email');
 	var date=getIdValue('date');

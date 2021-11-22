@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.mrpizzahut.app.intenum;
+import com.mrpizzahut.app.stringenums;
 import com.mrpizzahut.app.utillService;
 import com.mrpizzahut.app.api.kakao.kakaopayService;
 import com.mrpizzahut.app.pay.settle.settleService;
@@ -31,6 +32,8 @@ public class orderService {
 	private final int pageSize=10;
 	private final int cancleFlag=intenum.cancleFlag.getInt();
 	private final int doneFlag=intenum.doneFlag.getInt();
+	private final String exString=stringenums.ex.getString();
+	private final String nuString=stringenums.nu.getString();
 
 	
 	@Autowired
@@ -205,8 +208,10 @@ public class orderService {
 	public void getAllOrders(HttpServletRequest request,Model model) {
 		System.out.println("getAllOrders");
 		int page=Integer.parseInt(request.getParameter("page"));
-		String keyword=request.getParameter("keyword");
-		List<Map<String, Object>>orders=getOrders(keyword, page);
+		String keyword=utillService.checkOptional(request.getParameter("keyword"), nuString, null);
+		String email=utillService.checkOptional(request.getParameter("email"), nuString, null);
+		String productName=utillService.checkOptional(request.getParameter("productName"), nuString, null);
+		List<Map<String, Object>>orders=getOrders(keyword, page,email,productName);
 		System.out.println("제품 조회"+orders.toString());
 		if(utillService.checkEmpthy(orders)) {
 			throw utillService.makeRuntimeEX("검색결과가 존재하지 않습니다", "getAllOrders");
@@ -221,7 +226,7 @@ public class orderService {
 		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("orders", orders);
 	}
-	private List<Map<String, Object>> getOrders(String keyword,int page) {
+	private List<Map<String, Object>> getOrders(String keyword,int page,String email,String productName) {
 		System.out.println("getorders");
 		if(utillService.checkNull(keyword)) {
 			System.out.println("키워드없는 요청");
@@ -229,7 +234,8 @@ public class orderService {
 		}else {
 			System.out.println("검색요청 "+keyword);
 			Map<String, Object>search=utillService.getStart(page, pageSize);
-			search.put("keyword", keyword);
+			search.put("email", email);
+			search.put("productName", productName);
 			return orderDao.findAllByKey(search);
 		}
 	}

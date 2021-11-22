@@ -21,6 +21,14 @@ import com.mrpizzahut.app.pay.settle.settleDto;
 
 public class utillService {
 	
+	public static <T> T checkOptional(T object,String getExOrNull,String exMessage) {
+		System.out.println("checkOptional");
+		if(getExOrNull.equals(stringenums.ex.getString())) {
+			return Optional.ofNullable(object).orElseThrow(()->utillService.makeRuntimeEX(exMessage, "checkOptional"));
+		}
+		return Optional.ofNullable(object).orElseGet(()->null);
+	}
+		
 	public static <T> boolean checkEmpthy(List<T>list) {
 		System.out.println("checkEmpthy");
 		if(list.isEmpty()||list.size()==0) {

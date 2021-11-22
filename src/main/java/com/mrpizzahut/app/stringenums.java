@@ -6,7 +6,9 @@ public enum stringenums {
 	    card("card"),
 	    cardMchtId("nxca_jt_il"),
 	    vbanMchtId("nx_mid_il"),
-	    sucPayNum("0021");
+	    sucPayNum("0021"),
+	    ex("exe"),
+	    nu("null");
 
 
 	    private String messege;

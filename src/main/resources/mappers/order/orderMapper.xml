@@ -44,4 +44,7 @@
 	<update id="updateCouponToDone" parameterType="Map">
 		update coupon set usedFlag=#{doneFlag} where COUPONNAME=#{couponName}
 	</update>
+	<select id="findAllByKey" parameterType="Map" resultType="Map">
+		 select b.*,(select count(*) from orders  where ONAME like '%'||#{productName}||'%' and OEMAIL=#{email})totalcount from(select ROW_NUMBER() OVER (ORDER BY ONUM desc)  num, a.* from orders a  where a.ONAME like '%'||#{productName}||'%' and OEMAIL=#{email} ) b where  num between #{start} and #{end}
+	</select>
 </mapper>
