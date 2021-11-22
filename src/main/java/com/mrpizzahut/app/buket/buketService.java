@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ import Daos.buketDao;
 @Service
 public class buketService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(buketService.class);
 	
 	@Autowired
 	private buketDao buketDao;
@@ -31,7 +32,7 @@ public class buketService {
 		//buketDao.deleteByEmail(email);
 	}
 	public boolean getCartByEmail(String email,Model model) {
-		logger.info("getCartByEmail");
+		System.out.println("getCartByEmail");
 		List<Map<String, Object>>maps=buketDao.findByEmail(email);
 		if(maps.isEmpty()) {
 			return true;
@@ -50,35 +51,42 @@ public class buketService {
 		model.addAttribute("maps",maps);
 		return false;
 	}
-	public JSONObject changeCount(JSONObject jsonObject) {
-		logger.info("changeCount");
+	public JSONObject changeCount(JSONObject jsonObject,HttpServletRequest request) {
+		System.out.println("changeCount");
 		System.out.println(jsonObject);
+		String email=utillService.getEmail(request);
 		int bid=Integer.parseInt(jsonObject.get("bid").toString());
-		Map<String, Object>map=buketDao.findByBid(bid);
-		logger.info("장바구니 조회결과" +map.toString());
+		Map<String, Object>map=Optional.ofNullable(buketDao.findByBid(bid)).orElseThrow(()->utillService.makeRuntimeEX("존재하지 않는 장바구니 품목입니다", "changeCount"));
+		System.out.println("장바구니 조회결과" +map.toString());
 		String dbEmail=(String)map.get("CEMAIL");
 		int num=Integer.parseInt(jsonObject.get("num").toString());
-		if(!dbEmail.equals("kim@kim.com")) {
+		if(!dbEmail.equals(email)) {
 			throw utillService.makeRuntimeEX("장바구니 이메일 불일치", "changeCount");
 		}/*else if(num!=1||num!=1) {
 			throw utillService.makeRuntimeEX("카운트 수량을 조작하였습니다", "changeCount");
 		}*/
+		Map<String, Object>product=Optional.ofNullable(buketDao.findPriceByProduct(map)).orElseThrow(()->utillService.makeRuntimeEX("존재하지 않는 상품발견", "changeCount"));
+		System.out.println("상품의 현재 상태 "+product.toString());
+		int menuCount=Integer.parseInt(product.get("MCOUNT").toString());
 		int dbCount=Integer.parseInt(map.get("CCOUNT").toString());
 		dbCount +=num;
-		
+		if(menuCount<num) {
+			throw utillService.makeRuntimeEX("재고가 부족합니다 남은재고 "+menuCount, "changeCount");
+		}
+		int menuPrice=Integer.parseInt(product.get("PRICE").toString().replace(",", ""));
 		if(dbCount<=0) {
 			buketDao.deleteById(bid);
 			return utillService.makeJson(false, "0");
 		}else {
-			Map<String, Object>map2=new HashMap<String, Object>();
-			map2.put("count", dbCount);
-			map2.put("bid", bid);
-			buketDao.updateCount(map2);
+			map.put("count", dbCount);
+			map.put("bid", bid);
+			buketDao.updateCount(map);
 		}
+	
 		JSONObject response=new JSONObject();
 		response.put("flag", true);
 		response.put("count", dbCount);
-		response.put("price", dbCount*20000);
+		response.put("price", dbCount*menuPrice);
 		return response;
 	}
 	@Transactional(rollbackFor = Exception.class)
@@ -103,11 +111,8 @@ public class buketService {
 		
 	}
 	public void totalPriceAndUser(String emil,Model model) {
-		logger.info("totalPriceAndUser");
-		Map<String, Object>map=buketDao.findUser(emil);
-		if(map.isEmpty()) {
-			throw utillService.makeRuntimeEX("존재하지 않는 회원입니다", "totalPriceAndUser");
-		}
+		System.out.println("totalPriceAndUser");
+		Map<String, Object>map=Optional.ofNullable(buketDao.findUser(emil)).orElseThrow(()->utillService.makeRuntimeEX("존재하지 않는 회원입니다", "totalPriceAndUser"));
 		String mobile=map.get("MOBILE").toString();
 		map.put("MOBILE1", mobile.substring(0, 3));
 		map.put("MOBILE2", mobile.substring(3, 7));

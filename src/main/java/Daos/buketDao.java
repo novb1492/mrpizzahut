@@ -12,4 +12,5 @@ public interface buketDao {
  public Map<String, Object> findUser(String email);
  public Map<String, Object>findByPizzaName(Map<String, Object>map);
  public int deleteByEmail(String email);
+ public Map<String, Object> findPriceByProduct(Map<String, Object>map);
 }

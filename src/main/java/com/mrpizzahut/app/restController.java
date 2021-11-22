@@ -51,7 +51,7 @@ public class restController {
 	@RequestMapping(value = "/changeCount", method = RequestMethod.PUT)
 	public JSONObject changeCount(@RequestBody JSONObject jsonObject,HttpServletRequest request,HttpServletResponse response) {
 		logger.info("changeCount rest");
-		return buketService.changeCount(jsonObject);
+		return buketService.changeCount(jsonObject,request);
 	}
 	@RequestMapping(value = "/deleteCart", method = RequestMethod.POST)
 	public JSONObject deleteCart(@RequestBody deleteCartDto dto,HttpServletRequest request,HttpServletResponse response) {

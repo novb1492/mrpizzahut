@@ -32,5 +32,13 @@
 	<delete id="deleteByEmail" parameterType="String" > 
 			delete from cart where CEMAIL = #{email} 
 	</delete>
-
+	<select id="findPriceByProduct" parameterType="Map" resultType="Map">
+		select PRICE,MCOUNT from menu where MNAME=#{CMENU}
+		<if test="CEDGE!=null">
+			and EDGE=#{CEDGE}
+		</if>
+		<if test="CSIZE!=null">
+			and MSIZE=#{CSIZE}
+		</if>
+	</select>
 </mapper>
