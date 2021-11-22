@@ -295,15 +295,15 @@ int totalPrice=(int)request.getAttribute("totalPrice");
 								
 									
 									
-								<input type="hidden" id="eCoupon_product" name="eCoupon_product" value="N">		
+								<input type="hidden" id="<%=map.get("CNUM") %>originPrice"  value="<%=map.get("price") %>">		
 									
 								
 								<span class="ui-spinner ui-widget ui-widget-content ui-corner-all" style="height: 35px;">
 									<input class="cartSpinner ui-spinner-input" type="text" value="<%=map.get("CCOUNT") %>" id="<%=map.get("CNUM") %>count" title="수량입력" style="width:46px;text-align:center;" readonly="" aria-valuemin="0" aria-valuemax="25" aria-valuenow="1" autocomplete="off" role="spinbutton">
-										<a href="#" onclick="test(<%=map.get("CNUM")%>,1,<%=map.get("price") %>)" class="ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only cartPlus" tabindex="-1" role="button" aria-disabled="false">
+										<a href="#" onclick="test(<%=map.get("CNUM")%>,1)" class="ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only cartPlus" tabindex="-1" role="button" aria-disabled="false">
 											<i class="icon icon-plus"></i>
 										</a>
-										<a href="#" onclick="test(<%=map.get("CNUM")%>,-1,<%=map.get("price") %>)" class="ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only cartMinus" tabindex="-1" role="button" aria-disabled="false">
+										<a href="#" onclick="test(<%=map.get("CNUM")%>,-1)" class="ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only cartMinus" tabindex="-1" role="button" aria-disabled="false">
 											<i class="icon icon-minus"></i>
 										</a>
 								</span>

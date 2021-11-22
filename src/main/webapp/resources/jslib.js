@@ -265,7 +265,7 @@ function checkAll(){
 			}
         }
 }
-function test(bid,num,originPrice){
+function test(bid,num){
 	let	data=JSON.stringify({
          "bid":bid,
          "num":num
@@ -277,14 +277,30 @@ function test(bid,num,originPrice){
 		$('.'+bid+'num').append(re.count);
 		$('.'+bid+'price').empty();
 		$('.'+bid+'price').append(re.price);
-		var totalPrice=document.getElementById('totalPrice').value;
+		var totalPrice=getIdValue('totalPrice');
+		var originPrice=getIdValue(bid+'originPrice');
+		console.log(num+'계산방식');
 		console.log(totalPrice+'계산전');
+		console.log(originPrice+'오리진가격');
 		totalPrice=totalPrice*1;
-		totalPrice=totalPrice-originPrice+re.price;
+		if(num>0){
+			totalPrice=totalPrice-originPrice+re.price;
+		}else{
+			console.log(originPrice-re.price);
+			var minusprice=originPrice-re.price;
+			console.log(minusprice+'차감가격');
+			if(minusprice<=0){
+				totalPrice=totalPrice-re.price;
+			}else{
+				totalPrice=totalPrice-minusprice;
+			}
+			
+		}
 		console.log(originPrice);
 		console.log(re.price);
 		console.log(totalPrice);
 		document.getElementById('totalPrice').value=totalPrice;
+		document.getElementById(bid+'originPrice').value=re.price;
 		$('.totalPrice').empty();
 		$('.totalPrice').append(totalPrice);
 
