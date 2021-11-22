@@ -46,13 +46,13 @@
             		
             	<%}else{
             		%>
-            		 <input type="button" id="beforeButton" onclick="changePage(-1,'/app/admin/order?detail=all')" class="btn btn-outline-primary btn-sm" value="이전">
+            		 <input type="button" id="beforeButton" onclick="changeOrderPage(-1)" class="btn btn-outline-primary btn-sm" value="이전">
             	<%}
             %>
             <span class="showPage"><%=nowPage %></span>/ <span class="showPage"><%=totalPage %></span>
            <% if(nowPage<totalPage){
             	%>
-            	 <input type="button" id="nextButton" onclick="changePage(1,'/app/admin/order?detail=all')"  class="btn btn-outline-primary btn-sm" value="다음">
+            	 <input type="button" id="nextButton" onclick="changeOrderPage(1)"  class="btn btn-outline-primary btn-sm" value="다음">
             
             <%}else{
             	%>

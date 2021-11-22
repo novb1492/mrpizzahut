@@ -1,4 +1,10 @@
 var result;
+function changeOrderPage(num){
+	var email=getParam('email');
+	var productName=getParam('productName');
+	var page=getParam('page');
+	location.href='/app/admin/order?detail=all&page='+(page*1+num)+'&keyword=yes&email='+email+'&productName='+productName;
+}
 function doSearchOrder(){
 	var email=getIdValue('email');
 	var productName=getIdValue('productName');
