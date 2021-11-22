@@ -236,6 +236,9 @@ public class orderService {
 			Map<String, Object>search=utillService.getStart(page, pageSize);
 			search.put("email", email);
 			search.put("productName", productName);
+			if(utillService.checkNull(productName)||utillService.checkNull(email)) {
+				throw utillService.makeRuntimeEX("이메일/제품이름이 공백입니다", "getorders");
+			}
 			return orderDao.findAllByKey(search);
 		}
 	}
