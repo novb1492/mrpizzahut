@@ -37,7 +37,7 @@ public class couponService {
 	public void getCoupon(HttpServletRequest request,Model model) {
 		System.out.println("getCoupon");
 		int conum=Integer.parseInt(request.getParameter("conum"));
-		Map<String, Object>coupon=Optional.ofNullable(couponDao.findByConum(5000)).orElseThrow(()->utillService.makeRuntimeEX("쿠폰이 존재하지 않습니다", ""));
+		Map<String, Object>coupon=Optional.ofNullable(couponDao.findByConum(conum)).orElseThrow(()->utillService.makeRuntimeEX("쿠폰이 존재하지 않습니다", ""));
 		String created= coupon.get("COEXPIRED").toString().replace(" ", "T");
 		int usedFlag=Integer.parseInt(coupon.get("USEDFLAG").toString());
 		String susedFlag="사용된 쿠폰입니다";

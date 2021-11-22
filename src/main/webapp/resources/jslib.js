@@ -24,8 +24,8 @@ function cancleArticle(flag) {
 	}
 }
 function cancleOrder(){
-	var onum=document.getElementById('onum').value;
-	var mchttrdno=document.getElementById('mchttrdno').value;
+	var onum=getIdValue('onum');
+	var mchttrdno=getIdValue('mchttrdno');
 	let	data=JSON.stringify({
          "onum":onum,
          "mchttrdno":mchttrdno
@@ -50,7 +50,7 @@ function changeYear(num){
 	location.href='/app/admin/sales?month='+month+'&year='+(year*1+num)+'&productName='+productName;
 }
 function deleteCoupon(){
-	var conum=document.getElementById('conum').value;
+	var conum=getIdValue('conum');
 	var result=requestDelteToServer('/app/admin/coupon?conum='+conum);
 	alert(result.message);
 	if(result.flag){
@@ -151,10 +151,10 @@ function requestOrder(){
 		return;
 	}
 	let	data=JSON.stringify({
-         "mobile1":document.getElementById('view_delivery_phone1').value,
-          "mobile2":document.getElementById('view_delivery_phone2').value,
-           "mobile3":document.getElementById('view_delivery_phone3').value,
-           "name":document.getElementById('gift_from_nm').value,
+         "mobile1":getIdValue('view_delivery_phone1'),
+          "mobile2":getIdValue('view_delivery_phone2'),
+           "mobile3":getIdValue('view_delivery_phone3'),
+           "name":getIdValue('gift_from_nm'),
            "kind":kind,
            "coupon":coupons
 	}); 
