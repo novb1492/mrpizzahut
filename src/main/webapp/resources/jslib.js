@@ -278,8 +278,13 @@ function test(bid,num,originPrice){
 		$('.'+bid+'price').empty();
 		$('.'+bid+'price').append(re.price);
 		var totalPrice=document.getElementById('totalPrice').value;
+		console.log(totalPrice+'계산전');
 		totalPrice=totalPrice*1;
 		totalPrice=totalPrice-originPrice+re.price;
+		console.log(originPrice);
+		console.log(re.price);
+		console.log(totalPrice);
+		document.getElementById('totalPrice').value=totalPrice;
 		$('.totalPrice').empty();
 		$('.totalPrice').append(totalPrice);
 
