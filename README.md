@@ -27,7 +27,7 @@ utillService에 형식에 상관없이 optional+제네릭을 이용해 null 검�
 빈 배열 검사 메소드를 만들었습니다  
 
 db정보
-orders=주문이 이뤄지면 주문정보가 담기는 db  
+orders=주문이 관련 테이블입니다    
  Name                                      Null?    Type
  ----------------------------------------- -------- ----------------------------  
  ONUM                                      NOT NULL NUMBER  
@@ -49,7 +49,7 @@ orders=주문이 이뤄지면 주문정보가 담기는 db
 CREATE SEQUENCE order_sq INCREMENT BY 1 START WITH 1  
 UNIQUE (ONUM)  
 
-kpay=카카오페이 결제시 저장이 이뤄집니다  
+kpay=카카오페이 관련 테이블입니다   
  Name                                      Null?    Type  
  ----------------------------------------- -------- ----------------------------  
  KNUM                                      NOT NULL NUMBER  
@@ -68,10 +68,40 @@ kpay=카카오페이 결제시 저장이 이뤄집니다
  KCOUPN                                             VARCHAR2(300)  
  
  CREATE SEQUENCE kpay_sq INCREMENT BY 1 START WITH 1  
-UNIQUE (KNUM)
-UNIQUE (KPARTNERORDERID)
+UNIQUE (KNUM)  
+UNIQUE (KPARTNERORDERID)  
 고유번호/고유거래번호 입니다  
+
+vbank=가상계좌 거래관련 테이블입니다    
+
+ Name                                      Null?    Type  
+ ----------------------------------------- -------- ----------------------------  
+ VNUM                                      NOT NULL NUMBER  
+ VCREATED                                  NOT NULL TIMESTAMP(6)  
+ VEXPIREDATE                                        TIMESTAMP(6)  
+ VFNCD                                              VARCHAR2(100)  
+ VFNNM                                              VARCHAR2(20)  
+ VMCHTID                                            VARCHAR2(100)  
+ VMCHTTRDNO                                NOT NULL VARCHAR2(50)  
+ VMETHOD                                   NOT NULL VARCHAR2(10)  
+ VTLACNTNO                                          VARCHAR2(30)  
+ VTRDAMT                                   NOT NULL NUMBER  
+ VTRDNO                                             VARCHAR2(50)  
+ VCANCLEORD                                         NUMBER  
+ VCANCLEFLAG                               NOT NULL NUMBER  
+ VCANCLEDATE                                        TIMESTAMP(6)  
+ VDONEFLAG                                 NOT NULL NUMBER  
+ VDONEDATE                                          TIMESTAMP(6)  
+ VPHONE                                    NOT NULL VARCHAR2(11)  
+ VEMAIL                                    NOT NULL VARCHAR2(100)  
+ VCOUPON                                            VARCHAR2(300)  
+ CHECKFLAG                                 NOT NULL NUMBER  
  
+UNIQUE (VNUM)  
+UNIQUE (VMCHTTRDNO)  
+고유번호/고유거래번호입니다  
+
+
  
 
 
