@@ -73,7 +73,6 @@ UNIQUE (KPARTNERORDERID)
 고유번호/고유거래번호 입니다  
 
 vbank=가상계좌 거래관련 테이블입니다    
-
  Name                                      Null?    Type  
  ----------------------------------------- -------- ----------------------------  
  VNUM                                      NOT NULL NUMBER  
@@ -102,7 +101,6 @@ UNIQUE (VMCHTTRDNO)
 고유번호/고유거래번호입니다  
 
 card=카드관련 테이블입니다  
-
  Name                                      Null?    Type  
  ----------------------------------------- -------- ----------------------------  
  CNUM                                               NUMBER  
@@ -122,9 +120,60 @@ card=카드관련 테이블입니다
  CPHONE                                    NOT NULL VARCHAR2(11)  
  CCOUPON                                            VARCHAR2(300)  
  
-CREATE SEQUENCE card_sq INCREMENT BY 1 START WITH 1;  
+CREATE SEQUENCE card_sq INCREMENT BY 1 START WITH 1  
 UNIQUE (CNUM)  
 UNIQUE (CMCHTTRDNO)  
+
+coupon=쿠폰 관련 테이블입니다    
+ Name                                      Null?    Type  
+ ----------------------------------------- -------- ----------------------------
+ CONUM                                     NOT NULL NUMBER  
+ COUSEDEMAIL                                        VARCHAR2(100)  
+ COUPONNAME                                NOT NULL VARCHAR2(200)  
+ USEDFLAG                                  NOT NULL NUMBER  
+ USEDDATE                                           TIMESTAMP(6)  
+ COMCHTTRDNO                                        VARCHAR2(200)  
+ COKIND                                    NOT NULL VARCHAR2(20)    
+ COPRICE                                   NOT NULL NUMBER  
+ COCREATED                                 NOT NULL TIMESTAMP(6)  
+ COEXPIRED                                 NOT NULL TIMESTAMP(6)  
+ 
+CREATE SEQUENCE coupon_sq INCREMENT BY 1 START WITH 1  
+UNIQUE (CONUM)  
+UNIQUE (COUPONNAME)  
+고유번호/쿠폰이름을 유니크로 지정했습니다  
+
+구현기능
+ 
+유저페이지
+
+결제
+카드/가상계좌/카카오페이결제  
+쿠폰 중복/기간/개수검증  
+(다른 제품에 동일 쿠폰 이있어도 검증가능)  
+(피자 3판이면 쿠폰은 최대 3개만 가능)  
+일괄 적용이 아닌 판수에 맞게 적용  
+(a피자 3판 쿠폰 1개 라면 a피자 첫번째 판에대해서만 쿠폰 적용)  
+
+재고 검증  
+장바구니 
+수량 조절 및 계산  
+
+관리자페이지
+메뉴등록/수정/삭제 가능  
+메뉴이미지는 모두 s3에 저장  
+글작성중 사진 업로드시 세션에저장
+저장 하지 않고 이탈시 사진이 존재하면  
+클라우드에서 자동 삭제가 이뤄짐  
+
+쿠폰등록/수정/삭제가능  
+주문 조회/환불가능  
+환불시 쿠폰도 다시 살려주게 해놓았습니다  
+
+매출차트  
+연도/월/일/품목별로  순판매금액/환불금액 막대차트로 표시  
+
+
 
 
  
