@@ -18,6 +18,7 @@ lombook을 사용할 수 없는 프로젝트 였고
 그밖의 개인적인 사정이 있었습니다  
 전체적으로 하드코딩이 되어버려서 아쉽습니다  
 
+
 알게된점  
 늘 null검사 list가 비워있는지 검사할때  
 list<t>형식이 달라서 고민이 많았습니다  
@@ -47,6 +48,31 @@ orders=주문이 이뤄지면 주문정보가 담기는 db
 
 CREATE SEQUENCE order_sq INCREMENT BY 1 START WITH 1  
 UNIQUE (ONUM)  
+
+kpay=카카오페이 결제시 저장이 이뤄집니다  
+ Name                                      Null?    Type  
+ ----------------------------------------- -------- ----------------------------  
+ KNUM                                      NOT NULL NUMBER  
+ KCID                                      NOT NULL VARCHAR2(50)  
+ KCREATED                                  NOT NULL TIMESTAMP(6)  
+ KPARTNERORDERID                           NOT NULL VARCHAR2(100)  
+ KEMAIL                                    NOT NULL VARCHAR2(100)  
+ KTEXFREE                                           NUMBER  
+ KTID                                               VARCHAR2(50)  
+ KPRICE                                    NOT NULL NUMBER  
+ KDONEFLAG                                 NOT NULL NUMBER  
+ KDONEDATE                                          TIMESTAMP(6)  
+ KCANCLEFLAG                               NOT NULL NUMBER  
+ KCANCLEDATE                                        TIMESTAMP(6)  
+ KPHONE                                    NOT NULL VARCHAR2(11)  
+ KCOUPN                                             VARCHAR2(300)  
+ 
+ CREATE SEQUENCE kpay_sq INCREMENT BY 1 START WITH 1  
+UNIQUE (KNUM)
+UNIQUE (KPARTNERORDERID)
+고유번호/고유거래번호 입니다  
+ 
+ 
 
 
  
