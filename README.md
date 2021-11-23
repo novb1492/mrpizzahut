@@ -101,6 +101,33 @@ UNIQUE (VNUM)
 UNIQUE (VMCHTTRDNO)  
 고유번호/고유거래번호입니다  
 
+card=카드관련 테이블입니다  
+
+ Name                                      Null?    Type  
+ ----------------------------------------- -------- ----------------------------  
+ CNUM                                               NUMBER  
+ CCANCLEFLAG                               NOT NULL NUMBER  
+ CCNCLORD                                           NUMBER  
+ CEMAIL                                    NOT NULL VARCHAR2(100)   
+ CFNNM                                              VARCHAR2(50)  
+ CMCHTTRDNO                                NOT NULL VARCHAR2(100)  
+ CMCHTID                                            VARCHAR2(100)  
+ CMETHOD                                   NOT NULL VARCHAR2(50)  
+ CTRDAMT                                   NOT NULL NUMBER  
+ CTRDNO                                             VARCHAR2(50)  
+ CCANCLEDATE                                        TIMESTAMP(6)  
+ CCREATED                                  NOT NULL TIMESTAMP(6)  
+ CDONEFLAG                                 NOT NULL NUMBER  
+ CDONEDATE                                          TIMESTAMP(6)  
+ CPHONE                                    NOT NULL VARCHAR2(11)  
+ CCOUPON                                            VARCHAR2(300)  
+ 
+CREATE SEQUENCE card_sq INCREMENT BY 1 START WITH 1;  
+UNIQUE (CNUM)  
+UNIQUE (CMCHTTRDNO)  
+
+
+ 
 
  
 
